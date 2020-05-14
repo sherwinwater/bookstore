@@ -113,6 +113,8 @@ public class UserServlet extends HttpServlet {
 
             case "logout":
                 user = null;
+                ArrayList<CartItem> cart =(ArrayList<CartItem>)request.getSession().getAttribute("cart");
+                cart.clear();
                 url = "/account/login.jsp";
                 break;
         }
