@@ -6,7 +6,7 @@
                   Home</a></li>
           <li><a href="<c:url value='/catalog/catalog.jsp' />">
                   Browse Catalog</a></li>
-          <li><a href="<c:url value='/email' />">
+          <li><a href="<c:url value='/email/email.jsp' />">
                   Join Email List</a></li>
           <li><a href="<c:url value='/customer_service' />">
                   Customer Service</a></li>

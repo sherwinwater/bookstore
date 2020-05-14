@@ -20,14 +20,12 @@
             <th>Quantity</th>
             <th>Action</th>
         </tr>
-
         <c:forEach var="row" items="${rs.rows}">
             <tr>
                 <td>${row.id}</td>
                 <td>${row.author}</td>
                 <td>${row.title}</td>
                 <td>${row.price}</td>
-
             <form action="<c:url value='/book'/>" method="POST">
                 <td>
                     <input type="number" name="book_qty" value="1" min="1">
@@ -44,12 +42,10 @@
             </tr>
         </c:forEach>
     </table>
-
     <form action="<c:url value='/book'/>" method="POST">
         <input type="hidden" name="todo" value="view">
         <input type="submit" value="view cart">
     </form>
-
 </section>
 
 <!-- end the middle column -->
