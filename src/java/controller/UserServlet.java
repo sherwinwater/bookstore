@@ -100,6 +100,7 @@ public class UserServlet extends HttpServlet {
 
                     if (UserDB.userLogin(username, saltedAndHashedPassword)) {
                         request.setAttribute("username", username);
+                        user = new User(username);
                         url = "/account/login_ok.jsp";
                     } else {
                         message = "wrong username or password";
@@ -109,8 +110,13 @@ public class UserServlet extends HttpServlet {
                 }
                 request.setAttribute("message", message);
                 break;
+
+            case "logout":
+                user = null;
+                url = "/account/login.jsp";
+                break;
         }
-        
+
         synchronized (lock) {
             session.setAttribute("user", user);
         }

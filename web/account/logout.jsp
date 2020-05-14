@@ -1,12 +1,6 @@
 <jsp:include page="/includes/header.jsp" />
 <jsp:include page="/includes/column_left_home.jsp" />
-<%--<%@page import="/controller/UserServlet.java" %>--%>
 <!-- start the middle column -->
-<%
-    session = request.getSession();
-    session.invalidate();
-//    user.clear();
-%>
 
 <section>
     <h1>Welcome Readers!</h1>
