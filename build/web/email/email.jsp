@@ -12,19 +12,17 @@
 <section>
     <form action="<c:url value='/Email' />" method="post">
         <label>First Name: </label>
-        <input type="text" name="firstname" value=""><br>
+        <input type="text" name="firstname" value="${firstname}"><br>
         <label>Last Name: </label>
-        <input type="text" name="lastname" value=""><br>
+        <input type="text" name="lastname" value="${lastname}"><br>
         <label>Email: </label>
-        <input type="email" name="email" value=""><br>
-        <label>Password: </label>
-        <input type="password" name="password" value=""><br>
-        <label>Password: </label>
-        <input type="password" name="password_confirm" value="" placeholder="confirm password"><br>
+        <input type="email" name="email" value="${email}"><br>
         <input type="hidden" name="todo" value="add">
         <input type="submit" value="Join the email list">
         
     </form>
+        <br>
+        <p><i>${msg_email}</i></p>
 </section>
 
 <!-- end the middle column -->

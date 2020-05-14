@@ -19,10 +19,14 @@
         <nav id='nav_bar'>
             <ul>
                 <li><a href="<c:url value='/admin/admin.jsp'/>">Admin</a></li>
-                <li><a href="<c:url value='/account/account.jsp'/>">Account</a></li>
+                <li><a href="<c:url value='/account/login.jsp'/>">Account</a></li>
+                    <c:if test="${not empty user}">
+                    <li><a href="<c:url value=''/>">Hi ${user.username}</a></li>
+                    <li><a href="<c:url value='/account/logout.jsp'/>">Logout</a></li>
+                    </c:if>
                 <li><a href="<c:url value='/order/order.jsp'/>">Order</a></li>
             </ul>
         </nav>
 
-            
-<!--header removes the left part-->
+
+        <!--header removes the left part-->

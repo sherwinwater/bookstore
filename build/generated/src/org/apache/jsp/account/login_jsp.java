@@ -1,10 +1,10 @@
-package org.apache.jsp.email;
+package org.apache.jsp.account;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
-public final class email_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class login_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -75,35 +75,56 @@ public final class email_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write('\n');
       org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_left_all.jsp", out, false);
       out.write("\n");
-      out.write(" <!--start the middle column--> \n");
+      out.write("<!--start the middle column--> \n");
       out.write("\n");
-      out.write("<section>\n");
+      out.write("<section id=\"login\">\n");
+      out.write("    <h1>Log In</h1>\n");
+      out.write("    <p><i>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${message}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</i></p>\n");
       out.write("    <form action=\"");
       if (_jspx_meth_c_url_0(_jspx_page_context))
         return;
-      out.write("\" method=\"post\">\n");
-      out.write("        <label>First Name: </label>\n");
-      out.write("        <input type=\"text\" name=\"firstname\" value=\"");
-      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${firstname}", java.lang.String.class, (PageContext)_jspx_page_context, null));
-      out.write("\"><br>\n");
-      out.write("        <label>Last Name: </label>\n");
-      out.write("        <input type=\"text\" name=\"lastname\" value=\"");
-      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${lastname}", java.lang.String.class, (PageContext)_jspx_page_context, null));
-      out.write("\"><br>\n");
-      out.write("        <label>Email: </label>\n");
-      out.write("        <input type=\"email\" name=\"email\" value=\"");
-      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${email}", java.lang.String.class, (PageContext)_jspx_page_context, null));
-      out.write("\"><br>\n");
-      out.write("        <input type=\"hidden\" name=\"todo\" value=\"add\">\n");
-      out.write("        <input type=\"submit\" value=\"Join the email list\">\n");
-      out.write("        \n");
+      out.write("\" method=\"post\" id=\"login\">\n");
+      out.write("        <input type=\"hidden\" name=\"todo\" value=\"login\">        \n");
+      out.write("        <label class=\"pad_top\">Username:</label>\n");
+      out.write("        <input type=\"text\" name=\"username\"><br>\n");
+      out.write("        <label class=\"pad_top\">Password:</label>\n");
+      out.write("        <input type=\"password\" name=\"password\"><br>\n");
+      out.write("        <label>&nbsp;</label>\n");
+      out.write("        <input type=\"submit\" value=\"Log In\" class=\"margin_left\">\n");
       out.write("    </form>\n");
-      out.write("        <br>\n");
-      out.write("        <p><i>");
-      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${msg_email}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("    <br>\n");
+      out.write("    <h1>Sign Up</h1>\n");
+      out.write("    <p><i>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${message_signup}", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write("</i></p>\n");
+      out.write("    <p><i>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${msg_user}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</i></p>\n");
+      out.write("    <form action=\"");
+      if (_jspx_meth_c_url_1(_jspx_page_context))
+        return;
+      out.write("\" method=\"post\" id=\"signup\">\n");
+      out.write("        <input type=\"hidden\" name=\"todo\" value=\"signup\">        \n");
+      out.write("        <label class=\"pad_top\">Username:</label>\n");
+      out.write("        <input type=\"text\" name=\"username\" placeholder=\"email\"><br>\n");
+      out.write("        <label class=\"pad_top\">Password:</label>\n");
+      out.write("        <input type=\"password\" name=\"password\"><br>\n");
+      out.write("        <label>&nbsp;</label>\n");
+      out.write("        <input type=\"submit\" value=\"Sign Up\" class=\"margin_left\">\n");
+      out.write("    </form>\n");
+      out.write("    <!--    <h2>Password info</h2>\n");
+      out.write("        <p>Hash:<br>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${hashedPassword}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p>\n");
+      out.write("        <p>Salt:<br>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${salt}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p>\n");
+      out.write("        <p>Salted Hash:<br>");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${saltedAndHashedPassword}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</p>-->\n");
       out.write("</section>\n");
-      out.write("\n");
       out.write("<!-- end the middle column -->\n");
       out.write("\n");
       org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_right_news.jsp", out, false);
@@ -212,13 +233,31 @@ public final class email_jsp extends org.apache.jasper.runtime.HttpJspBase
     org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_0 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
     _jspx_th_c_url_0.setPageContext(_jspx_page_context);
     _jspx_th_c_url_0.setParent(null);
-    _jspx_th_c_url_0.setValue("/Email");
+    _jspx_th_c_url_0.setValue("/user");
     int _jspx_eval_c_url_0 = _jspx_th_c_url_0.doStartTag();
     if (_jspx_th_c_url_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
       _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
       return true;
     }
     _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
+    return false;
+  }
+
+  private boolean _jspx_meth_c_url_1(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:url
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_1 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_1.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_1.setParent(null);
+    _jspx_th_c_url_1.setValue("/user");
+    int _jspx_eval_c_url_1 = _jspx_th_c_url_1.doStartTag();
+    if (_jspx_th_c_url_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
+      return true;
+    }
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
     return false;
   }
 }

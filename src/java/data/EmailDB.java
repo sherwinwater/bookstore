@@ -3,22 +3,22 @@ package data;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class UserDB {
-    private static final String TABLE = "user";
+public class EmailDB {
+    private static final String TABLE = "email";
     
-    public static int insert(User user) {
+    public static int insert(Email emailer) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (username,"
-                + "hashpassword,salt)"
+                = "INSERT INTO " + TABLE + " (firstname,lastname,"
+                + "email)"
                 + "VALUES(?,?,?)";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getHashpassword());
-            ps.setString(3, user.getSalt());
+            ps.setString(1, emailer.getFirstname());
+            ps.setString(2, emailer.getLastname());
+            ps.setString(3, emailer.getEmail());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -29,18 +29,18 @@ public class UserDB {
         }
     }
 
-    public static int update(User user) {
+    public static int update(Email emailer) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
         String query = "UPDATE "+TABLE+" SET "
-                + "username = ? "
-                + "WHERE username = ?";
+                + "lastname = ? "
+                + "WHERE firstname = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getUsername());
+            ps.setString(1, emailer.getLastname());
+            ps.setString(2, emailer.getFirstname());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -51,16 +51,16 @@ public class UserDB {
         }
     }
 
-    public static void delete(User user) {
+    public static void delete(Email emailer) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
         String query = "DELETE FROM "+TABLE+" "
-                + "WHERE username = ?";
+                + "WHERE firstname = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, user.getUsername());
+            ps.setString(1, emailer.getFirstname());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -71,41 +71,17 @@ public class UserDB {
         }
     }
 
-    public static boolean userExists(String username) {
+    public static boolean emailerExists(String email) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         String query = "SELECT * FROM "+TABLE+" "
-                + "WHERE username = ?";
+                + "WHERE email = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, username);
-            rs = ps.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            System.out.println(e);
-            return false;
-        } finally {
-            DBUtil.closeResultSet(rs);
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
-        }
-    }
-    
-    public static boolean userLogin(String username,String password) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String query = "SELECT * FROM "+TABLE+" "
-                + "WHERE username = ? AND hashpassword = ?";
-        try {
-            ps = connection.prepareStatement(query);
-            ps.setString(1, username);
-            ps.setString(2, password);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -118,27 +94,28 @@ public class UserDB {
         }
     }
 
-    public static ArrayList<User> select(String username) {
+    public static ArrayList<Email> select(String firstname) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<User> userList = new ArrayList<>();
+        ArrayList<Email> emailerList = new ArrayList<>();
 
         String query = "SELECT * FROM "+TABLE+" "
-                + "WHERE username = ?";
+                + "WHERE firstname = ?";
+        int i = 0;
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, username);
+            ps.setString(1, firstname);
             rs = ps.executeQuery();
             while (rs.next()) {
-                User user = new User(rs.getString("username"));
-                user.setHashpassword(rs.getString("hashpassword"));
-                user.setSalt(rs.getString("salt"));
-                userList.add(user);
-                System.out.println("salt"+user.getSalt());
+                Email emailer = new Email(rs.getString("email"));
+                emailer.setFirstname(rs.getString("firstname"));
+                emailer.setLastname(rs.getString("lastname"));
+                emailerList.add(emailer);
+                System.out.println(++i);
             }
-            return userList;
+            return emailerList;
         } catch (SQLException e) {
             System.out.println(e);
             return null;

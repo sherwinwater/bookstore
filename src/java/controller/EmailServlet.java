@@ -3,8 +3,8 @@ package controller;
 import data.Book;
 import data.BookDB;
 import data.CartItem;
-import data.User;
-import data.UserDB;
+import data.Email;
+import data.EmailDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -28,39 +28,46 @@ public class EmailServlet extends HttpServlet {
         String todo = request.getParameter("todo");
 
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-        if (user == null) {
-            synchronized (session) {
-                session.setAttribute("userList", user);
-            }
+        final Object lock = request.getSession().getId().intern();
+        Email emailer = new Email();
+        synchronized (lock) {
+            emailer = (Email) session.getAttribute("emailer");
+        }
+
+        if (emailer == null) {
+            emailer = new Email();
         }
 
         switch (todo) {
             case "add":
-                String firsname = request.getParameter("firstname");
+                String firstname = request.getParameter("firstname");
                 String lastname = request.getParameter("lastname");
-                String password = request.getParameter("password");
                 String email = request.getParameter("email");
-                user = new User(email);
-                user.setFirstname(firsname);
-                user.setLastname(lastname);
-                user.setPassword(password);
+                emailer = new Email(email);
+                emailer.setFirstname(firstname);
+                emailer.setLastname(lastname);
                 String msg_email = "";
-                if (!UserDB.userExists(email)) {
-                    UserDB.insert(user);
+                if (!EmailDB.emailerExists(email)) {
+                    EmailDB.insert(emailer);
                     msg_email = email + " successfully registers in the list.";
                 } else {
-                    msg_email= email +" is already in the list!";
+                    msg_email = email + " is already in the list!";
                 }
-                    request.setAttribute("msg_email", msg_email);
+                request.setAttribute("msg_email", msg_email);
+                request.setAttribute("firstname", firstname);
+                request.setAttribute("lastname", lastname);
+                request.setAttribute("email", email);
 
-                url = "/email/email_result.jsp";
+                url = "/email/email.jsp";
                 break;
 
             default:
                 url = "/catalog/catalog.jsp";
         }
-
+        
+        synchronized (lock) {
+            session.setAttribute("emailer", emailer);
+        }
         getServletContext()
                 .getRequestDispatcher(url)
                 .forward(request, response);

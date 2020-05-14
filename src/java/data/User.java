@@ -3,48 +3,39 @@ package data;
 import java.io.Serializable;
 
 public class User implements Serializable{
-    private String firstname;
-    private String lastname;
-    private String password;
-    private String email;
+    private String username;
+    private String hashpassword;
+    private String salt;
 
-    public User(String email) {
-        this.email = email;
+    public User() {
     }
 
-    public String getFirstname() {
-        return firstname;
+    public User(String username) {
+        this.username = username;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getUsername() {
+        return username;
     }
 
-    public String getLastname() {
-        return lastname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public String getHashpassword() {
+        return hashpassword;
     }
 
-    public String getPassword() {
-        return password;
+    public void setHashpassword(String hashpassword) {
+        this.hashpassword = hashpassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public String getSalt() {
+        return salt;
     }
 
-    public String getEmail() {
-        return email;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-    
-    
-    
-    
+   
 }

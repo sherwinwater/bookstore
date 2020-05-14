@@ -24,13 +24,15 @@ public class BookServlet extends HttpServlet {
         String url = "/catalog/catalog.jsp";
         String todo = request.getParameter("todo");
 
+        // session with threads-safe
         HttpSession session = request.getSession();
-        ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+        final Object lock = request.getSession().getId().intern();
+        ArrayList<CartItem> cart = new ArrayList<>();
+        synchronized (lock) {
+            cart = (ArrayList<CartItem>) session.getAttribute("cart");
+        }
         if (cart == null) {
             cart = new ArrayList<>();
-            synchronized (session) {
-                session.setAttribute("cart", cart);
-            }
         }
 
         switch (todo) {
@@ -108,6 +110,10 @@ public class BookServlet extends HttpServlet {
                 break;
             default:
                 url = "/catalog/catalog.jsp";
+        }
+
+        synchronized (lock) {
+            session.setAttribute("cart", cart);
         }
 
         ServletContext sc = request.getServletContext();
