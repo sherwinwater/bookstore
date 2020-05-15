@@ -46,12 +46,12 @@
                 </tr>
             </c:forEach>
         </table>
+        
+        <form action="<c:url value='/book'/>" method="POST">
+            <input type="hidden" name="todo" value="checkout">
+            <input type="submit" value="checkout">
+        </form>
     </c:if>
-
-    <form action="<c:url value='/book'/>" method="POST">
-        <input type="hidden" name="todo" value="checkout">
-        <input type="submit" value="checkout">
-    </form>
 
     <form action="<c:url value='/book'/>" method="POST">
         <input type="hidden" name="todo" value="shopping">

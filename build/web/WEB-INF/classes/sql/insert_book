@@ -1,0 +1,31 @@
+INSERT INTO books (title, author, format, price)
+  VALUES ('The Adventures of Duck and Goose',
+   'Sir Quackalot', 'paperback', 10.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('The Return of Duck and Goose', 'Sir Quackalot',
+   'paperback', 11.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('More Fun with Duck and Goose', 'Sir Quackalot',
+   'paperback', 12.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('Duck and Goose on Holiday', 'Sir Quackalot',
+   'paperback', 11.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('The Return of Duck and Goose', 'Sir Quackalot',
+   'hardback', 19.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('The Adventures of Duck and Goose', 'Sir Quackalot',
+   'hardback', 18.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('My Friend is a Duck', 'A. Parrot', 'paperback',
+   14.99);
+INSERT INTO books (title, author, format, price)
+  VALUES (
+   'Annotated Notes on the ‘Duck and Goose’ chronicles',
+   'Prof Macaw', 'ebook', 8.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('‘Duck and Goose’ Cheat Sheet for Students',
+   'Polly Parrot', 'ebook', 5.99);
+INSERT INTO books (title, author, format, price)
+  VALUES ('‘Duck and Goose’: an allegory for modern times?',
+   'Bor Ing', 'hardback', 59.99);

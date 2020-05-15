@@ -24,7 +24,6 @@ public class EmailServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String url = "/index.jsp";
-
         String todo = request.getParameter("todo");
 
         HttpSession session = request.getSession();
@@ -43,28 +42,29 @@ public class EmailServlet extends HttpServlet {
                 String firstname = request.getParameter("firstname");
                 String lastname = request.getParameter("lastname");
                 String email = request.getParameter("email");
-                emailer = new Email(email);
-                emailer.setFirstname(firstname);
-                emailer.setLastname(lastname);
-                String msg_email = "";
-                if (!EmailDB.emailerExists(email)) {
-                    EmailDB.insert(emailer);
-                    msg_email = email + " successfully registers in the list.";
-                } else {
-                    msg_email = email + " is already in the list!";
+                if (firstname != null && lastname != null && email != null) {
+                    emailer = new Email(email);
+                    emailer.setFirstname(firstname);
+                    emailer.setLastname(lastname);
+                    String msg_email = "";
+                    if (!EmailDB.emailerExists(email)) {
+                        EmailDB.insert(emailer);
+                        msg_email = email + " successfully registers in the list.";
+                    } else {
+                        msg_email = email + " is already in the list!";
+                    }
+                    request.setAttribute("msg_email", msg_email);
+                    request.setAttribute("firstname", firstname);
+                    request.setAttribute("lastname", lastname);
+                    request.setAttribute("email", email);
+                    url = "/email/email.jsp";
                 }
-                request.setAttribute("msg_email", msg_email);
-                request.setAttribute("firstname", firstname);
-                request.setAttribute("lastname", lastname);
-                request.setAttribute("email", email);
-
-                url = "/email/email.jsp";
                 break;
 
             default:
                 url = "/catalog/catalog.jsp";
         }
-        
+
         synchronized (lock) {
             session.setAttribute("emailer", emailer);
         }

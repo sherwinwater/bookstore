@@ -1,0 +1,18 @@
+SMAP
+column_005fleft_005fall_jsp.java
+JSP
+*S JSP
+*F
++ 0 column_left_all.jsp
+includes/column_left_all.jsp
+*L
+1,5:54
+5:118,5
+5,3:61
+7:136,5
+7,4:66
+10:154,5
+10,3:72
+12:172,5
+12,23:77
+*E

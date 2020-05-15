@@ -6,7 +6,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="stylesheet" href="<c:url value='/styles/main.css'/>">
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <!--<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>-->
     </head>
     <body>
         <header>
@@ -31,6 +31,7 @@
                     <li><a href="<c:url value=''/>">Hi ${user.username}</a></li>
                     <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
                     </c:if>
+                <li><a href="<c:url value='/cart/cart.jsp'/>">Cart</a></li>
                 <li><a href="<c:url value='/order/order.jsp'/>">Order</a></li>
             </ul>
         </nav>
