@@ -78,14 +78,23 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("            <h2>Best place to read & search</h2>\n");
       out.write("        </header>\n");
       out.write("\n");
-      out.write("        <nav id='nav_bar'>\n");
+      out.write("        <nav id='nav_bar'>    \n");
+      out.write("            <form action=\"");
+      if (_jspx_meth_c_url_2(_jspx_page_context))
+        return;
+      out.write("\" method=\"post\" id=\"searchform\">\n");
+      out.write("                <input type=\"hidden\" name=\"todo\" value=\"search\">        \n");
+      out.write("                <input type=\"search\" name=\"search\" placeholder=\"search\">\n");
+      out.write("                <input type=\"submit\" value=\"Search\" class=\"margin_right\">\n");
+      out.write("            </form>\n");
+      out.write("                \n");
       out.write("            <ul>\n");
       out.write("                <li><a href=\"");
-      if (_jspx_meth_c_url_2(_jspx_page_context))
+      if (_jspx_meth_c_url_3(_jspx_page_context))
         return;
       out.write("\">Admin</a></li>\n");
       out.write("                <li><a href=\"");
-      if (_jspx_meth_c_url_3(_jspx_page_context))
+      if (_jspx_meth_c_url_4(_jspx_page_context))
         return;
       out.write("\">Account</a></li>\n");
       out.write("                    ");
@@ -158,7 +167,7 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
     org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_2 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
     _jspx_th_c_url_2.setPageContext(_jspx_page_context);
     _jspx_th_c_url_2.setParent(null);
-    _jspx_th_c_url_2.setValue("/admin/admin.jsp");
+    _jspx_th_c_url_2.setValue("/book");
     int _jspx_eval_c_url_2 = _jspx_th_c_url_2.doStartTag();
     if (_jspx_th_c_url_2.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
       _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_2);
@@ -176,13 +185,31 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
     org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_3 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
     _jspx_th_c_url_3.setPageContext(_jspx_page_context);
     _jspx_th_c_url_3.setParent(null);
-    _jspx_th_c_url_3.setValue("/account/login.jsp");
+    _jspx_th_c_url_3.setValue("/admin/admin.jsp");
     int _jspx_eval_c_url_3 = _jspx_th_c_url_3.doStartTag();
     if (_jspx_th_c_url_3.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
       _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_3);
       return true;
     }
     _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_3);
+    return false;
+  }
+
+  private boolean _jspx_meth_c_url_4(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:url
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_4 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_4.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_4.setParent(null);
+    _jspx_th_c_url_4.setValue("/account/login.jsp");
+    int _jspx_eval_c_url_4 = _jspx_th_c_url_4.doStartTag();
+    if (_jspx_th_c_url_4.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
+      return true;
+    }
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
     return false;
   }
 
@@ -200,15 +227,11 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
       do {
         out.write("\n");
         out.write("                    <li><a href=\"");
-        if (_jspx_meth_c_url_4((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_if_0, _jspx_page_context))
+        if (_jspx_meth_c_url_5((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_if_0, _jspx_page_context))
           return true;
         out.write("\">Hi ");
         out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${user.username}", java.lang.String.class, (PageContext)_jspx_page_context, null));
         out.write("</a></li>\n");
-        out.write("                    <!--<li><a href=\"");
-        if (_jspx_meth_c_url_5((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_if_0, _jspx_page_context))
-          return true;
-        out.write("\">Logout</a></li>-->\n");
         out.write("                    <li><a href=\"");
         if (_jspx_meth_c_url_6((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_if_0, _jspx_page_context))
           return true;
@@ -227,24 +250,6 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
     return false;
   }
 
-  private boolean _jspx_meth_c_url_4(javax.servlet.jsp.tagext.JspTag _jspx_th_c_if_0, PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_4 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_4.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_4.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_if_0);
-    _jspx_th_c_url_4.setValue("");
-    int _jspx_eval_c_url_4 = _jspx_th_c_url_4.doStartTag();
-    if (_jspx_th_c_url_4.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
-    return false;
-  }
-
   private boolean _jspx_meth_c_url_5(javax.servlet.jsp.tagext.JspTag _jspx_th_c_if_0, PageContext _jspx_page_context)
           throws Throwable {
     PageContext pageContext = _jspx_page_context;
@@ -253,7 +258,7 @@ public final class header_jsp extends org.apache.jasper.runtime.HttpJspBase
     org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_5 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
     _jspx_th_c_url_5.setPageContext(_jspx_page_context);
     _jspx_th_c_url_5.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_if_0);
-    _jspx_th_c_url_5.setValue("/account/logout.jsp");
+    _jspx_th_c_url_5.setValue("");
     int _jspx_eval_c_url_5 = _jspx_th_c_url_5.doStartTag();
     if (_jspx_th_c_url_5.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
       _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_5);

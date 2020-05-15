@@ -105,7 +105,6 @@ public class BookDB {
 
         String query = "SELECT * FROM "+TABLE+" "
                 + "WHERE product_id = ?";
-        int i = 0;
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, id);
@@ -116,7 +115,6 @@ public class BookDB {
                 item.setQuantity(rs.getInt("product_quantity"));
                 item.setTotalprice(rs.getDouble("product_totalprice"));
                 itemList.add(item);
-                System.out.println(++i);
             }
             return itemList;
         } catch (SQLException e) {
@@ -128,4 +126,38 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
+    
+    public static ArrayList<Book> search(String title) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Book> bookList = new ArrayList<>();
+
+        String query = "SELECT * FROM books "
+                + "WHERE title LIKE ?";
+        try {
+            ps = connection.prepareStatement(query);
+            title = "%"+title+"%";
+            ps.setString(1, title);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(rs.getString("id"),
+                        rs.getDouble("price"));
+                book.setTitle(rs.getString("title"));
+                book.setAuthor(rs.getString("author"));
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+    
+    
 }

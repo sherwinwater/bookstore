@@ -10,13 +10,20 @@
     </head>
     <body>
         <header>
-            <img src="<c:url value='/images/logo.png'/>" 
-                 alt="Book Store Logo" width="188">
+            <a href="<c:url value='/index.jsp'/>">
+                <img src="<c:url value='/images/logo.png'/>" 
+                     alt="Book Store Logo" width="188"></a>
             <h1>Sherwin Bookstore</h1>
             <h2>Best place to read & search</h2>
         </header>
 
-        <nav id='nav_bar'>
+        <nav id='nav_bar'>    
+            <form action="<c:url value='/book'/>" method="post" id="searchform">
+                <input type="hidden" name="todo" value="search">        
+                <input type="search" name="search" placeholder="search book title">
+                <input type="submit" value="Search" class="margin_right">
+            </form>
+                
             <ul>
                 <li><a href="<c:url value='/admin/admin.jsp'/>">Admin</a></li>
                 <li><a href="<c:url value='/account/login.jsp'/>">Account</a></li>

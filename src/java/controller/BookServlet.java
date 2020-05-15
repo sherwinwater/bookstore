@@ -108,8 +108,13 @@ public class BookServlet extends HttpServlet {
                 cart.clear();
                 url = "/catalog/catalog.jsp";
                 break;
-            default:
-                url = "/catalog/catalog.jsp";
+            case "search":
+                String search = request.getParameter("search");
+                ArrayList<Book> bookList = new ArrayList<>();
+                bookList = BookDB.search(search);
+                request.setAttribute("bookList", bookList);
+                url = "/catalog/search_results.jsp";
+                break;
         }
 
         synchronized (lock) {

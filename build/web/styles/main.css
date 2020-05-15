@@ -7,7 +7,7 @@ html {
 }
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif;
-    font-size: 87.5%;
+    font-size: 77.5%;
     width: 964px;
     background-color: white;
     margin: 15px auto;
@@ -26,20 +26,20 @@ section, aside {
 h1 { font-size: 175%; }
 h2 { font-size: 125%; }
 
-a { font-weight: bold; }
+a { font-weight: bold;  text-decoration: none;}
 a:link { color: green; }
 a:visited { color: green; }
 a.current { color: #ef9c00; }
-a:hover, a:focus { color: blue; }
+a:hover, a:focus { color: maroon; }
 
 ul { 
-    margin-left: 1.5em;
+    margin-left: 1.5em;   
     margin-bottom: 1.5em; 
 }
 li { padding-bottom: 0.25em; }
 
 p { padding-bottom: 0.5em; }
-    
+
 em { font-weight: bold; }
 
 /* the styles for the header */
@@ -61,6 +61,12 @@ header img {
     float: left;
 }
 
+
+#searchform{
+    display: inline;
+    text-align: center;
+    margin-right: 6em;
+}
 /* the styles for the top navigation bar */
 #nav_bar {
     clear: left;
@@ -70,9 +76,11 @@ header img {
     text-align: right;
 }
 #nav_bar ul {
+    margin-top: .5em;
     margin-bottom: .5em;
     list-style: none;
     padding-top: .5em;
+    display: inline;
 }
 #nav_bar li {
     display: inline;
