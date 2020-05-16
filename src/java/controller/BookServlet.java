@@ -35,19 +35,18 @@ public class BookServlet extends HttpServlet {
             cart = new ArrayList<>();
         }
 
-        
         String book_java = "java";
-        String book_PHP ="PHP";
+        String book_PHP = "PHP";
         String book_Javascripts = "Javascripts";
-        
+
         int qyt_book_java = BookDB.search(book_java).size();
         int qyt_book_PHP = BookDB.search(book_PHP).size();
         int qyt_book_Javascripts = BookDB.search(book_Javascripts).size();
-        
+
         session.setAttribute("qyt_book_java", qyt_book_java);
         session.setAttribute("qyt_book_PHP", qyt_book_PHP);
         session.setAttribute("qyt_book_Javascripts", qyt_book_Javascripts);
-        
+
         switch (todo) {
             case "shopping":
                 url = "/catalog/catalog.jsp";
@@ -126,7 +125,7 @@ public class BookServlet extends HttpServlet {
                 ArrayList<Book> bookList = new ArrayList<>();
                 bookList = BookDB.search(search);
                 request.setAttribute("bookList", bookList);
-                url = "/catalog/search_results.jsp";
+                url = "/catalog/search.jsp";
                 break;
         }
 
