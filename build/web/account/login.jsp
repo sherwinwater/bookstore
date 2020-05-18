@@ -1,10 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
-<jsp:include page="/includes/header.jsp" />
-<jsp:include page="/includes/column_left_all.jsp" />
-<!--start the middle column--> 
-
 <section id="login">
     <h1>Log In</h1>
     <p><i>${message}</i></p>
@@ -35,13 +29,3 @@
         <p>Salt:<br>${salt}</p>
         <p>Salted Hash:<br>${saltedAndHashedPassword}</p>-->
 </section>
-<!-- end the middle column -->
-
-<jsp:include page="/includes/column_right_news.jsp" />
-<jsp:include page="/includes/footer.jsp" />
-
-
-
-
-
-

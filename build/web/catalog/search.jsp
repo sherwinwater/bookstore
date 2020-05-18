@@ -1,14 +1,9 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<jsp:include page="/includes/header.jsp" />
-<jsp:include page="/includes/column_left_catalog.jsp" />
-<!--start the middle column--> 
-
-<section>
+<!--<section>-->
     <!--retrieve book from database ebookshop-->
     <c:if test="${empty bookList}">
-        <p><i>Please input search content</i></p>
+        <p><i>No results</i></p>
     </c:if>
 
     <table>
@@ -44,19 +39,13 @@
             </tr>
         </c:forEach>
     </table>
-        <p id="message"></p>
     <c:if test="${not empty bookList}">
         <form action="<c:url value='/book'/>" method="POST">
             <input type="hidden" name="todo" value="view">
             <input type="submit" value="view cart">
         </form>
     </c:if>
-</section>
-
-<!-- end the middle column -->
-
-<jsp:include page="/includes/column_right_news.jsp" />
-<jsp:include page="/includes/footer.jsp" />
+<!--</section>-->
 
 
 

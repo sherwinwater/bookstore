@@ -4,8 +4,9 @@
     int currentYear = currentDate.get(Calendar.YEAR);
 %>
 <footer>
-    <p>&copy; Copyright <%= currentYear %> Sherwin  &amp; Company, Inc. 
+    <p>&copy; Copyright <%= currentYear%> Sherwin  &amp; Company, Inc. 
         All rights reserved.</p>
 </footer>
+<!--<script src="js.js"></script>-->
 </body>
 </html>

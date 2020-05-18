@@ -18,23 +18,22 @@
         </header>
 
         <nav id='nav_bar'>    
-            <form action="<c:url value='/book'/>" method="post" id="searchform">
+<!--            <form action="<c:url value='/book'/>" method="post" id="searchform">
                 <input type="hidden" name="todo" value="search">        
                 <input type="search" name="search" placeholder="search book title">
                 <input type="submit" value="Search" class="margin_right">
-            </form>
-                
-            <ul>
-                <li><a href="<c:url value='/admin/admin.jsp'/>">Admin</a></li>
-                <li><a href="<c:url value='/account/login.jsp'/>">Account</a></li>
+            </form>-->
+
+            <input type="search" name="search" placeholder="search book title" id="searchTxt">
+
+<!--            <ul>
+                <li><a href="#" onclick="show('ll')">Admin</a></li>
+                <li><a href="#" onclick="show('login')">Account</a></li>
                     <c:if test="${not empty user}">
                     <li><a href="<c:url value=''/>">Hi ${user.username}</a></li>
                     <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
                     </c:if>
-                <li><a href="<c:url value='/cart/cart.jsp'/>">Cart</a></li>
-                <li><a href="<c:url value='/order/order.jsp'/>">Order</a></li>
-            </ul>
+                <li><a href="#" onclick="show('cart')">Cart</a></li>
+                <li><a href="#" onclick="show('order')">Order</a></li>
+            </ul>-->
         </nav>
-
-
-        <!--header removes the left part-->

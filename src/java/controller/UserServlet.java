@@ -26,7 +26,6 @@ public class UserServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String url = "/account/login.jsp";
-
         String todo = request.getParameter("todo");
 
         HttpSession session = request.getSession();

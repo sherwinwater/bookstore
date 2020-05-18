@@ -35,18 +35,21 @@ public class BookServlet extends HttpServlet {
             cart = new ArrayList<>();
         }
 
-        String book_java = "java";
-        String book_PHP = "PHP";
-        String book_Javascripts = "Javascripts";
+//        String book_java = "java";
+//        String book_PHP = "PHP";
+//        String book_JavaScript = "JavaScript";
+//
+//        int qyt_book_java = BookDB.search(book_java).size();
+//        int qyt_book_PHP = BookDB.search(book_PHP).size();
+//        int qyt_book_JavaScript = BookDB.search(book_JavaScript).size();
+//
+//        session.setAttribute("qyt_book_java", qyt_book_java);
+//        session.setAttribute("qyt_book_PHP", qyt_book_PHP);
+//        session.setAttribute("qyt_book_JavaScript", qyt_book_JavaScript);
 
-        int qyt_book_java = BookDB.search(book_java).size();
-        int qyt_book_PHP = BookDB.search(book_PHP).size();
-        int qyt_book_Javascripts = BookDB.search(book_Javascripts).size();
-
-        session.setAttribute("qyt_book_java", qyt_book_java);
-        session.setAttribute("qyt_book_PHP", qyt_book_PHP);
-        session.setAttribute("qyt_book_Javascripts", qyt_book_Javascripts);
-
+//        request.getServletContext().setAttribute("qyt_book_java", qyt_book_java);
+//        request.getServletContext().setAttribute("qyt_book_PHP", qyt_book_PHP);
+//        request.getServletContext().setAttribute("qyt_book_JavaScript", qyt_book_JavaScript);
         switch (todo) {
             case "shopping":
                 url = "/catalog/catalog.jsp";
@@ -125,6 +128,19 @@ public class BookServlet extends HttpServlet {
                 ArrayList<Book> bookList = new ArrayList<>();
                 bookList = BookDB.search(search);
                 request.setAttribute("bookList", bookList);
+
+                String book_java = "java";
+                String book_PHP = "PHP";
+                String book_JavaScript = "JavaScript";
+
+                int qyt_book_java = BookDB.search(book_java).size();
+                int qyt_book_PHP = BookDB.search(book_PHP).size();
+                int qyt_book_JavaScript = BookDB.search(book_JavaScript).size();
+
+                request.setAttribute("qyt_book_java", qyt_book_java);
+                request.setAttribute("qyt_book_PHP", qyt_book_PHP);
+                request.setAttribute("qyt_book_JavaScript", qyt_book_JavaScript);
+
                 url = "/catalog/search.jsp";
                 break;
         }

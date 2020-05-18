@@ -6,7 +6,7 @@
 <sql:query sql="desc books" var="title" dataSource="${ds}" /> 
 
 <jsp:include page="/includes/header.jsp" />
-<jsp:include page="/includes/column_left_all.jsp" />
+<jsp:include page="/includes/column_left_catalog.jsp" />
 <!--start the middle column--> 
 
 <section>
