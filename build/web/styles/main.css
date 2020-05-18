@@ -51,11 +51,15 @@ header h1 {
     color: #ef9c00;
     margin-left: 120px;
     margin-bottom: 0.25em;
+    font-size: 225%;
 }
 header h2 {
     color: green;
     font-style: italic;
     margin-left: 120px;
+        margin-bottom: 0.25em;
+        font-size: 150%;
+
 }
 header img { 
     float: left;

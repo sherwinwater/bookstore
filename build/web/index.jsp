@@ -1,5 +1,6 @@
 <jsp:include page="/includes/header.jsp" />
 <jsp:include page="/includes/column_left_catalog.jsp" />
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!-- start the middle column -->
 <section id="content">
@@ -14,8 +15,10 @@
     </div>
 
 </section>
+<!--<script src="<c:url value='/js/main.js' />"></script>-->
 
-<script>
+
+<!--<script>
     var links = document.getElementsByClassName("link");
     var email = document.getElementById("email");
     var service = document.getElementById("service");
@@ -86,27 +89,28 @@
         if (args[0] == null) {
             content.innerHTML = "no results";
         } else {
-            content.innerHTML = `<table style="border: 1px solid black;
-    border-collapse: collapse;">
-        <tr>
-            <th>ID</th>
-            <th>Author</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Action</th>
-        </tr>`;
-            for (var x in args) {
-                content.innerHTML += `<tr>
-            <td>\${args[x].id}</td>
-            <td>\${args[x].author}</td>
-            <td>\${args[x].title}</td>
-            <td>\${args[x].price}</td>
-            <td>111</td>
-            <td>add to cart</td>
-        </tr><br>`;
-            }
-            content.innerHTML += `</table>`;
+            content.innerHTML ="<table><tr>ss</table>";
+//            content.innerHTML = `<table style="border: 1px solid black;
+//    border-collapse: collapse;">
+//        <tr>
+//            <th>ID</th>
+//            <th>Author</th>
+//            <th>Title</th>
+//            <th>Price</th>
+//            <th>Quantity</th>
+//            <th>Action</th>
+//        </tr>`;
+//            for (var x in args) {
+//                content.innerHTML += `<tr>
+//            <td>\${args[x].id}</td>
+//            <td>\${args[x].author}</td>
+//            <td>\${args[x].title}</td>
+//            <td>\${args[x].price}</td>
+//            <td>111</td>
+//            <td>add to cart</td>
+//        </tr><br>`;
+//            }
+//            content.innerHTML += `</table>`;
 
 //                content.innerHTML += args[x].id + " " + args[x].title +
 //                        args[x].author + " " + args[x].price + " " + "<br>";
@@ -126,7 +130,7 @@
     }
 
 
-</script>
+</script>-->
 
 <!-- end the middle column -->
 <jsp:include page="/includes/column_right_news.jsp" />

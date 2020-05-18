@@ -29,7 +29,7 @@
                 <td>${row.price}</td>
             <form action="<c:url value='/book'/>" method="POST">
                 <td>
-                    <input type="number" name="book_qty" value="1" min="1">
+                    <input type="number" name="book_quantity" value="1" min="1">
                 </td>
                 <td>
                     <input type="hidden" name="todo" value="add">

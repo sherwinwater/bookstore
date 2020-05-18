@@ -62,11 +62,11 @@ public class BookServlet extends HttpServlet {
                 String book_author = request.getParameter("book_author");
                 String book_title = request.getParameter("book_title");
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
-                int book_qty = Integer.parseInt(request.getParameter("book_qty"));
+                int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
                 Book newbook = new Book(book_id, book_price);
 
                 CartItem cartitem = new CartItem(book_id, book_price);
-                cartitem.setQuantity(book_qty);
+                cartitem.setQuantity(book_quantity);
 
                 if (cart.isEmpty()) {
                     cart.add(cartitem);
@@ -74,7 +74,7 @@ public class BookServlet extends HttpServlet {
                     boolean isHasBook = false;
                     for (CartItem item : cart) {
                         if (item.getId().equals(book_id)) {
-                            item.setQuantity(book_qty);
+                            item.setQuantity(book_quantity);
                             isHasBook = true;
                         }
                     }
@@ -98,11 +98,11 @@ public class BookServlet extends HttpServlet {
                 break;
 
             case "update":
-                int book_qty2 = Integer.parseInt(request.getParameter("quantity"));
+                int book_quantity2 = Integer.parseInt(request.getParameter("quantity"));
                 String book_id2 = request.getParameter("book_id");
                 for (CartItem item : cart) {
                     if (item.getId().equals(book_id2)) {
-                        item.setQuantity(book_qty2);
+                        item.setQuantity(book_quantity2);
                     }
                 }
                 url = "/cart/cart.jsp";

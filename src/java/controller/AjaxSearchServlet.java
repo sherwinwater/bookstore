@@ -39,9 +39,9 @@ public class AjaxSearchServlet extends HttpServlet {
         int qyt_book_JavaScript = BookDB.search(book_JavaScript).size();
 
         JSONObject jo = new JSONObject();
-        jo.put("qyt_book_java", qyt_book_java);
-        jo.put("qyt_book_PHP", qyt_book_PHP);
-        jo.put("qyt_book_JavaScript", qyt_book_JavaScript);
+        jo.put("java_quantity", qyt_book_java);
+        jo.put("PHP_quantity", qyt_book_PHP);
+        jo.put("JavaScript_quantity", qyt_book_JavaScript);
         jo.put("bookList", bookList);
         
         response.setContentType("application/json");
