@@ -1,3 +1,10 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
+
+<sql:setDataSource var="ds" dataSource="jdbc/bookDB" />
+<sql:query sql="select * from books" var="rs" dataSource="${ds}" /> 
+<sql:query sql="desc books" var="title" dataSource="${ds}" /> 
+
 <!DOCTYPE html>
 
 <html>
@@ -7,7 +14,7 @@
     </head>
     <body>
         <header>
-            <a href="./index.html">
+            <a href="<c:url value='/index.jsp'/>">
                 <img src="./images/logo.png" 
                      alt="Book Store Logo" width="188"></a>
             <h1>Sherwin Bookstore</h1>
@@ -15,16 +22,14 @@
         </header>
 
         <nav id='nav_bar'>    
-            <input type="search" name="search" placeholder="search book title" id="searchTxt" style="width: 26em">
+            <input type="search" name="search" placeholder="search book title" id="searchTxt">
             <ul>
                 <li><a href="#" onclick="showPage('./admin/admin.html')">Admin</a></li>
-                <li><a href="#" onclick="showPage('./account/login.html')">Account</a>   
-                    <ul id="login_sucess" style="display: none">
-                        <li><a href="<c:url value=''/>"></a></li>
-                        <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
-                    </ul>
-                </li>
-                <li><a href="#" onclick="viewCart()">Cart</a></li>
+                <li><a href="#" onclick="showPage('./account/login.jsp')">Account</a></li>                
+                    <li><a href="<c:url value=''/>">Hi ${user.username}</a></li>
+                    <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
+                
+                <li><a href="#" onclick="showPage('./cart')">Cart</a></li>
                 <li><a href="#" onclick="showPage('order')">Order</a></li>
             </ul>
 
@@ -33,7 +38,7 @@
         <aside id="sidebarA">
             <nav>
                 <ul>
-                    <li><a class="link current" href="./index.html" >
+                    <li><a class="link current" href="./index.jsp" >
                             Home</a></li>
                     <li >
                         <a class="link" href="#" id="catalog" onclick='showSearchandCatalog("ajaxsearch?search=")'>
@@ -56,7 +61,7 @@
         </aside>
         <!-- start the middle column -->
         <section id="content">
-            <h1 class='content'>Welcome Readers!</h1>
+            <h1 class='content'>Welcome<span id="username_welcome"></span> Readers!</h1>
             <p class='content'>Thanks for visiting. Make yourself at home. Feel free to browse through 
                 our book catalog. When you do, you can read samples from on our site.
                 We think our catalog contains some great books, and we 

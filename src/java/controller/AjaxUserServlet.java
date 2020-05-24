@@ -17,9 +17,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONObject;
 
-@WebServlet(name = "UserServlet", urlPatterns = {"/user"})
-public class UserServlet extends HttpServlet {
+@WebServlet(name = "AjaxUserServlet", urlPatterns = {"/ajaxuser"})
+public class AjaxUserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -38,33 +39,68 @@ public class UserServlet extends HttpServlet {
         if (user == null) {
             user = new User();
         }
+        synchronized (lock) {
+            session.setAttribute("user", user);
+        }
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String message = "";
         String salt = "";
         String saltedAndHashedPassword;
+        String msg_password = "";
+        String msg_username = "";
 
         switch (todo) {
-            case "signup":
+            case "checkname":
+                response.setHeader("Cache-Control", "no-cache");
+                response.setHeader("Pragma", "no-cache");
+                PrintWriter out = response.getWriter();
 
+                // check username duplicate
+                msg_username = "NEW USER";
+                if (UserDB.userExists(username)) {
+                    msg_username = username + " is already in the list!";
+                }
+                JSONObject msg = new JSONObject();
+                msg.put("msg_username", msg_username);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(msg);
+                break;
+
+            case "checkpassword":
+                response.setHeader("Cache-Control", "no-cache");
+                response.setHeader("Pragma", "no-cache");
+                out = response.getWriter();
                 // check strength requirements
                 try {
                     PasswordUtil.checkPasswordStrength(password);
-                    message = "";
+                    msg_password = "";
                 } catch (Exception e) {
-                    message = e.getMessage();
+                    msg_password = e.getMessage();
                 }
-                request.setAttribute("message_signup", message);
 
-                // check username duplicate
-                String msg_user = "";
-                if (UserDB.userExists(username)) {
-                    msg_user = username + " is already in the list!";
+                msg = new JSONObject();
+                msg.put("msg_password", msg_password);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(msg);
+                break;
+
+            case "signup":
+                msg = new JSONObject();
+                if (password == "") {  // "" cannot be null, string is "", object is null
+                    msg_password = "Password cannot be empty";
+                    msg.put("msg_password", msg_password);
+                    request.setAttribute("message_signup", msg_password);
                 }
-                request.setAttribute("msg_user", msg_user);
-                System.out.println(msg_user);
-                log(msg_user);
+                if (username == "") { // "" cannot be null, string is "", object is null
+                    msg_username = "Username cannot be empty";
+                    msg.put("msg_username", msg_username);
+                    request.setAttribute("msg_username", msg_username);
+                }
+
                 // sign up
                 if (PasswordUtil.validatePassword(password)
                         && !UserDB.userExists(username)) {
@@ -84,11 +120,16 @@ public class UserServlet extends HttpServlet {
                     user.setSalt(salt);
                     UserDB.insert(user);
                     request.setAttribute("username", username);
-                    url = "/account/login_ok.jsp";
+                    msg.put("username", username);
                 }
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(msg);
+
                 break;
 
             case "login":
+                msg = new JSONObject();
                 if (!UserDB.select(username).isEmpty()) {
                     salt = UserDB.select(username).get(0).getSalt();
                     try {
@@ -101,30 +142,30 @@ public class UserServlet extends HttpServlet {
                     if (UserDB.userLogin(username, saltedAndHashedPassword)) {
                         request.setAttribute("username", username);
                         user = new User(username);
-                        url = "/account/login_ok.jsp";
+                        msg.put("username", username);
                     } else {
                         message = "wrong username or password";
                     }
                 } else {
                     message = "user does not exsit.";
                 }
-                request.setAttribute("message", message);
+                msg.put("msg_login", message);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(msg);
                 break;
 
             case "logout":
                 user = null;
-                ArrayList<CartItem> cart =(ArrayList<CartItem>)request.getSession().getAttribute("cart");
+                ArrayList<CartItem> cart = (ArrayList<CartItem>) request.getSession().getAttribute("cart");
                 cart.clear();
                 url = "/account/login.jsp";
+                getServletContext()
+                        .getRequestDispatcher(url)
+                        .forward(request, response);
                 break;
         }
 
-        synchronized (lock) {
-            session.setAttribute("user", user);
-        }
-        getServletContext()
-                .getRequestDispatcher(url)
-                .forward(request, response);
     }
 
     @Override

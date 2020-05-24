@@ -4,12 +4,11 @@ var service = document.getElementById("service");
 var searchTxt = document.getElementById("searchTxt");
 var content = document.getElementById("content");
 var contents = document.getElementsByClassName("content");
-
 // add current classname
 for (var i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function () {
         var current = document.getElementsByClassName("current");
-        if (current[0] != this) {
+        if (current[0] !== this) {
             current[0].className = current[0].className.replace("current", "");
 //            this.className += " current";
             this.className = "link current";
@@ -18,78 +17,366 @@ for (var i = 0; i < links.length; i++) {
 }
 
 // show and hide subcatalog
-function showSubcatalog() {
-    showBookQuantity();
+function showSubcatalog(data) {
+    showBookQuantity(data);
     var e = document.getElementById("subcatalog");
-    e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+    e.style.display = (e.style.display === 'block') ? 'none' : 'block';
+}
+
+// show navbar pages
+// <objec> method
+//function showPage(page) {
+//    content.innerHTML = `<object type="text/html" data="${page}" width="300" height="500"></object>`;
+//}
+
+//function showPage(e) {
+//    (e || window.event).preventDefault();
+//
+//    fetch('./account/login.html' /*, options */)
+//            .then((response) => response.text())
+//            .then((html) => {
+//                document.getElementById("content").innerHTML = html;
+//            })
+//            .catch((error) => {
+//                console.warn(error);
+//            });
+//}
+
+function showPage(href) {
+
+//xmlhttp method
+//    var xmlhttp = new XMLHttpRequest();
+//    xmlhttp.open("GET", href, false);
+//    xmlhttp.send();
+//    document.getElementById("content").innerHTML = xmlhttp.responseText;
+
+// fetch method;
+    fetch(href)
+            .then(res => res.text()) // text()--xml, json()---json
+            .then(res => {
+                document.getElementById("content").innerHTML = res;
+//                alert(res);
+            })
+}
+
+function checkout(action) {
+    let page = "";
+    switch (action) {
+        case "contactinfo":
+            page = './order/contactInfo.html';
+            break;
+    }
+    showPage(page);
+    document.getElementById("sidebarB").style.display = "none";
+}
+
+async function getContactinfo(){
+    
+}
+
+//call back method
+//function foo(link, callback) {
+//    httpRequest = new XMLHttpRequest();
+//    httpRequest.onreadystatechange = function () {
+//        if (httpRequest.readyState === 4) { // request is done
+//            if (httpRequest.status === 200) { // successfully
+//                callback(httpRequest.responseText); // we're calling our method
+//            }
+//        }
+//    };
+//    httpRequest.open('GET', link);
+//    httpRequest.send();
+//}
+//
+//function showMsg(a) {
+//    content.innerHTML = a;
+//}
+//
+//function show(link) {
+//    foo(link, showMsg);
+//}
+
+async function viewCart() {
+    let page = "ajaxcart?todo=view";
+    let response = await fetch(page);
+    let resJason = await response.json();
+    getTable(resJason.cart, "viewCart");
+}
+
+async function showSearchResults(page) {
+    let response = await fetch(page);
+    let resJason = await response.json();
+    getTable(resJason.bookList, "addCart");
+}
+
+async function showSearchandCatalog(page) {
+    let response = await fetch(page);
+    let resJason = await response.json();
+    getTable(resJason.bookList, "addCart");
+    showSubcatalog(resJason);
+}
+
+// --end show page 
+async function checkUsername(page) {
+    let response = await fetch(page + document.getElementById("signup_username").value);
+    let resJason = await response.json();
+    document.getElementById("message_signup_username").innerHTML = resJason.msg_username;
+//    document.getElementById("message_signup_username").focus();
+}
+
+async function checkPassword(page) {
+    let response = await fetch(page + document.getElementById("signup_password").value);
+    let resJason = await response.json();
+    document.getElementById("message_signup_password").innerHTML = resJason.msg_password;
+//    if (resJason.msg_password != null) {
+//        document.getElementById("message_signup_password").focus();
+//    }
 }
 
 searchTxt.addEventListener("keyup", () => {
-    ajaxAsyncRequest("ajaxsearch?search=" + searchTxt.value);
+    showSearchResults("ajaxsearch?search=" + searchTxt.value);
 });
+// sign up
 
-var responseJason;
-// retrieve data from the database
-function ajaxAsyncRequest(reqURL, isShowSubcatalog) {
-    //Creating a new XMLHttpRequest object
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); //for IE6, IE5
+async function loginUser(action) {
+    let username = password = page = "";
+    if (action === "signup") {
+        username = document.signupForm.username.value;
+        password = document.signupForm.password.value;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
+    } else if (action === "login") {
+        username = document.loginForm.username.value;
+        password = document.loginForm.password.value;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
     }
-    //Create a asynchronous GET request
-    xmlhttp.open("GET", reqURL, true);
 
-    //When readyState is 4 then get the server output
-    xmlhttp.onreadystatechange = function () {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status === 200) {
-                responseJason = JSON.parse(xmlhttp.responseText);
-//                alert(xmlhttp.responseText);
-//                alert(responseJason);
-                showSearchResults(responseJason.bookList);
-                if (isShowSubcatalog == true) {
-                    showSubcatalog();
-                }
-            } else {
-                alert('Something is wrong !!');
-            }
+// method1
+//    let response = await fetch(page);
+//    let resJason = await response.json();
+//    console.log(resJason);
+//    document.getElementById("message_signup").innerHTML = resJason.msg_username;
+
+// POST method
+    const settings = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
         }
     };
-    xmlhttp.send(null);
+    try {
+        const response = await fetch(page, settings);
+        const resJason = await response.json();
+        console.log(resJason);
+        // do something
+        if (resJason.username != null) {
+            document.getElementById("login_signup_page").innerHTML = `
+        <h1>Welcome ${resJason.username}!</h1>
+            <p class='content'>Thanks for visiting. Make yourself at home. Feel free to browse through 
+                our book catalog. When you do, you can read samples from on our site.
+                We think our catalog contains some great books, and we 
+                hope you like it as much as we do.</p>
+            <p class='content'>If you find an book that you like, we hope that you will use this site 
+                to order it. Most of the book we carry are not available anywhere else!</p>`;
+        }
+        if (resJason.msg_login != null) {
+            document.getElementById("message_login").innerHTML = resJason.msg_login;
+        }
+        if (resJason.msg_username != null) {
+            document.getElementById("message_signup_username").innerHTML = resJason.msg_username;
+        }
+        if (resJason.msg_password != null) {
+            document.getElementById("message_signup_password").innerHTML = resJason.msg_password;
+        }
+    } catch (e) {
+        console.log(e);
+    }
 }
 
-function showSearchResults(args) {
-    if (args[0] == null) {
-        content.innerHTML = "no results";
-    } else {
-        var thead = tbody = "";
-        thead = `<table><thead><tr>
-            <th>ID</th>
-            <th>Author</th>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Action</th>
-        </tr></thead><tbody>`;
-        for (var x in args) {
-            tbody += `<tr>
-            <td>${args[x].id}</td>
-            <td>${args[x].author}</td>
-            <td>${args[x].title}</td>
-            <td>${args[x].price}</td>
-            <td><input type="number" value="1" min="1"></td>
-            <td><input type="button" value="add to cart"></td></tr>`;
-        }
-        content.innerHTML = thead + tbody + `</tbody></table>`;
+// add cart
+async function getCart(i, action) {
+    let book_ids = book_prices = book_quantitys = book_quantitys_update = book_titles = book_authors = page = "";
+    switch (action) {
+        case "add":
+            book_ids = document.getElementsByClassName('book_id');
+            book_prices = document.getElementsByClassName('book_price');
+            book_quantitys = document.getElementsByClassName('book_quantity');
+            book_titles = document.getElementsByClassName('book_title');
+            book_authors = document.getElementsByClassName('book_author');
+            page = "ajaxcart?todo=" + action
+                    + "&book_id=" + book_ids[i].innerHTML
+                    + "&book_price=" + book_prices[i].innerHTML
+                    + "&book_quantity=" + book_quantitys[i].value
+                    + "&book_title=" + book_titles[i].innerHTML
+                    + "&book_author=" + book_authors[i].innerHTML;
+            break;
+        case "update":
+        case "remove":
+            book_ids = document.getElementsByClassName('book_id');
+            book_prices = document.getElementsByClassName('book_price');
+            book_quantitys_update = document.getElementsByClassName('book_quantity_update');
+            book_titles = document.getElementsByClassName('book_title');
+            book_authors = document.getElementsByClassName('book_author');
+            page = "ajaxcart?todo=" + action
+                    + "&book_id=" + book_ids[i].innerHTML
+                    + "&book_price=" + book_prices[i].innerHTML
+                    + "&book_quantity_update=" + book_quantitys_update[i].value
+                    + "&book_title=" + book_titles[i].innerHTML
+                    + "&book_author=" + book_authors[i].innerHTML;
+            break;
+
     }
 
+// method--GET
+//    let response = await fetch(page);
+//    let resJason = await response.json();
+//    console.log(resJason);
+//    document.getElementById("message_signup").innerHTML = resJason.msg_username;
+
+// method--POST
+    const settings = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        }
+    };
+    try {
+        const response = await fetch(page, settings);
+        const resJason = await response.json();
+        console.log(resJason);
+        if (action == "remove") {
+//            if (resJason.cart != null) {
+            getTable(resJason.cart, "viewCart");
+//                showItemsInCart();
+//            }
+        }
+        // do something
+
+    } catch (e) {
+        console.log(e);
+    }
 }
 
-function showBookQuantity() {
-    document.getElementById('java_quantity').innerHTML = "Java(" + responseJason.java_quantity + ")";
-    document.getElementById('PHP_quantity').innerHTML = "PHP(" + responseJason.PHP_quantity + ")";
-    document.getElementById('JavaScript_quantity').innerHTML = "JavaScript(" + responseJason.JavaScript_quantity + ")";
+
+// xmlhttp method
+//// retrieve data from the database
+//function ajaxAsyncRequest(reqURL) {
+//    //Creating a new XMLHttpRequest object
+//    var xmlhttp;
+//    if (window.XMLHttpRequest) {
+//        xmlhttp = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari
+//    } else {
+//        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP"); //for IE6, IE5
+//    }
+//    //Create a asynchronous GET request
+//    xmlhttp.open("GET", reqURL, true);
+//    //When readyState is 4 then get the server output
+//    xmlhttp.onreadystatechange = function () {
+//        if (xmlhttp.readyState == 4) {
+//            if (xmlhttp.status === 200) {
+//                var responseJason = JSON.parse(xmlhttp.responseText);
+//////                alert(xmlhttp.responseText);
+////                showSearchResults(responseJason.bookList);
+////                if (isShowSubcatalog == true) {
+////                    showSubcatalog();
+////                }
+////                console.log(responseJason);
+//
+//            } else {
+//                alert('Something is wrong !!');
+//            }
+//        }
+//    };
+//    xmlhttp.send(null);
+//}
+
+
+function getTable(args, action) {
+
+    switch (action) {
+        case "addCart":
+            if (args[0] == null) {   // cannot be === null
+                content.innerHTML = "no results";
+            } else {
+                var thead = tbody = "";
+                var i = 0;
+                thead = ` <table> <thead><tr>
+                        <th>ID</th>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr></thead> <tbody> `;
+                for (var item in args) {
+                    tbody += ` <tr>
+                        <td class="book_id">${args[item].id}</td>
+                        <td class="book_author">${args[item].author}</td>
+                        <td class="book_title">${args[item].title}</td>
+                        <td class="book_price">${args[item].price}</td>
+                        <td> 
+                            <input type="number" name="book_quantity" value="1" min="1" class="book_quantity">
+                        </td>
+                        <td>
+                        <input type="button" value="Add to Cart" class="book_add" onclick="getCart(${i},'add')">
+                        </td>
+                        </tr>`;
+                    i++;
+                }
+                content.innerHTML = thead + tbody + `</tbody> </table>`;
+            }
+            break;
+
+        case "viewCart":
+            if (args[0] == null) {   // cannot be === null
+                content.innerHTML = "no results";
+            } else {
+                var thead = tbody = "";
+                var i = 0;
+                thead = `<h1>Your cart</h1>`;
+                thead += ` <table> <thead><tr>
+                        <th>ID</th>
+                        <th>Author</th>
+                        <th>Title</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Action</th>
+                    </tr></thead> <tbody> `;
+                for (var item in args) {
+                    tbody += ` <tr>
+                        <td class="book_id">${args[item].id}</td>
+                        <td class="book_author">${args[item].author}</td>
+                        <td class="book_title">${args[item].title}</td>
+                        <td class="book_price">${args[item].price}</td>
+                        <td> 
+                            <input type="number" name="book_quantity_update" value="${args[item].quantity}" min="1" 
+                                    class="book_quantity_update" style="display:inline-block">
+                            <input type="button" value="update" class="book_update" style="display:inline-block"
+                            onclick="getCart(${i},'update')" >
+                        </td>
+                        <td>
+                        <input type="button" value="Remove item" class="book_remove" style="display:inline-block"
+                            onclick="getCart(${i},'remove')" >
+                        </td>
+                        </tr>`;
+                    i++;
+                }
+                content.innerHTML = thead + tbody + `</tbody> </table><br><br>`;
+            }
+
+            let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
+                                   onclick='showSearchandCatalog("ajaxsearch?search=")' >`;
+            let checkout = `<input type="button" value="Checkout" style="display:inline-block"
+                            onclick="checkout('contactinfo')" >`;
+            content.innerHTML += `<br>` + shopping + checkout;
+
+            break;
+    }
 }
 
+function showBookQuantity(data) {
+    document.getElementById('java_quantity').innerHTML = "Java(" + data.java_quantity + ")";
+    document.getElementById('PHP_quantity').innerHTML = "PHP(" + data.PHP_quantity + ")";
+    document.getElementById('JavaScript_quantity').innerHTML = "JavaScript(" + data.JavaScript_quantity + ")";
+}

@@ -13,8 +13,8 @@ public class CartItem extends Book {
     private int quantity;
     private double totalprice;
     
-    public CartItem(String id, Double price) {
-        super(id, price);
+    public CartItem(String id, Double price,String title,String author) {
+        super(id, price,title,author);
     }
 
     public int getQuantity() {

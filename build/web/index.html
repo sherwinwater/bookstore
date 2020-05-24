@@ -7,7 +7,7 @@
     </head>
     <body>
         <header>
-            <a href="<c:url value='/index.jsp'/>">
+            <a href="./index.html">
                 <img src="./images/logo.png" 
                      alt="Book Store Logo" width="188"></a>
             <h1>Sherwin Bookstore</h1>
@@ -15,7 +15,19 @@
         </header>
 
         <nav id='nav_bar'>    
-            <input type="search" name="search" placeholder="search book title" id="searchTxt">
+            <input type="search" name="search" placeholder="search book title" id="searchTxt" style="width: 26em">
+            <ul>
+                <li><a href="#" onclick="showPage('./admin/admin.html')">Admin</a></li>
+                <li><a href="#" onclick="showPage('./account/login.html')">Account</a>   
+                    <ul id="login_sucess" style="display: none">
+                        <li><a href="<c:url value=''/>"></a></li>
+                        <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
+                    </ul>
+                </li>
+                <li><a href="#" onclick="viewCart()">Cart</a></li>
+                <li><a href="#" onclick="showPage('order')">Order</a></li>
+            </ul>
+
         </nav>
 
         <aside id="sidebarA">
@@ -23,15 +35,15 @@
                 <ul>
                     <li><a class="link current" href="./index.html" >
                             Home</a></li>
-                     <li >
-                        <a class="link" href="#" id="catalog" onclick='ajaxAsyncRequest("ajaxsearch?search=",true)'>
+                    <li >
+                        <a class="link" href="#" id="catalog" onclick='showSearchandCatalog("ajaxsearch?search=")'>
                             Browse Catalog</a>
                         <ul id="subcatalog" style="display:none; margin-bottom: 0;">
-                            <li onclick='ajaxAsyncRequest("ajaxsearch?search=java")' style="margin-top: 0.5em;">
+                            <li onclick='showSearchResults("ajaxsearch?search=java")' style="margin-top: 0.5em;">
                                 <a href="#"  id='java_quantity' ></a></li>
-                            <li onclick='ajaxAsyncRequest("ajaxsearch?search=PHP")'>
+                            <li onclick='showSearchResults("ajaxsearch?search=PHP")'>
                                 <a href="#"  id='PHP_quantity' ></a></li>
-                            <li onclick='ajaxAsyncRequest("ajaxsearch?search=JavaScript")' style="margin-bottom: 0em;">
+                            <li onclick='showSearchResults("ajaxsearch?search=JavaScript")' style="margin-bottom: 0em;">
                                 <a href="#"  id='JavaScript_quantity'></a></li>
                         </ul>
                     </li>
@@ -75,6 +87,3 @@
         <script src="./js/main.js"></script>
     </body>
 </html>
-
-
-

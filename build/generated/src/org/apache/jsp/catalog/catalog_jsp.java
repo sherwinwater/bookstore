@@ -76,81 +76,35 @@ public final class catalog_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\n");
       org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/header.jsp", out, false);
       out.write('\n');
-      out.write('\n');
-      out.write('\n');
-      out.write("\n");
-      out.write("<!DOCTYPE html> \n");
-      out.write("\n");
-      out.write("<!--<html>\n");
-      out.write("    <head>\n");
-      out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"");
-      if (_jspx_meth_c_url_0(_jspx_page_context))
-        return;
-      out.write("\">\n");
-      out.write("        <script src=\"http://html5shiv.googlecode.com/svn/trunk/html5.js\"></script>\n");
-      out.write("    </head>\n");
-      out.write("    <body>\n");
-      out.write("        <header>\n");
-      out.write("            <img src=\"");
-      if (_jspx_meth_c_url_1(_jspx_page_context))
-        return;
-      out.write("\" \n");
-      out.write("                 alt=\"Book Store Logo\" width=\"188\">\n");
-      out.write("            <h1>Sherwin Living Bookstore</h1>\n");
-      out.write("            <h2>Best place to read & search</h2>\n");
-      out.write("        </header>\n");
-      out.write("\n");
-      out.write("        <nav id='nav_bar'>\n");
-      out.write("            <ul>\n");
-      out.write("                <li><a href=\"");
-      if (_jspx_meth_c_url_2(_jspx_page_context))
-        return;
-      out.write("\">Admin</a></li>\n");
-      out.write("                <li><a href=\"");
-      if (_jspx_meth_c_url_3(_jspx_page_context))
-        return;
-      out.write("\">Account</a></li>\n");
-      out.write("                <li><a href=\"");
-      if (_jspx_meth_c_url_4(_jspx_page_context))
-        return;
-      out.write("\">Order</a></li>\n");
-      out.write("            </ul>\n");
-      out.write("        </nav>-->\n");
-      out.write("\n");
-      out.write("\n");
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_left_all.jsp", out, false);
+      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_left_catalog.jsp", out, false);
       out.write("\n");
       out.write(" <!--start the middle column--> \n");
       out.write("\n");
       out.write("<section>\n");
-      out.write("    <h1>order your book</h1>\n");
-      out.write("\n");
       out.write("    <!--retrieve book from database ebookshop-->\n");
       out.write("    <table>\n");
       out.write("        <tr>\n");
-      out.write("            <th>id</th>\n");
-      out.write("            <th>author</th>\n");
-      out.write("            <th>title</th>\n");
-      out.write("            <th>price</th>\n");
-      out.write("            <th>quantity</th>\n");
-      out.write("            <th>buy</th>\n");
+      out.write("            <th>ID</th>\n");
+      out.write("            <th>Author</th>\n");
+      out.write("            <th>Title</th>\n");
+      out.write("            <th>Price</th>\n");
+      out.write("            <th>Quantity</th>\n");
+      out.write("            <th>Action</th>\n");
       out.write("        </tr>\n");
+      out.write("        ");
       out.write("\n");
       out.write("        ");
       if (_jspx_meth_c_forEach_0(_jspx_page_context))
         return;
       out.write("\n");
       out.write("    </table>\n");
-      out.write("\n");
       out.write("    <form action=\"");
-      if (_jspx_meth_c_url_6(_jspx_page_context))
+      if (_jspx_meth_c_url_1(_jspx_page_context))
         return;
       out.write("\" method=\"POST\">\n");
       out.write("        <input type=\"hidden\" name=\"todo\" value=\"view\">\n");
       out.write("        <input type=\"submit\" value=\"view cart\">\n");
       out.write("    </form>\n");
-      out.write("\n");
       out.write("</section>\n");
       out.write("\n");
       out.write("<!-- end the middle column -->\n");
@@ -253,96 +207,6 @@ public final class catalog_jsp extends org.apache.jasper.runtime.HttpJspBase
     return false;
   }
 
-  private boolean _jspx_meth_c_url_0(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_0 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_0.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_0.setParent(null);
-    _jspx_th_c_url_0.setValue("/styles/main.css");
-    int _jspx_eval_c_url_0 = _jspx_th_c_url_0.doStartTag();
-    if (_jspx_th_c_url_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
-    return false;
-  }
-
-  private boolean _jspx_meth_c_url_1(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_1 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_1.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_1.setParent(null);
-    _jspx_th_c_url_1.setValue("/images/logo.png");
-    int _jspx_eval_c_url_1 = _jspx_th_c_url_1.doStartTag();
-    if (_jspx_th_c_url_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
-    return false;
-  }
-
-  private boolean _jspx_meth_c_url_2(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_2 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_2.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_2.setParent(null);
-    _jspx_th_c_url_2.setValue("/admin");
-    int _jspx_eval_c_url_2 = _jspx_th_c_url_2.doStartTag();
-    if (_jspx_th_c_url_2.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_2);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_2);
-    return false;
-  }
-
-  private boolean _jspx_meth_c_url_3(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_3 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_3.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_3.setParent(null);
-    _jspx_th_c_url_3.setValue("/account");
-    int _jspx_eval_c_url_3 = _jspx_th_c_url_3.doStartTag();
-    if (_jspx_th_c_url_3.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_3);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_3);
-    return false;
-  }
-
-  private boolean _jspx_meth_c_url_4(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_4 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_4.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_4.setParent(null);
-    _jspx_th_c_url_4.setValue("/order/order.jsp");
-    int _jspx_eval_c_url_4 = _jspx_th_c_url_4.doStartTag();
-    if (_jspx_th_c_url_4.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
-      return true;
-    }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_4);
-    return false;
-  }
-
   private boolean _jspx_meth_c_forEach_0(PageContext _jspx_page_context)
           throws Throwable {
     PageContext pageContext = _jspx_page_context;
@@ -372,13 +236,12 @@ public final class catalog_jsp extends org.apache.jasper.runtime.HttpJspBase
           out.write("                <td>");
           out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${row.price}", java.lang.String.class, (PageContext)_jspx_page_context, null));
           out.write("</td>\n");
-          out.write("\n");
           out.write("            <form action=\"");
-          if (_jspx_meth_c_url_5((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_forEach_0, _jspx_page_context, _jspx_push_body_count_c_forEach_0))
+          if (_jspx_meth_c_url_0((javax.servlet.jsp.tagext.JspTag) _jspx_th_c_forEach_0, _jspx_page_context, _jspx_push_body_count_c_forEach_0))
             return true;
           out.write("\" method=\"POST\">\n");
           out.write("                <td>\n");
-          out.write("                    <input type=\"number\" name=\"book_qty\" value=\"1\" min=\"1\">\n");
+          out.write("                    <input type=\"number\" name=\"book_quantity\" value=\"1\" min=\"1\">\n");
           out.write("                </td>\n");
           out.write("                <td>\n");
           out.write("                    <input type=\"hidden\" name=\"todo\" value=\"add\">\n");
@@ -418,39 +281,39 @@ public final class catalog_jsp extends org.apache.jasper.runtime.HttpJspBase
     return false;
   }
 
-  private boolean _jspx_meth_c_url_5(javax.servlet.jsp.tagext.JspTag _jspx_th_c_forEach_0, PageContext _jspx_page_context, int[] _jspx_push_body_count_c_forEach_0)
+  private boolean _jspx_meth_c_url_0(javax.servlet.jsp.tagext.JspTag _jspx_th_c_forEach_0, PageContext _jspx_page_context, int[] _jspx_push_body_count_c_forEach_0)
           throws Throwable {
     PageContext pageContext = _jspx_page_context;
     JspWriter out = _jspx_page_context.getOut();
     //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_5 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_5.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_5.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_forEach_0);
-    _jspx_th_c_url_5.setValue("/book");
-    int _jspx_eval_c_url_5 = _jspx_th_c_url_5.doStartTag();
-    if (_jspx_th_c_url_5.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_5);
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_0 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_0.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_0.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_c_forEach_0);
+    _jspx_th_c_url_0.setValue("/book");
+    int _jspx_eval_c_url_0 = _jspx_th_c_url_0.doStartTag();
+    if (_jspx_th_c_url_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
       return true;
     }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_5);
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
     return false;
   }
 
-  private boolean _jspx_meth_c_url_6(PageContext _jspx_page_context)
+  private boolean _jspx_meth_c_url_1(PageContext _jspx_page_context)
           throws Throwable {
     PageContext pageContext = _jspx_page_context;
     JspWriter out = _jspx_page_context.getOut();
     //  c:url
-    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_6 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
-    _jspx_th_c_url_6.setPageContext(_jspx_page_context);
-    _jspx_th_c_url_6.setParent(null);
-    _jspx_th_c_url_6.setValue("/book");
-    int _jspx_eval_c_url_6 = _jspx_th_c_url_6.doStartTag();
-    if (_jspx_th_c_url_6.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_6);
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_1 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_1.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_1.setParent(null);
+    _jspx_th_c_url_1.setValue("/book");
+    int _jspx_eval_c_url_1 = _jspx_th_c_url_1.doStartTag();
+    if (_jspx_th_c_url_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
       return true;
     }
-    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_6);
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
     return false;
   }
 }

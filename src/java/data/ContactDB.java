@@ -3,26 +3,29 @@ package data;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class BookDB {
-    private static final String TABLE = "cart";
+public class ContactDB {
+    private static final String TABLE = "contact";
     
-    public static int insert(CartItem item) {
+    public static int insert(Contact contact) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (product_id,product_price,"
-                + "product_title,product_author,"
-                + "product_quantity,product_totalprice)"
-                + "VALUES(?,?,?,?)";
+                = "INSERT INTO " + TABLE + " (FirstName,LastName,Email,"
+                + "CompanyName,Address1,Address2,City,State,Zip,Country)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, item.getId());
-            ps.setDouble(2, item.getPrice());
-            ps.setString(3, item.getTitle());
-            ps.setString(4, item.getAuthor());
-            ps.setInt(5, item.getQuantity());
-            ps.setDouble(6, item.getTotalprice());
+            ps.setString(1, contact.getFirstName());
+            ps.setString(2, contact.getLastName());
+            ps.setString(3, contact.getEmail());
+            ps.setString(4, contact.getCompanyName());
+            ps.setString(5, contact.getAddress1());
+            ps.setString(6, contact.getAddress2());
+            ps.setString(7, contact.getCity());
+            ps.setString(8, contact.getState());
+            ps.setString(9, contact.getZip());
+            ps.setString(10, contact.getCountry());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -33,18 +36,18 @@ public class BookDB {
         }
     }
 
-    public static int update(CartItem item) {
+    public static int update(Contact contact) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
         String query = "UPDATE "+TABLE+" SET "
-                + "product_price = ? "
-                + "WHERE product_id = ?";
+                + "Email = ? "
+                + "WHERE Email = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setDouble(1, item.getPrice());
-            ps.setString(2, item.getId());
+            ps.setString(1, contact.getEmail());
+            ps.setString(2, contact.getEmail());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -55,17 +58,16 @@ public class BookDB {
         }
     }
 
-    public static void delete(CartItem item) {
+    public static void delete(Contact contact) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String table = "cart";
 
         String query = "DELETE FROM "+TABLE+" "
-                + "WHERE product_id = ?";
+                + "WHERE email = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, item.getId());
+            ps.setString(1, contact.getEmail());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -76,17 +78,17 @@ public class BookDB {
         }
     }
 
-    public static boolean itemExists(String id) {
+    public static boolean contactExists(String email) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
         String query = "SELECT * FROM "+TABLE+" "
-                + "WHERE product_id = ?";
+                + "WHERE Email = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, id);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             return rs.next();
         } catch (SQLException e) {
@@ -99,28 +101,34 @@ public class BookDB {
         }
     }
 
-    public static ArrayList<CartItem> select(String id) {
+    public static ArrayList<Contact> select(String email) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<CartItem> itemList = new ArrayList<>();
+        ArrayList<Contact> contactList = new ArrayList<>();
 
         String query = "SELECT * FROM "+TABLE+" "
-                + "WHERE product_id = ?";
+                + "WHERE Email = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, id);
+            ps.setString(1, email);
             rs = ps.executeQuery();
             while (rs.next()) {
-                CartItem item = new CartItem(rs.getString("product_id"),
-                        rs.getDouble("product_price"),rs.getString("product_title"),
-                rs.getString("product_author"));
-                item.setQuantity(rs.getInt("product_quantity"));
-                item.setTotalprice(rs.getDouble("product_totalprice"));
-                itemList.add(item);
+                Contact contact = new Contact(rs.getString("Email"));
+                contact.setFirstName(rs.getString("FirstName"));
+                contact.setLastName(rs.getString("LastName"));
+                contact.setEmail(rs.getString("Email"));
+                contact.setCompanyName(rs.getString("CompanyName"));
+                contact.setAddress1(rs.getString("Address1"));
+                contact.setAddress2(rs.getString("Address2"));
+                contact.setCity(rs.getString("City"));
+                contact.setState(rs.getString("State"));
+                contact.setZip(rs.getString("Zip"));
+                contact.setCountry(rs.getString("Country"));
+                contactList.add(contact);
             }
-            return itemList;
+            return contactList;
         } catch (SQLException e) {
             System.out.println(e);
             return null;
@@ -130,37 +138,4 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
-    
-    public static ArrayList<Book> search(String title) {
-        ConnectionPool pool = ConnectionPool.getInstance();
-        Connection connection = pool.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        ArrayList<Book> bookList = new ArrayList<>();
-
-        String query = "SELECT * FROM books "
-                + "WHERE title LIKE ?";
-        try {
-            ps = connection.prepareStatement(query);
-            title = "%"+title+"%";
-            ps.setString(1, title);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                Book book = new Book(rs.getString("id"),
-                        rs.getDouble("price"),rs.getString("title"),
-                        rs.getString("author"));
-                bookList.add(book);
-            }
-            return bookList;
-        } catch (SQLException e) {
-            System.out.println(e);
-            return null;
-        } finally {
-            DBUtil.closeResultSet(rs);
-            DBUtil.closePreparedStatement(ps);
-            pool.freeConnection(connection);
-        }
-    }
-    
-    
 }

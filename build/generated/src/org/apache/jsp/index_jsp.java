@@ -11,10 +11,26 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
 
   private static java.util.List<String> _jspx_dependants;
 
+  private org.apache.jasper.runtime.TagHandlerPool _jspx_tagPool_sql_setDataSource_var_dataSource_nobody;
+  private org.apache.jasper.runtime.TagHandlerPool _jspx_tagPool_c_url_value_nobody;
+  private org.apache.jasper.runtime.TagHandlerPool _jspx_tagPool_sql_query_var_sql_dataSource_nobody;
+
   private org.glassfish.jsp.api.ResourceInjector _jspx_resourceInjector;
 
   public java.util.List<String> getDependants() {
     return _jspx_dependants;
+  }
+
+  public void _jspInit() {
+    _jspx_tagPool_sql_setDataSource_var_dataSource_nobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
+    _jspx_tagPool_c_url_value_nobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
+    _jspx_tagPool_sql_query_var_sql_dataSource_nobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
+  }
+
+  public void _jspDestroy() {
+    _jspx_tagPool_sql_setDataSource_var_dataSource_nobody.release();
+    _jspx_tagPool_c_url_value_nobody.release();
+    _jspx_tagPool_sql_query_var_sql_dataSource_nobody.release();
   }
 
   public void _jspService(HttpServletRequest request, HttpServletResponse response)
@@ -41,143 +57,118 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/header.jsp", out, false);
+      out.write("\n");
+      out.write("\n");
+      out.write("\n");
+      if (_jspx_meth_sql_setDataSource_0(_jspx_page_context))
+        return;
       out.write('\n');
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_left_catalog.jsp", out, false);
-      out.write("\n");
-      out.write("\n");
-      out.write("<!-- start the middle column -->\n");
-      out.write("<section id=\"content\">\n");
-      out.write("    <h1 class='content'>Welcome Readers!</h1>\n");
-      out.write("    <p class='content'>Thanks for visiting. Make yourself at home. Feel free to browse through \n");
-      out.write("        our book catalog. When you do, you can read samples from on our site.\n");
-      out.write("        We think our catalog contains some great books, and we \n");
-      out.write("        hope you like it as much as we do.</p>\n");
-      out.write("    <p class='content'>If you find an book that you like, we hope that you will use this site \n");
-      out.write("        to order it. Most of the book we carry are not available anywhere else!</p>\n");
-      out.write("    <div id=\"subnavbar\">\n");
-      out.write("    </div>\n");
-      out.write("\n");
-      out.write("</section>\n");
-      out.write("\n");
-      out.write("<!--<script>\n");
-      out.write("    var links = document.getElementsByClassName(\"link\");\n");
-      out.write("    var email = document.getElementById(\"email\");\n");
-      out.write("    var service = document.getElementById(\"service\");\n");
-      out.write("    var searchTxt = document.getElementById(\"searchTxt\");\n");
-      out.write("    var content = document.getElementById(\"content\");\n");
-      out.write("    var contents = document.getElementsByClassName(\"content\");\n");
-      out.write("\n");
-      out.write("    // add current classname\n");
-      out.write("    for (var i = 0; i < links.length; i++) {\n");
-      out.write("        links[i].addEventListener(\"click\", function () {\n");
-      out.write("            var current = document.getElementsByClassName(\"current\");\n");
-      out.write("            current[0].className = current[0].className.replace(\"current\", \"\");\n");
-      out.write("            this.className += \" current\";\n");
-      out.write("        });\n");
-      out.write("    }\n");
-      out.write("\n");
-      out.write("    // show and hide subcatalog\n");
-      out.write("    function showSubcatalog() {\n");
-      out.write("        var e = document.getElementById(\"subcatalog\");\n");
-      out.write("        e.style.display = (e.style.display == 'block') ? 'none' : 'block';\n");
-      out.write("    }\n");
-      out.write("\n");
-      out.write("//    function show(navbar) {\n");
-      out.write("//        contents[0].innerHTML = \"\";\n");
-      out.write("//        contents[1].innerHTML = \"\";\n");
-      out.write("//        contents[2].innerHTML = \"\";\n");
-      out.write("//        var e = document.getElementById('subnavbar');\n");
-      out.write("//        e.innerHTML = '';\n");
-      out.write("//        e.style.display ='block';\n");
-      out.write("//    }\n");
-      out.write("\n");
-      out.write("    searchTxt.addEventListener(\"keyup\", () => {\n");
-      out.write("        ajaxAsyncRequest(\"ajaxsearch?search=\" + searchTxt.value);\n");
-      out.write("    });\n");
-      out.write("\n");
-      out.write("    var response;\n");
-      out.write("    var responseJason;\n");
-      out.write("    // retrieve data from the database\n");
-      out.write("    function ajaxAsyncRequest(reqURL) {\n");
-      out.write("        //Creating a new XMLHttpRequest object\n");
-      out.write("        var xmlhttp;\n");
-      out.write("        if (window.XMLHttpRequest) {\n");
-      out.write("            xmlhttp = new XMLHttpRequest(); //for IE7+, Firefox, Chrome, Opera, Safari\n");
-      out.write("        } else {\n");
-      out.write("            xmlhttp = new ActiveXObject(\"Microsoft.XMLHTTP\"); //for IE6, IE5\n");
-      out.write("        }\n");
-      out.write("        //Create a asynchronous GET request\n");
-      out.write("        xmlhttp.open(\"GET\", reqURL, true);\n");
-      out.write("\n");
-      out.write("        //When readyState is 4 then get the server output\n");
-      out.write("        xmlhttp.onreadystatechange = function () {\n");
-      out.write("            if (xmlhttp.readyState == 4) {\n");
-      out.write("                if (xmlhttp.status === 200) {\n");
-      out.write("                    response = xmlhttp.responseText;\n");
-      out.write("                    responseJason = JSON.parse(response);\n");
-      out.write("//                    content.innerHTML = responseJason.bookList[0].price;\n");
-      out.write("                    showSearchResults(responseJason.bookList);\n");
-      out.write("                    showSc();\n");
-      out.write("//                    alert(xmlhttp.responseText);\n");
-      out.write("                } else {\n");
-      out.write("                    alert('Something is wrong !!');\n");
-      out.write("                }\n");
-      out.write("            }\n");
-      out.write("        };\n");
-      out.write("        xmlhttp.send(null);\n");
-      out.write("    }\n");
-      out.write("    function showSearchResults(args) {\n");
-      out.write("        if (args[0] == null) {\n");
-      out.write("            content.innerHTML = \"no results\";\n");
-      out.write("        } else {\n");
-      out.write("            content.innerHTML =\"<table><tr>ss</table>\";\n");
-      out.write("//            content.innerHTML = `<table style=\"border: 1px solid black;\n");
-      out.write("//    border-collapse: collapse;\">\n");
-      out.write("//        <tr>\n");
-      out.write("//            <th>ID</th>\n");
-      out.write("//            <th>Author</th>\n");
-      out.write("//            <th>Title</th>\n");
-      out.write("//            <th>Price</th>\n");
-      out.write("//            <th>Quantity</th>\n");
-      out.write("//            <th>Action</th>\n");
-      out.write("//        </tr>`;\n");
-      out.write("//            for (var x in args) {\n");
-      out.write("//                content.innerHTML += `<tr>\n");
-      out.write("//            <td>${args[x].id}</td>\n");
-      out.write("//            <td>${args[x].author}</td>\n");
-      out.write("//            <td>${args[x].title}</td>\n");
-      out.write("//            <td>${args[x].price}</td>\n");
-      out.write("//            <td>111</td>\n");
-      out.write("//            <td>add to cart</td>\n");
-      out.write("//        </tr><br>`;\n");
-      out.write("//            }\n");
-      out.write("//            content.innerHTML += `</table>`;\n");
-      out.write("\n");
-      out.write("//                content.innerHTML += args[x].id + \" \" + args[x].title +\n");
-      out.write("//                        args[x].author + \" \" + args[x].price + \" \" + \"<br>\";\n");
-      out.write("        }\n");
-      out.write("\n");
-      out.write("    }\n");
-      out.write("\n");
-      out.write("    function showSc() {\n");
-      out.write("        document.getElementById(\"subcatalog\").innerHTML = `\n");
-      out.write("                <li onclick='ajaxAsyncRequest(\"ajaxsearch?search=java\")'>\n");
-      out.write("                    <a href=\"#\" class=\"subcatalog\" >Java(${responseJason.qyt_book_java})</a></li>\n");
-      out.write("                <li onclick='ajaxAsyncRequest(\"ajaxsearch?search=PHP\")'>\n");
-      out.write("                    <a href=\"#\" class=\"subcatalog\" >PHP(${responseJason.qyt_book_PHP})</a></li>\n");
-      out.write("                <li onclick='ajaxAsyncRequest(\"ajaxsearch?search=JavaScript\")'>\n");
-      out.write("                    <a href=\"#\" class=\"subcatalog\" >JavaScript(${responseJason.qyt_book_JavaScript})</a></li>\n");
-      out.write("`;\n");
-      out.write("    }\n");
-      out.write("\n");
-      out.write("\n");
-      out.write("</script>-->\n");
-      out.write("\n");
-      out.write("<!-- end the middle column -->\n");
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/column_right_news.jsp", out, false);
+      if (_jspx_meth_sql_query_0(_jspx_page_context))
+        return;
+      out.write(' ');
       out.write('\n');
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/includes/footer.jsp", out, false);
+      if (_jspx_meth_sql_query_1(_jspx_page_context))
+        return;
+      out.write(" \n");
+      out.write("\n");
+      out.write("<!DOCTYPE html>\n");
+      out.write("\n");
+      out.write("<html>\n");
+      out.write("    <head>\n");
+      out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+      out.write("        <link rel=\"stylesheet\" href=\"./styles/main.css\">\n");
+      out.write("    </head>\n");
+      out.write("    <body>\n");
+      out.write("        <header>\n");
+      out.write("            <a href=\"");
+      if (_jspx_meth_c_url_0(_jspx_page_context))
+        return;
+      out.write("\">\n");
+      out.write("                <img src=\"./images/logo.png\" \n");
+      out.write("                     alt=\"Book Store Logo\" width=\"188\"></a>\n");
+      out.write("            <h1>Sherwin Bookstore</h1>\n");
+      out.write("            <h2>Best place to read & search</h2>\n");
+      out.write("        </header>\n");
+      out.write("\n");
+      out.write("        <nav id='nav_bar'>    \n");
+      out.write("            <input type=\"search\" name=\"search\" placeholder=\"search book title\" id=\"searchTxt\">\n");
+      out.write("            <ul>\n");
+      out.write("                <li><a href=\"#\" onclick=\"showPage('./admin/admin.html')\">Admin</a></li>\n");
+      out.write("                <li><a href=\"#\" onclick=\"showPage('./account/login.jsp')\">Account</a></li>                \n");
+      out.write("                    <li><a href=\"");
+      if (_jspx_meth_c_url_1(_jspx_page_context))
+        return;
+      out.write("\">Hi ");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${user.username}", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("</a></li>\n");
+      out.write("                    <li><a href=\"");
+      if (_jspx_meth_c_url_2(_jspx_page_context))
+        return;
+      out.write("\">Logout</a></li>\n");
+      out.write("                \n");
+      out.write("                <li><a href=\"#\" onclick=\"showPage('./cart')\">Cart</a></li>\n");
+      out.write("                <li><a href=\"#\" onclick=\"showPage('order')\">Order</a></li>\n");
+      out.write("            </ul>\n");
+      out.write("\n");
+      out.write("        </nav>\n");
+      out.write("\n");
+      out.write("        <aside id=\"sidebarA\">\n");
+      out.write("            <nav>\n");
+      out.write("                <ul>\n");
+      out.write("                    <li><a class=\"link current\" href=\"./index.jsp\" >\n");
+      out.write("                            Home</a></li>\n");
+      out.write("                    <li >\n");
+      out.write("                        <a class=\"link\" href=\"#\" id=\"catalog\" onclick='showSearchandCatalog(\"ajaxsearch?search=\")'>\n");
+      out.write("                            Browse Catalog</a>\n");
+      out.write("                        <ul id=\"subcatalog\" style=\"display:none; margin-bottom: 0;\">\n");
+      out.write("                            <li onclick='showSearchResults(\"ajaxsearch?search=java\")' style=\"margin-top: 0.5em;\">\n");
+      out.write("                                <a href=\"#\"  id='java_quantity' ></a></li>\n");
+      out.write("                            <li onclick='showSearchResults(\"ajaxsearch?search=PHP\")'>\n");
+      out.write("                                <a href=\"#\"  id='PHP_quantity' ></a></li>\n");
+      out.write("                            <li onclick='showSearchResults(\"ajaxsearch?search=JavaScript\")' style=\"margin-bottom: 0em;\">\n");
+      out.write("                                <a href=\"#\"  id='JavaScript_quantity'></a></li>\n");
+      out.write("                        </ul>\n");
+      out.write("                    </li>\n");
+      out.write("                    <li><a class=\"link\" href=\"#\" id=\"email\">\n");
+      out.write("                            Join Email List</a></li>\n");
+      out.write("                    <li><a class=\"link\" href=\"#\" id=\"service\">\n");
+      out.write("                            Customer Service</a></li>\n");
+      out.write("                </ul>\n");
+      out.write("            </nav>\n");
+      out.write("        </aside>\n");
+      out.write("        <!-- start the middle column -->\n");
+      out.write("        <section id=\"content\">\n");
+      out.write("            <h1 class='content'>Welcome<span id=\"username_welcome\"></span> Readers!</h1>\n");
+      out.write("            <p class='content'>Thanks for visiting. Make yourself at home. Feel free to browse through \n");
+      out.write("                our book catalog. When you do, you can read samples from on our site.\n");
+      out.write("                We think our catalog contains some great books, and we \n");
+      out.write("                hope you like it as much as we do.</p>\n");
+      out.write("            <p class='content'>If you find an book that you like, we hope that you will use this site \n");
+      out.write("                to order it. Most of the book we carry are not available anywhere else!</p>\n");
+      out.write("        </section>\n");
+      out.write("        <!-- end the middle column -->\n");
+      out.write("\n");
+      out.write("        <aside id=\"sidebarB\">\n");
+      out.write("            <h1>New Release</h1>\n");
+      out.write("            <img src=\"./images/becoming_MichelleObama.jpg\" width=\"120\" \n");
+      out.write("                 alt=\"becoming cover\">\n");
+      out.write("            <h2><a href=\"catalog/product/8601\" class=\"no_underline\">\n");
+      out.write("                    BECOMING \n");
+      out.write("                </a></h2>\n");
+      out.write("            <p>by Michelle Obama</p>\n");
+      out.write("            <p class=\"news_item\">The former first lady describes her journey from \n");
+      out.write("                the South Side of Chicago to the White House, and how she balanced work \n");
+      out.write("                and family.</p>\n");
+      out.write("        </aside>\n");
+      out.write("\n");
+      out.write("        <footer>\n");
+      out.write("            <p>&copy; Copyright <script>document.write(new Date().getUTCFullYear());</script>\n");
+      out.write("                Sherwin  &amp; Company, Inc. \n");
+      out.write("                All rights reserved.</p>\n");
+      out.write("        </footer>\n");
+      out.write("        <script src=\"./js/main.js\"></script>\n");
+      out.write("    </body>\n");
+      out.write("</html>");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;
@@ -189,5 +180,134 @@ public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase
     } finally {
       _jspxFactory.releasePageContext(_jspx_page_context);
     }
+  }
+
+  private boolean _jspx_meth_sql_setDataSource_0(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  sql:setDataSource
+    org.apache.taglibs.standard.tag.rt.sql.SetDataSourceTag _jspx_th_sql_setDataSource_0 = (org.apache.taglibs.standard.tag.rt.sql.SetDataSourceTag) _jspx_tagPool_sql_setDataSource_var_dataSource_nobody.get(org.apache.taglibs.standard.tag.rt.sql.SetDataSourceTag.class);
+    _jspx_th_sql_setDataSource_0.setPageContext(_jspx_page_context);
+    _jspx_th_sql_setDataSource_0.setParent(null);
+    _jspx_th_sql_setDataSource_0.setVar("ds");
+    _jspx_th_sql_setDataSource_0.setDataSource(new String("jdbc/bookDB"));
+    int _jspx_eval_sql_setDataSource_0 = _jspx_th_sql_setDataSource_0.doStartTag();
+    if (_jspx_th_sql_setDataSource_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_sql_setDataSource_var_dataSource_nobody.reuse(_jspx_th_sql_setDataSource_0);
+      return true;
+    }
+    _jspx_tagPool_sql_setDataSource_var_dataSource_nobody.reuse(_jspx_th_sql_setDataSource_0);
+    return false;
+  }
+
+  private boolean _jspx_meth_sql_query_0(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  sql:query
+    org.apache.taglibs.standard.tag.rt.sql.QueryTag _jspx_th_sql_query_0 = (org.apache.taglibs.standard.tag.rt.sql.QueryTag) _jspx_tagPool_sql_query_var_sql_dataSource_nobody.get(org.apache.taglibs.standard.tag.rt.sql.QueryTag.class);
+    _jspx_th_sql_query_0.setPageContext(_jspx_page_context);
+    _jspx_th_sql_query_0.setParent(null);
+    _jspx_th_sql_query_0.setSql("select * from books");
+    _jspx_th_sql_query_0.setVar("rs");
+    _jspx_th_sql_query_0.setDataSource((java.lang.Object) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${ds}", java.lang.Object.class, (PageContext)_jspx_page_context, null));
+    int[] _jspx_push_body_count_sql_query_0 = new int[] { 0 };
+    try {
+      int _jspx_eval_sql_query_0 = _jspx_th_sql_query_0.doStartTag();
+      if (_jspx_th_sql_query_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+        return true;
+      }
+    } catch (Throwable _jspx_exception) {
+      while (_jspx_push_body_count_sql_query_0[0]-- > 0)
+        out = _jspx_page_context.popBody();
+      _jspx_th_sql_query_0.doCatch(_jspx_exception);
+    } finally {
+      _jspx_th_sql_query_0.doFinally();
+      _jspx_tagPool_sql_query_var_sql_dataSource_nobody.reuse(_jspx_th_sql_query_0);
+    }
+    return false;
+  }
+
+  private boolean _jspx_meth_sql_query_1(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  sql:query
+    org.apache.taglibs.standard.tag.rt.sql.QueryTag _jspx_th_sql_query_1 = (org.apache.taglibs.standard.tag.rt.sql.QueryTag) _jspx_tagPool_sql_query_var_sql_dataSource_nobody.get(org.apache.taglibs.standard.tag.rt.sql.QueryTag.class);
+    _jspx_th_sql_query_1.setPageContext(_jspx_page_context);
+    _jspx_th_sql_query_1.setParent(null);
+    _jspx_th_sql_query_1.setSql("desc books");
+    _jspx_th_sql_query_1.setVar("title");
+    _jspx_th_sql_query_1.setDataSource((java.lang.Object) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${ds}", java.lang.Object.class, (PageContext)_jspx_page_context, null));
+    int[] _jspx_push_body_count_sql_query_1 = new int[] { 0 };
+    try {
+      int _jspx_eval_sql_query_1 = _jspx_th_sql_query_1.doStartTag();
+      if (_jspx_th_sql_query_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+        return true;
+      }
+    } catch (Throwable _jspx_exception) {
+      while (_jspx_push_body_count_sql_query_1[0]-- > 0)
+        out = _jspx_page_context.popBody();
+      _jspx_th_sql_query_1.doCatch(_jspx_exception);
+    } finally {
+      _jspx_th_sql_query_1.doFinally();
+      _jspx_tagPool_sql_query_var_sql_dataSource_nobody.reuse(_jspx_th_sql_query_1);
+    }
+    return false;
+  }
+
+  private boolean _jspx_meth_c_url_0(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:url
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_0 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_0.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_0.setParent(null);
+    _jspx_th_c_url_0.setValue("/index.jsp");
+    int _jspx_eval_c_url_0 = _jspx_th_c_url_0.doStartTag();
+    if (_jspx_th_c_url_0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
+      return true;
+    }
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_0);
+    return false;
+  }
+
+  private boolean _jspx_meth_c_url_1(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:url
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_1 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_1.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_1.setParent(null);
+    _jspx_th_c_url_1.setValue("");
+    int _jspx_eval_c_url_1 = _jspx_th_c_url_1.doStartTag();
+    if (_jspx_th_c_url_1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
+      return true;
+    }
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_1);
+    return false;
+  }
+
+  private boolean _jspx_meth_c_url_2(PageContext _jspx_page_context)
+          throws Throwable {
+    PageContext pageContext = _jspx_page_context;
+    JspWriter out = _jspx_page_context.getOut();
+    //  c:url
+    org.apache.taglibs.standard.tag.rt.core.UrlTag _jspx_th_c_url_2 = (org.apache.taglibs.standard.tag.rt.core.UrlTag) _jspx_tagPool_c_url_value_nobody.get(org.apache.taglibs.standard.tag.rt.core.UrlTag.class);
+    _jspx_th_c_url_2.setPageContext(_jspx_page_context);
+    _jspx_th_c_url_2.setParent(null);
+    _jspx_th_c_url_2.setValue("/user?todo=logout");
+    int _jspx_eval_c_url_2 = _jspx_th_c_url_2.doStartTag();
+    if (_jspx_th_c_url_2.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
+      _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_2);
+      return true;
+    }
+    _jspx_tagPool_c_url_value_nobody.reuse(_jspx_th_c_url_2);
+    return false;
   }
 }

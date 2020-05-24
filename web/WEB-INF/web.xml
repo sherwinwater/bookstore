@@ -18,7 +18,7 @@
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
 
-    <servlet>
+<!--    <servlet>
         <servlet-name>BookServlet</servlet-name>
         <servlet-class>controller.BookServlet</servlet-class>
     </servlet>
@@ -26,7 +26,7 @@
     <servlet-mapping>
         <servlet-name>BookServlet</servlet-name>
         <url-pattern>/book</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     
     
 </web-app>
