@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ContactDB {
-    private static final String TABLE = "contact";
+    private static final String TABLE = "Contact";
     
     public static int insert(Contact contact) {
         ConnectionPool pool = ConnectionPool.getInstance();

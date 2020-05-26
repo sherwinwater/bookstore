@@ -298,3 +298,11 @@ footer p {
 #contactInfo span{
     color: red;
 }
+
+/* The styles for the invoice section*/
+#section_invoice table, 
+#section_invoice tr, 
+#section_invoice td,
+#section_invoice th{
+    border: none;
+}

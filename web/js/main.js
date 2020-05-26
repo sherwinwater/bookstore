@@ -63,16 +63,63 @@ function checkout(action) {
     let page = "";
     switch (action) {
         case "contactinfo":
-            page = './order/contactInfo.html';
+            page = './order/contactinfo.jsp';
+            break;
+        case "invoice":
+            page = './order/invoice.jsp';
+            break;
+        case "creditinfo":
+            page = './order/creditinfo.jsp';
+            break;
+        case "order":
+            page = './order/placeorder.jsp';
             break;
     }
     showPage(page);
     document.getElementById("sidebarB").style.display = "none";
 }
 
-async function getContactinfo(){
-    
+async function getContactinfo() {
+    let page = "Ajaxcheckout?todo=";
+    let todo = document.contactinfoForm.todo.value;
+    let FirstName = document.contactinfoForm.FirstName.value;
+    let LastName = document.contactinfoForm.LastName.value;
+    let Email = document.contactinfoForm.Email.value;
+    let CompanyName = document.contactinfoForm.CompanyName.value;
+    let Address1 = document.contactinfoForm.Address1.value;
+    let Address2 = document.contactinfoForm.Address2.value;
+    let City = document.contactinfoForm.City.value;
+    let State = document.contactinfoForm.State.value;
+    let Zip = document.contactinfoForm.Zip.value;
+    let Country = document.contactinfoForm.Country.value;
+    page = page + todo + "&FirstName=" + FirstName + "&LastName=" + LastName + "&Email=" + Email +
+            "&CompanyName=" + CompanyName + "&Address1=" + Address1 + "&Address2=" + Address2 + "&City=" + City +
+            "&State=" + State + "&Zip=" + Zip + "&Country=" + Country;
+    let response = await fetch(page);
+    let resJason = await response.json();
+
+    // show invoice page
+    checkout("invoice");
 }
+
+async function placeOrder() {
+    let page = "ajaxcheckout?todo=";
+    let todo = document.creditinfoForm.todo.value;
+    let creditCardType = document.creditinfoForm.creditCardType.value;
+    let creditCardNumber = document.creditinfoForm.creditCardNumber.value;
+    let expirationMonth = document.creditinfoForm.expirationMonth.value;
+    let expirationYear = document.creditinfoForm.expirationYear.value;
+    let creditCardExpirationDate = expirationMonth + expirationYear;
+    page = page + todo + "&creditCardType=" + creditCardType +
+            "&creditCardNumber=" + creditCardNumber +
+            "&creditCardExpirationDate=" + creditCardExpirationDate;
+    let response = await fetch(page);
+    let resJason = await response.json();
+
+    // show invoice page
+    checkout("order");
+}
+
 
 //call back method
 //function foo(link, callback) {
@@ -307,6 +354,7 @@ function getTable(args, action) {
                         <th>Title</th>
                         <th>Price</th>
                         <th>Quantity</th>
+                        <th>Inventory</th>
                         <th>Action</th>
                     </tr></thead> <tbody> `;
                 for (var item in args) {
@@ -318,6 +366,7 @@ function getTable(args, action) {
                         <td> 
                             <input type="number" name="book_quantity" value="1" min="1" class="book_quantity">
                         </td>
+                        <td class="book_inventory">${args[item].inventory_qty}</td>
                         <td>
                         <input type="button" value="Add to Cart" class="book_add" onclick="getCart(${i},'add')">
                         </td>

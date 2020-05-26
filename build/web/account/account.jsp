@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<sql:setDataSource var="ds" dataSource="jdbc/bookDB" />
+<sql:setDataSource var="ds" dataSource="jdbc/CartDB" />
 <sql:query sql="select * from books" var="rs" dataSource="${ds}" /> 
 <sql:query sql="desc books" var="title" dataSource="${ds}" /> 
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import data.Book;
+import data.CartDB;
 import data.BookDB;
 import data.CartItem;
 
@@ -111,13 +112,13 @@ public class BookServlet extends HttpServlet {
 
             case "checkout":
                 for (CartItem item : cart) {
-                    BookDB.insert(item);
+                    CartDB.insert(item);
                 }
 //                CartItem updateitem = new CartItem("1001",222.0);
-//                System.out.println("updateitem 1001 222.0:  "+BookDB.update(updateitem));
-//                ArrayList<CartItem> selectitems = BookDB.select("1002");
+//                System.out.println("updateitem 1001 222.0:  "+CartDB.update(updateitem));
+//                ArrayList<CartItem> selectitems = CartDB.select("1002");
 //                request.setAttribute("selectitems", selectitems);
-//                System.out.println("item is here?" +BookDB.itemExists("10011"));
+//                System.out.println("item is here?" +CartDB.itemExists("10011"));
                 url = "/order/checkout.jsp";
                 break;
             case "newshopping":

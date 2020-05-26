@@ -2,7 +2,7 @@ package controller;
 
 import business.PasswordUtil;
 import data.Book;
-import data.BookDB;
+import data.CartDB;
 import data.CartItem;
 import data.User;
 import data.UserDB;
@@ -115,7 +115,7 @@ public class AjaxUserServlet extends HttpServlet {
                         saltedAndHashedPassword = ex.getMessage();
                     }
 
-                    user = new User(username);
+                    user.setUsername(username);
                     user.setHashpassword(saltedAndHashedPassword);
                     user.setSalt(salt);
                     UserDB.insert(user);
@@ -141,7 +141,7 @@ public class AjaxUserServlet extends HttpServlet {
 
                     if (UserDB.userLogin(username, saltedAndHashedPassword)) {
                         request.setAttribute("username", username);
-                        user = new User(username);
+                        user.setUsername(username);
                         msg.put("username", username);
                     } else {
                         message = "wrong username or password";

@@ -1,6 +1,6 @@
-<jsp:include page="/includes/header.jsp" />
-<jsp:include page="/includes/column_left_home.jsp" />
-<!-- start the middle column -->
+<%@page import="java.util.Enumeration"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 
 <section>
     <h1>Welcome Readers!</h1>
@@ -12,9 +12,20 @@
 
     <p>If you find an book that you like, we hope that you will use this site 
         to order it. Most of the book we carry are not available anywhere else!</p>
+
+    <%
+        Enumeration names = session.getAttributeNames();
+            while (names.hasMoreElements()) {
+                System.out.println((String) names.nextElement());
+            }
+            
+        session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+        System.out.println("session : "+session);
+    %>
+
+
+
 </section>
-
-<!-- end the middle column -->
-
-<jsp:include page="/includes/column_right_news.jsp" />
-<jsp:include page="/includes/footer.jsp" />

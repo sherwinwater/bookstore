@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/ebook">
 
-    <Resource name="jdbc/bookDB" type="javax.sql.DataSource" auth="Container" 
+    <Resource name="jdbc/CartDB" type="javax.sql.DataSource" auth="Container" 
                 driverClassName="com.mysql.jdbc.Driver" 
                 url="jdbc:mysql://localhost:3306/ebookshop"
                 username="sam" password="sam" 

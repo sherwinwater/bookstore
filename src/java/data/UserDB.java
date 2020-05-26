@@ -136,7 +136,6 @@ public class UserDB {
                 user.setHashpassword(rs.getString("hashpassword"));
                 user.setSalt(rs.getString("salt"));
                 userList.add(user);
-                System.out.println("salt"+user.getSalt());
             }
             return userList;
         } catch (SQLException e) {

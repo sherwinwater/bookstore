@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class BookDB {
-    private static final String TABLE = "cart";
+    private static final String TABLE = "books";
     
     public static int insert(CartItem item) {
         ConnectionPool pool = ConnectionPool.getInstance();
@@ -59,7 +59,6 @@ public class BookDB {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
-        String table = "cart";
 
         String query = "DELETE FROM "+TABLE+" "
                 + "WHERE product_id = ?";
@@ -138,17 +137,18 @@ public class BookDB {
         ResultSet rs = null;
         ArrayList<Book> bookList = new ArrayList<>();
 
-        String query = "SELECT * FROM books "
-                + "WHERE title LIKE ?";
+        String query = "SELECT * FROM "+ TABLE 
+                + " WHERE product_title LIKE ?";
         try {
             ps = connection.prepareStatement(query);
             title = "%"+title+"%";
             ps.setString(1, title);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Book book = new Book(rs.getString("id"),
-                        rs.getDouble("price"),rs.getString("title"),
-                        rs.getString("author"));
+                Book book = new Book(rs.getString("product_id"),
+                        rs.getDouble("product_price"),rs.getString("product_title"),
+                        rs.getString("product_author"));
+                book.setInventory_qty(rs.getInt("product_inventory_qty"));
                 bookList.add(book);
             }
             return bookList;

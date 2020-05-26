@@ -8,6 +8,7 @@ public class Book implements Serializable{
     private Double price;
     private String title;
     private String author;
+    private int inventory_qty;
 
     public Book() {
     }
@@ -49,6 +50,14 @@ public class Book implements Serializable{
 
     public void setAuthor(String author) {
         this.author = author;
+    }
+
+    public int getInventory_qty() {
+        return inventory_qty;
+    }
+
+    public void setInventory_qty(int inventory_qty) {
+        this.inventory_qty = inventory_qty;
     }
 
 }
