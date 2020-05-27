@@ -13,9 +13,7 @@ public class Contact implements Serializable{
     private String state;
     private String zip;
     private String country;
-    private String credityCardType;
-    private String creditCardNumber;
-    private String creditCardExpirationDate;
+    private String invoiceID;
 
     public Contact() {
     }
@@ -104,30 +102,12 @@ public class Contact implements Serializable{
         this.country = country;
     }
 
-    public String getCredityCardType() {
-        return credityCardType;
+    public String getInvoiceID() {
+        return invoiceID;
     }
 
-    public void setCredityCardType(String credityCardType) {
-        this.credityCardType = credityCardType;
+    public void setInvoiceID(String invoiceID) {
+        this.invoiceID = invoiceID;
     }
-
-    public String getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    public void setCreditCardNumber(String creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
-    }
-
-    public String getCreditCardExpirationDate() {
-        return creditCardExpirationDate;
-    }
-
-    public void setCreditCardExpirationDate(String creditCardExpirationDate) {
-        this.creditCardExpirationDate = creditCardExpirationDate;
-    }
-
-    
-   
+  
 }

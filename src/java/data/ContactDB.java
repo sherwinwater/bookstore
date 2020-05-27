@@ -12,8 +12,9 @@ public class ContactDB {
         PreparedStatement ps = null;
         String query
                 = "INSERT INTO " + TABLE + " (FirstName,LastName,Email,"
-                + "CompanyName,Address1,Address2,City,State,Zip,Country)"
-                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
+                + "CompanyName,Address1,Address2,City,State,"
+                + "Zip,Country,Invoice_invoiceID)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, contact.getFirstName());
@@ -26,6 +27,7 @@ public class ContactDB {
             ps.setString(8, contact.getState());
             ps.setString(9, contact.getZip());
             ps.setString(10, contact.getCountry());
+            ps.setString(11, contact.getInvoiceID());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

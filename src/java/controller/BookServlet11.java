@@ -17,7 +17,7 @@ import data.BookDB;
 import data.CartItem;
 
 @WebServlet(name = "BookServlet", urlPatterns = {"/book"})
-public class BookServlet extends HttpServlet {
+public class BookServlet11 extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

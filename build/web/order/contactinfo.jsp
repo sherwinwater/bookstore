@@ -1,7 +1,7 @@
 <section id="contactInfo">   
     <h1>Enter your delivery contact information</h1>
     <p>Required <span>*</span></p>
-    <form action="#" method="post" name="contactinfoForm" onsubmit="getContactinfo();return false" >
+    <form action="#" method="post" name="contactinfoForm" onsubmit="checkContactinfo();return false" >
         <input type="hidden" name="todo" value="contactinfo">        
         <label class="pad_top">First Name</label>
         <input type="text" name="FirstName" value="${contact.firstName}"><span>*</span><br>

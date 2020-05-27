@@ -12,7 +12,7 @@
         <input type="text" name="firstname" placeHolder="firstname">
         <input type="text" name="lastname" placeHolder="lastname"><br>
         <label class="pad_top">Credit card number</label>
-        <input type="text" name="creditCardNumber" value="${contact.creditCardNumber}"><br>
+        <input type="text" name="creditCardNumber" value=""><br>
         <label class="pad_top">Expiration Date</label>
         <select name="expirationMonth">
             <option value="01">01</option>

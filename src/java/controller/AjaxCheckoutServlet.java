@@ -6,6 +6,14 @@ import data.CartDB;
 import data.CartItem;
 import data.Contact;
 import data.ContactDB;
+import data.CreditCard;
+import data.CreditCardDB;
+import data.Invoice;
+import data.InvoiceDB;
+import data.Order;
+import data.OrderDB;
+import data.User;
+import data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.NoSuchAlgorithmException;
@@ -19,13 +27,15 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 
-@WebServlet(name = "AjaxCheckoutServlet", urlPatterns = {"/Ajaxcheckout"})
+@WebServlet(name = "AjaxCheckoutServlet", urlPatterns = {"/ajaxcheckout"})
 public class AjaxCheckoutServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        PrintWriter out = response.getWriter();
         String todo = request.getParameter("todo");
         JSONObject data = new JSONObject();
 
@@ -46,6 +56,11 @@ public class AjaxCheckoutServlet extends HttpServlet {
                     session.setAttribute("contact", contact);
                 }
 
+                String cart_id = (String) session.getAttribute("cart_id");
+                String invoiceID = request.getParameter("invoiceID");
+                Invoice invoice = new Invoice(cart_id, invoiceID);
+                InvoiceDB.insert(invoice);
+
                 String FirstName = request.getParameter("FirstName");
                 String LastName = request.getParameter("LastName");
                 String Email = request.getParameter("Email");
@@ -57,6 +72,8 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 String Zip = request.getParameter("Zip");
                 String Country = request.getParameter("Country");
 
+                session.setAttribute("invoiceID", invoiceID);
+
                 contact.setFirstName(FirstName);
                 contact.setLastName(LastName);
                 contact.setEmail(Email);
@@ -67,15 +84,57 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 contact.setState(State);
                 contact.setZip(Zip);
                 contact.setCountry(Country);
+                contact.setInvoiceID(invoiceID);
                 ContactDB.insert(contact);
 
                 data.put("contact", contact);
+                data.put("invoice", invoice);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(data);
                 break;
-            case "order":
 
+            case "order":
+                // credit info
+                String firstname = request.getParameter("firstname");
+                String lastname = request.getParameter("lastname");
+                String creditCardType = request.getParameter("creditCardType");
+                String creditCardNumber = request.getParameter("creditCardNumber");
+                String creditCardExpirationDate = request.getParameter("creditCardExpirationDate");
+
+                CreditCard creditcard = new CreditCard(firstname, lastname,
+                        creditCardType, creditCardNumber, creditCardExpirationDate);
+
+                invoiceID = (String) session.getAttribute("invoiceID");
+                creditcard.setInvoiceID(invoiceID);
+                CreditCardDB.insert(creditcard);
+
+                // user
+                User user = new User();
+                synchronized (lock) {
+                    user = (User) session.getAttribute("user");
+                }
+
+                if (user == null) {
+                    user = new User("Guest");
+                    if (!UserDB.userExists("Guest")) {
+                        UserDB.insert(user);
+                    }
+                }
+                synchronized (lock) {
+                    session.setAttribute("user", user);
+                }
+
+                // order (orderID, username,invoiceID)
+                String orderID = request.getParameter("orderID");
+                Order order = new Order(orderID, invoiceID, user.getUsername());
+                OrderDB.insert(order);
+
+                data.put("creditcard", creditcard);
+                data.put("order", order);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(data);
                 break;
         }
 

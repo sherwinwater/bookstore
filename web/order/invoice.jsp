@@ -4,6 +4,10 @@
     <h1>Your Invoice</h1>
     <table >
         <tr >
+            <td>Invoice Number</td>
+            <td id="contact_invoiceID">${invoiceID}</td>
+        </tr>
+        <tr >
             <td>Date</td>
             <td><%= java.time.LocalDate.now()%></td>
         </tr>
@@ -39,6 +43,6 @@
     </table>
 
     <input type="button" value="Edit Address" style="display:inline-block" onclick="checkout('contactinfo')">
-    <input type="button" value="Continue" style="display:inline-block" onclick="checkout('creditinfo')">
+    <input type="button" value="Continue" style="display:inline-block" onclick="checkoutInvoice()">
 
 </section>

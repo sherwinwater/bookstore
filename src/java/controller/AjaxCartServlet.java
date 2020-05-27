@@ -24,6 +24,10 @@ public class AjaxCartServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("Pragma", "no-cache");
+        PrintWriter out = response.getWriter();
+
         String todo = request.getParameter("todo");
 
         // session with threads-safe
@@ -39,7 +43,7 @@ public class AjaxCartServlet extends HttpServlet {
         synchronized (lock) {
             session.setAttribute("cart", cart);
         }
-        
+
         JSONObject itemsIncart = new JSONObject();
         switch (todo) {
             case "view":
@@ -51,17 +55,13 @@ public class AjaxCartServlet extends HttpServlet {
 
                 break;
             case "add":
-                response.setHeader("Cache-Control", "no-cache");
-                response.setHeader("Pragma", "no-cache");
-                PrintWriter out = response.getWriter();
-
                 String book_id = request.getParameter("book_id");
                 String book_author = request.getParameter("book_author");
                 String book_title = request.getParameter("book_title");
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
 
-                CartItem cartitem = new CartItem(book_id, book_price,book_title,book_author);
+                CartItem cartitem = new CartItem(book_id, book_price, book_title, book_author);
                 cartitem.setQuantity(book_quantity);
 
                 if (cart.isEmpty()) {
@@ -120,36 +120,26 @@ public class AjaxCartServlet extends HttpServlet {
                 break;
 
             case "checkout":
+                String cart_id = request.getParameter("cart_id");
+                session.setAttribute("cart_id", cart_id);
+
                 for (CartItem item : cart) {
+                    item.setCart_id(cart_id);
                     CartDB.insert(item);
                 }
+                
+                itemsIncart = new JSONObject();
+                itemsIncart.put("cart", cart);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(itemsIncart);
+                
 //                CartItem updateitem = new CartItem("1001",222.0);
 //                System.out.println("updateitem 1001 222.0:  "+CartDB.update(updateitem));
 //                ArrayList<CartItem> selectitems = CartDB.select("1002");
 //                request.setAttribute("selectitems", selectitems);
 //                System.out.println("item is here?" +CartDB.itemExists("10011"));
 //                url = "/order/checkout.jsp";
-                break;
-
-            case "search":
-                String search = request.getParameter("search");
-                ArrayList<Book> bookList = new ArrayList<>();
-                bookList = BookDB.search(search);
-                request.setAttribute("bookList", bookList);
-
-                String book_java = "java";
-                String book_PHP = "PHP";
-                String book_JavaScript = "JavaScript";
-
-                int qyt_book_java = BookDB.search(book_java).size();
-                int qyt_book_PHP = BookDB.search(book_PHP).size();
-                int qyt_book_JavaScript = BookDB.search(book_JavaScript).size();
-
-                request.setAttribute("qyt_book_java", qyt_book_java);
-                request.setAttribute("qyt_book_PHP", qyt_book_PHP);
-                request.setAttribute("qyt_book_JavaScript", qyt_book_JavaScript);
-
-//                url = "/catalog/search.jsp";
                 break;
         }
 

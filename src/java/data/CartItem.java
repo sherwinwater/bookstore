@@ -12,6 +12,7 @@ package data;
 public class CartItem extends Book {
     private int quantity;
     private double totalprice;
+    private String cart_id;
     
     public CartItem(String id, Double price,String title,String author) {
         super(id, price,title,author);
@@ -31,6 +32,14 @@ public class CartItem extends Book {
 
     public void setTotalprice(double totalprice) {
         this.totalprice = totalprice;
+    }
+
+    public String getCart_id() {
+        return cart_id;
+    }
+
+    public void setCart_id(String cart_id) {
+        this.cart_id = cart_id;
     }
     
 }
