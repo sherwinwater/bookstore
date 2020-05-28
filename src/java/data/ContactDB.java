@@ -11,23 +11,23 @@ public class ContactDB {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (FirstName,LastName,Email,"
+                = "INSERT INTO " + TABLE + " (id,FirstName,LastName,Email,"
                 + "CompanyName,Address1,Address2,City,State,"
-                + "Zip,Country,Invoice_invoiceID)"
+                + "Zip,Country)"
                 + "VALUES(?,?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, contact.getFirstName());
-            ps.setString(2, contact.getLastName());
-            ps.setString(3, contact.getEmail());
-            ps.setString(4, contact.getCompanyName());
-            ps.setString(5, contact.getAddress1());
-            ps.setString(6, contact.getAddress2());
-            ps.setString(7, contact.getCity());
-            ps.setString(8, contact.getState());
-            ps.setString(9, contact.getZip());
-            ps.setString(10, contact.getCountry());
-            ps.setString(11, contact.getInvoiceID());
+            ps.setString(1, contact.getId());
+            ps.setString(2, contact.getFirstName());
+            ps.setString(3, contact.getLastName());
+            ps.setString(4, contact.getEmail());
+            ps.setString(5, contact.getCompanyName());
+            ps.setString(6, contact.getAddress1());
+            ps.setString(7, contact.getAddress2());
+            ps.setString(8, contact.getCity());
+            ps.setString(9, contact.getState());
+            ps.setString(10, contact.getZip());
+            ps.setString(11, contact.getCountry());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -117,7 +117,8 @@ public class ContactDB {
             ps.setString(1, email);
             rs = ps.executeQuery();
             while (rs.next()) {
-                Contact contact = new Contact(rs.getString("Email"));
+                Contact contact = new Contact();
+                contact.setId(rs.getString("id"));
                 contact.setFirstName(rs.getString("FirstName"));
                 contact.setLastName(rs.getString("LastName"));
                 contact.setEmail(rs.getString("Email"));

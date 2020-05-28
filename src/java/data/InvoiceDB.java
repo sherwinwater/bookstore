@@ -4,19 +4,23 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class InvoiceDB {
+
     private static final String TABLE = "Invoice";
-    
+
     public static int insert(Invoice invoice) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (invoiceID,cart_cartID)"
-                + "VALUES(?,?)";
+                = "INSERT INTO " + TABLE + " (invoiceID,cart_cartID,"
+                + "creditcard_id,contact_id)"
+                + "VALUES(?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, invoice.getInvoice_id());
             ps.setString(2, invoice.getCart_id());
+            ps.setString(3, invoice.getCreditcard_id());
+            ps.setString(4, invoice.getContact_id());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

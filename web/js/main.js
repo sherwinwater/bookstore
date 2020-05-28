@@ -63,10 +63,6 @@ function showPage(href) {
 
 async function checkoutCart() {
     checkout('contactinfo');
-    let cart_id = "cart" + randomID();
-    let page = "ajaxcart?todo=checkout&cart_id=" + cart_id;
-    let response = await fetch(page);
-    let resJason = await response.json();
 }
 
 // checkout contact information
@@ -83,10 +79,12 @@ async function checkContactinfo() {
     let State = document.contactinfoForm.State.value;
     let Zip = document.contactinfoForm.Zip.value;
     let Country = document.contactinfoForm.Country.value;
-    let invoiceID = "invoice" + randomID();
-    page = page + todo + "&FirstName=" + FirstName + "&LastName=" + LastName + "&Email=" + Email +
-            "&CompanyName=" + CompanyName + "&Address1=" + Address1 + "&Address2=" + Address2 + "&City=" + City +
-            "&State=" + State + "&Zip=" + Zip + "&Country=" + Country + "&invoiceID=" + invoiceID;
+    let contactID = "contact" + randomID();
+    page = page + todo + "&FirstName=" + FirstName + "&LastName=" + LastName +
+            "&Email=" + Email + "&CompanyName=" + CompanyName +
+            "&Address1=" + Address1 + "&Address2=" + Address2 + "&City=" + City +
+            "&State=" + State + "&Zip=" + Zip + "&Country=" + Country +
+            "&contactID=" + contactID;
     let response = await fetch(page);
     let resJason = await response.json();
 
@@ -110,11 +108,15 @@ async function placeOrder() {
     let expirationYear = document.creditinfoForm.expirationYear.value;
     let creditCardExpirationDate = expirationMonth + expirationYear;
     let orderID = "order" + randomID();
+    let creditID = "credit" + randomID();
+    let invoiceID = "invoice" + randomID();
     page = page + todo + "&firstname=" + firstname + "&lastname=" + lastname +
             "&creditCardType=" + creditCardType +
             "&creditCardNumber=" + creditCardNumber +
             "&creditCardExpirationDate=" + creditCardExpirationDate +
-            "&orderID=" + orderID;
+            "&orderID=" + orderID +
+            "&creditID=" + creditID +
+            "&invoiceID=" + invoiceID;
     let response = await fetch(page);
     let resJason = await response.json();
 
@@ -239,15 +241,18 @@ searchTxt.addEventListener("keyup", () => {
 // sign up
 
 async function loginUser(action) {
-    let username = password = page = "";
+    let username = password = page = cart_id = "";
+    cart_id = "cart" + randomID();
     if (action === "signup") {
         username = document.signupForm.username.value;
         password = document.signupForm.password.value;
-        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password +
+                "&cart_id=" + cart_id;
     } else if (action === "login") {
         username = document.loginForm.username.value;
         password = document.loginForm.password.value;
-        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password +
+                "&cart_id=" + cart_id;
     }
 
 // method1
@@ -295,7 +300,8 @@ async function loginUser(action) {
 
 // add cart
 async function getCart(i, action) {
-    let book_ids = book_prices = book_quantitys = book_quantitys_update = book_titles = book_authors = page = "";
+    let book_ids = book_prices = book_quantitys = book_quantitys_update
+            = book_titles = book_authors = page;
     switch (action) {
         case "add":
             book_ids = document.getElementsByClassName('book_id');

@@ -5,7 +5,8 @@
         <group>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/order/order.jsp</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/controller/AjaxCheckoutServlet.java</file>
-            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/order/creditinfo.jsp</file>
+            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/data/OrderDB.java</file>
+            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/controller/AjaxUserServlet.java</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/order/invoice.jsp</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/js/main.js</file>
         </group>

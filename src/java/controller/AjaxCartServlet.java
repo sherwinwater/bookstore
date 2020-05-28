@@ -15,6 +15,7 @@ import data.Book;
 import data.CartDB;
 import data.BookDB;
 import data.CartItem;
+import data.User;
 import data.UserDB;
 import org.json.JSONObject;
 
@@ -34,14 +35,22 @@ public class AjaxCartServlet extends HttpServlet {
         HttpSession session = request.getSession();
         final Object lock = request.getSession().getId().intern();
         ArrayList<CartItem> cart = new ArrayList<>();
+        User user = new User();
         synchronized (lock) {
             cart = (ArrayList<CartItem>) session.getAttribute("cart");
+            user = (User) session.getAttribute("user");
         }
         if (cart == null) {
             cart = new ArrayList<>();
         }
         synchronized (lock) {
             session.setAttribute("cart", cart);
+        }
+
+        // user
+        String username = "Guest";
+        if (user != null) {
+            username = user.getUsername();
         }
 
         JSONObject itemsIncart = new JSONObject();
@@ -60,22 +69,29 @@ public class AjaxCartServlet extends HttpServlet {
                 String book_title = request.getParameter("book_title");
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
+                String cart_id = (String) request.getSession().getAttribute("cart_id");
 
                 CartItem cartitem = new CartItem(book_id, book_price, book_title, book_author);
+                cartitem.setCart_id(cart_id);
+                cartitem.setUsername(username);
                 cartitem.setQuantity(book_quantity);
 
                 if (cart.isEmpty()) {
                     cart.add(cartitem);
+                    CartDB.insert(cartitem);
                 } else {
                     boolean isHasBook = false;
                     for (CartItem item : cart) {
-                        if (item.getId().equals(book_id)) {
+                        if (item.getId().equals(book_id)
+                                & item.getQuantity() != book_quantity) {
                             item.setQuantity(book_quantity);
+                            CartDB.updateQuantity(item);
                             isHasBook = true;
                         }
                     }
                     if (!isHasBook) {
                         cart.add(cartitem);
+                        CartDB.insert(cartitem);
                     }
                 }
 
@@ -90,10 +106,13 @@ public class AjaxCartServlet extends HttpServlet {
                 String removeId = request.getParameter("book_id");
                 Iterator<CartItem> itrCart = cart.iterator();
                 while (itrCart.hasNext()) {
-                    if (itrCart.next().getId().equals(removeId)) {
+                    CartItem item = itrCart.next();
+                    if (item.getId().equals(removeId)) {
                         itrCart.remove();
+                        CartDB.deleteItem(item);
                     }
                 }
+
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
                 response.setContentType("application/json");
@@ -106,8 +125,10 @@ public class AjaxCartServlet extends HttpServlet {
                 int book_quantity_update = Integer.parseInt(request.getParameter("book_quantity_update"));
                 book_id = request.getParameter("book_id");
                 for (CartItem item : cart) {
-                    if (item.getId().equals(book_id)) {
+                    if (item.getId().equals(book_id)
+                            & item.getQuantity() != book_quantity_update) {
                         item.setQuantity(book_quantity_update);
+                        CartDB.updateQuantity(item);
                     }
                 }
 
@@ -120,20 +141,13 @@ public class AjaxCartServlet extends HttpServlet {
                 break;
 
             case "checkout":
-                String cart_id = request.getParameter("cart_id");
-                session.setAttribute("cart_id", cart_id);
 
-                for (CartItem item : cart) {
-                    item.setCart_id(cart_id);
-                    CartDB.insert(item);
-                }
-                
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);
-                
+
 //                CartItem updateitem = new CartItem("1001",222.0);
 //                System.out.println("updateitem 1001 222.0:  "+CartDB.update(updateitem));
 //                ArrayList<CartItem> selectitems = CartDB.select("1002");

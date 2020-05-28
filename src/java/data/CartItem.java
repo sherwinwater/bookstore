@@ -13,6 +13,7 @@ public class CartItem extends Book {
     private int quantity;
     private double totalprice;
     private String cart_id;
+    private String username;
     
     public CartItem(String id, Double price,String title,String author) {
         super(id, price,title,author);
@@ -40,6 +41,14 @@ public class CartItem extends Book {
 
     public void setCart_id(String cart_id) {
         this.cart_id = cart_id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
     
 }

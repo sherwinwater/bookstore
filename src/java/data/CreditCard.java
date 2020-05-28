@@ -4,24 +4,26 @@ import java.io.Serializable;
 
 public class CreditCard implements Serializable{
     
+    private String id;
     private String firstname;
     private String lastname;
     private String cardtype;
     private String cardnumber;
     private String expirationdate;
-    private String invoiceID;
 
 
     public CreditCard() {
     }
 
-    public CreditCard(String firstname, String lastname, String cardtype, String cardnumber, String expirationdate) {
+    public CreditCard(String id, String firstname, String lastname, String cardtype, String cardnumber, String expirationdate) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.cardtype = cardtype;
         this.cardnumber = cardnumber;
         this.expirationdate = expirationdate;
     }
+
 
     public String getFirstname() {
         return firstname;
@@ -63,12 +65,12 @@ public class CreditCard implements Serializable{
         this.expirationdate = expirationdate;
     }
 
-    public String getInvoiceID() {
-        return invoiceID;
+    public String getId() {
+        return id;
     }
 
-    public void setInvoiceID(String invoiceID) {
-        this.invoiceID = invoiceID;
+    public void setId(String id) {
+        this.id = id;
     }
 
    

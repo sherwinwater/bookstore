@@ -3,6 +3,7 @@ package data;
 import java.io.Serializable;
 
 public class Contact implements Serializable{
+    private String id;
     private String firstName;
     private String lastName;
     private String email;
@@ -13,14 +14,24 @@ public class Contact implements Serializable{
     private String state;
     private String zip;
     private String country;
-    private String invoiceID;
 
     public Contact() {
     }
 
-    public Contact(String email) {
+    public Contact(String id, String firstName, String lastName, String email, String companyName, String address1, String address2, String city, String state, String zip, String country) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.email = email;
+        this.companyName = companyName;
+        this.address1 = address1;
+        this.address2 = address2;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.country = country;
     }
+
 
     public String getFirstName() {
         return firstName;
@@ -102,12 +113,12 @@ public class Contact implements Serializable{
         this.country = country;
     }
 
-    public String getInvoiceID() {
-        return invoiceID;
+    public String getId() {
+        return id;
     }
 
-    public void setInvoiceID(String invoiceID) {
-        this.invoiceID = invoiceID;
+    public void setId(String id) {
+        this.id = id;
     }
   
 }

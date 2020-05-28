@@ -42,6 +42,11 @@ public class AjaxCheckoutServlet extends HttpServlet {
         HttpSession session = request.getSession();
         final Object lock = request.getSession().getId().intern();
 
+        String contactID = "";
+        String creditID = "";
+        String invoiceID = "";
+        String orderID = "";
+        String cart_id = "";
         switch (todo) {
             case "contactinfo":
                 Contact contact = new Contact();
@@ -56,11 +61,7 @@ public class AjaxCheckoutServlet extends HttpServlet {
                     session.setAttribute("contact", contact);
                 }
 
-                String cart_id = (String) session.getAttribute("cart_id");
-                String invoiceID = request.getParameter("invoiceID");
-                Invoice invoice = new Invoice(cart_id, invoiceID);
-                InvoiceDB.insert(invoice);
-
+                contactID = request.getParameter("contactID");
                 String FirstName = request.getParameter("FirstName");
                 String LastName = request.getParameter("LastName");
                 String Email = request.getParameter("Email");
@@ -72,8 +73,9 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 String Zip = request.getParameter("Zip");
                 String Country = request.getParameter("Country");
 
-                session.setAttribute("invoiceID", invoiceID);
+                session.setAttribute("contactID", contactID);
 
+                contact.setId(contactID);
                 contact.setFirstName(FirstName);
                 contact.setLastName(LastName);
                 contact.setEmail(Email);
@@ -84,11 +86,9 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 contact.setState(State);
                 contact.setZip(Zip);
                 contact.setCountry(Country);
-                contact.setInvoiceID(invoiceID);
                 ContactDB.insert(contact);
 
                 data.put("contact", contact);
-                data.put("invoice", invoice);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(data);
@@ -96,39 +96,37 @@ public class AjaxCheckoutServlet extends HttpServlet {
 
             case "order":
                 // credit info
+                creditID = request.getParameter("creditID");
                 String firstname = request.getParameter("firstname");
                 String lastname = request.getParameter("lastname");
                 String creditCardType = request.getParameter("creditCardType");
                 String creditCardNumber = request.getParameter("creditCardNumber");
                 String creditCardExpirationDate = request.getParameter("creditCardExpirationDate");
 
-                CreditCard creditcard = new CreditCard(firstname, lastname,
+                CreditCard creditcard = new CreditCard(creditID, firstname, lastname,
                         creditCardType, creditCardNumber, creditCardExpirationDate);
 
-                invoiceID = (String) session.getAttribute("invoiceID");
-                creditcard.setInvoiceID(invoiceID);
                 CreditCardDB.insert(creditcard);
 
-                // user
-                User user = new User();
-                synchronized (lock) {
-                    user = (User) session.getAttribute("user");
-                }
-
-                if (user == null) {
-                    user = new User("Guest");
-                    if (!UserDB.userExists("Guest")) {
-                        UserDB.insert(user);
-                    }
-                }
-                synchronized (lock) {
-                    session.setAttribute("user", user);
-                }
+                // Invoice
+                contactID = (String) session.getAttribute("contactID");
+                invoiceID = request.getParameter("invoiceID");
+                cart_id = (String) session.getAttribute("cart_id");
+                Invoice invoice = new Invoice(cart_id, invoiceID, creditID, contactID);
+                InvoiceDB.insert(invoice);
+                session.setAttribute("invoice", invoice);
 
                 // order (orderID, username,invoiceID)
-                String orderID = request.getParameter("orderID");
-                Order order = new Order(orderID, invoiceID, user.getUsername());
+                orderID = request.getParameter("orderID");
+                Order order = new Order(orderID, invoiceID);
                 OrderDB.insert(order);
+                session.setAttribute("order", order);
+
+                // update cart with the isOrdered == 1 in the cart db table
+                ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
+                for (CartItem item : cart) {
+                    CartDB.updateIsOrdered(item);
+                }
 
                 data.put("creditcard", creditcard);
                 data.put("order", order);

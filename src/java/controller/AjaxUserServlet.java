@@ -32,8 +32,10 @@ public class AjaxUserServlet extends HttpServlet {
         HttpSession session = request.getSession();
         final Object lock = request.getSession().getId().intern();
         User user = new User();
+        ArrayList<CartItem> cart = new ArrayList<>();
         synchronized (lock) {
             user = (User) session.getAttribute("user");
+            cart = (ArrayList<CartItem>) session.getAttribute("cart");
         }
 
         if (user == null) {
@@ -41,10 +43,14 @@ public class AjaxUserServlet extends HttpServlet {
         }
         synchronized (lock) {
             session.setAttribute("user", user);
+            session.setAttribute("cart", cart);
         }
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String cart_id = request.getParameter("cart_id");
+        session.setAttribute("cart_id", cart_id);
+        
         String message = "";
         String salt = "";
         String saltedAndHashedPassword;
@@ -142,6 +148,8 @@ public class AjaxUserServlet extends HttpServlet {
                     if (UserDB.userLogin(username, saltedAndHashedPassword)) {
                         request.setAttribute("username", username);
                         user.setUsername(username);
+                        cart.clear();
+                        cart = CartDB.selectIsOrdered(username);
                         msg.put("username", username);
                     } else {
                         message = "wrong username or password";
@@ -157,7 +165,7 @@ public class AjaxUserServlet extends HttpServlet {
 
             case "logout":
                 user = null;
-                ArrayList<CartItem> cart = (ArrayList<CartItem>) request.getSession().getAttribute("cart");
+                cart = (ArrayList<CartItem>) request.getSession().getAttribute("cart");
                 cart.clear();
                 url = "/account/login.jsp";
                 getServletContext()

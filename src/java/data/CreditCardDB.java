@@ -11,17 +11,17 @@ public class CreditCardDB {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (firstname,lastname,CreditCardType,"
-                + "CreditCardNumber,CreditCardExpirationDate,Invoice_invoiceID)"
+                = "INSERT INTO " + TABLE + " (id,firstname,lastname,CreditCardType,"
+                + "CreditCardNumber,CreditCardExpirationDate)"
                 + "VALUES(?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, creditcard.getFirstname());
-            ps.setString(2, creditcard.getLastname());
-            ps.setString(3, creditcard.getCardtype());
-            ps.setString(4, creditcard.getCardnumber());
-            ps.setString(5, creditcard.getExpirationdate());
-            ps.setString(6, creditcard.getInvoiceID());
+            ps.setString(1, creditcard.getId());
+            ps.setString(2, creditcard.getFirstname());
+            ps.setString(3, creditcard.getLastname());
+            ps.setString(4, creditcard.getCardtype());
+            ps.setString(5, creditcard.getCardnumber());
+            ps.setString(6, creditcard.getExpirationdate());
 
             return ps.executeUpdate();
         } catch (SQLException e) {

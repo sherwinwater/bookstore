@@ -4,20 +4,20 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDB {
+
     private static final String TABLE = "Order";
-    
+
     public static int insert(Order order) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
-                = "INSERT INTO " + TABLE + " (orderID, Invoice_invoiceID, user_username) "
-                + "VALUES(?,?,?)";
+                = "INSERT INTO " + TABLE + " (orderID,Invoice_invoiceID)"
+                + "VALUES(?,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, order.getOrderID());
             ps.setString(2, order.getInvoiceID());
-            ps.setString(3, order.getUsername());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

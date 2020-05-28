@@ -6,15 +6,15 @@ public class Order implements Serializable{
     
     private String orderID;
     private String invoiceID;
-    private String username;
+    private boolean isPackaged;
+    private boolean isDelivered;
 
     public Order() {
     }
 
-    public Order(String orderID, String invoiceID, String username) {
+    public Order(String orderID, String invoiceID) {
         this.orderID = orderID;
         this.invoiceID = invoiceID;
-        this.username = username;
     }
 
     public String getOrderID() {
@@ -33,13 +33,23 @@ public class Order implements Serializable{
         this.invoiceID = invoiceID;
     }
 
-    public String getUsername() {
-        return username;
+    public boolean isIsPackaged() {
+        return isPackaged;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setIsPackaged(boolean isPackaged) {
+        this.isPackaged = isPackaged;
     }
+
+    public boolean isIsDelivered() {
+        return isDelivered;
+    }
+
+    public void setIsDelivered(boolean isDelivered) {
+        this.isDelivered = isDelivered;
+    }
+
+
     
     
 }
