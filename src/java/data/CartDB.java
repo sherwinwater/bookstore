@@ -57,7 +57,7 @@ public class CartDB {
             pool.freeConnection(connection);
         }
     }
-    
+
     public static int updateQuantity(CartItem item) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -107,10 +107,11 @@ public class CartDB {
         PreparedStatement ps = null;
 
         String query = "DELETE FROM " + TABLE + " "
-                + "WHERE product_id = ?";
+                + "WHERE product_id = ? AND cartID = ?";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, item.getId());
+            ps.setString(2, item.getCart_id());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -183,11 +184,11 @@ public class CartDB {
         ResultSet rs = null;
         ArrayList<CartItem> itemList = new ArrayList<>();
 
-        String query = "SELECT * FROM " + TABLE + " "
-                + "WHERE " + username + " = ? AND isOrdered = 0";
+        String query = "SELECT * FROM " + TABLE + " WHERE user_username = ? AND isOrdered = ? ";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, username);
+            ps.setBoolean(2, false);
             rs = ps.executeQuery();
             while (rs.next()) {
                 CartItem item = new CartItem(rs.getString("product_id"),
@@ -195,6 +196,8 @@ public class CartDB {
                         rs.getString("product_author"));
                 item.setQuantity(rs.getInt("product_quantity"));
                 item.setTotalprice(rs.getDouble("product_totalprice"));
+                item.setCart_id(rs.getString("cartID"));
+                item.setUsername(username);
                 itemList.add(item);
             }
             return itemList;

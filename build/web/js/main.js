@@ -301,7 +301,7 @@ async function loginUser(action) {
 // add cart
 async function getCart(i, action) {
     let book_ids = book_prices = book_quantitys = book_quantitys_update
-            = book_titles = book_authors = page;
+            = book_titles = book_authors = page = "";
     switch (action) {
         case "add":
             book_ids = document.getElementsByClassName('book_id');

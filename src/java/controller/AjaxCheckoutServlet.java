@@ -128,11 +128,23 @@ public class AjaxCheckoutServlet extends HttpServlet {
                     CartDB.updateIsOrdered(item);
                 }
 
+                // clear cart
+                cart.clear();
+                session.removeAttribute("cart_id");
+                session.removeAttribute("contact");
+                session.removeAttribute("creditID");
+                session.removeAttribute("invoiceID");
+                
                 data.put("creditcard", creditcard);
                 data.put("order", order);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(data);
+                
+                //  session invalidate
+//                if (session != null) {
+//                    session.invalidate();
+//                }
                 break;
         }
 

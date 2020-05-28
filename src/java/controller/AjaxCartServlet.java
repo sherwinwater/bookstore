@@ -53,6 +53,7 @@ public class AjaxCartServlet extends HttpServlet {
             username = user.getUsername();
         }
 
+        String id = "cartido00000";
         JSONObject itemsIncart = new JSONObject();
         switch (todo) {
             case "view":
@@ -70,7 +71,9 @@ public class AjaxCartServlet extends HttpServlet {
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
                 String cart_id = (String) request.getSession().getAttribute("cart_id");
-
+                if(cart_id == null){
+                    cart_id = id;
+                }
                 CartItem cartitem = new CartItem(book_id, book_price, book_title, book_author);
                 cartitem.setCart_id(cart_id);
                 cartitem.setUsername(username);
@@ -86,6 +89,10 @@ public class AjaxCartServlet extends HttpServlet {
                                 & item.getQuantity() != book_quantity) {
                             item.setQuantity(book_quantity);
                             CartDB.updateQuantity(item);
+                            isHasBook = true;
+                        }
+                        if (item.getId().equals(book_id)
+                                & item.getQuantity() == book_quantity) {
                             isHasBook = true;
                         }
                     }

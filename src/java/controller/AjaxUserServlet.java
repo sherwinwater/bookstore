@@ -50,7 +50,7 @@ public class AjaxUserServlet extends HttpServlet {
         String password = request.getParameter("password");
         String cart_id = request.getParameter("cart_id");
         session.setAttribute("cart_id", cart_id);
-        
+
         String message = "";
         String salt = "";
         String saltedAndHashedPassword;
@@ -148,8 +148,8 @@ public class AjaxUserServlet extends HttpServlet {
                     if (UserDB.userLogin(username, saltedAndHashedPassword)) {
                         request.setAttribute("username", username);
                         user.setUsername(username);
-                        cart.clear();
                         cart = CartDB.selectIsOrdered(username);
+                        session.setAttribute("cart", cart);
                         msg.put("username", username);
                     } else {
                         message = "wrong username or password";
