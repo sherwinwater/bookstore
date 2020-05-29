@@ -27,10 +27,8 @@ public class AjaxCartServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
-        PrintWriter out = response.getWriter();
 
         String todo = request.getParameter("todo");
-
         // session with threads-safe
         HttpSession session = request.getSession();
         final Object lock = request.getSession().getId().intern();
@@ -45,15 +43,22 @@ public class AjaxCartServlet extends HttpServlet {
         }
         synchronized (lock) {
             session.setAttribute("cart", cart);
+            session.setAttribute("user", user);
         }
 
         // user
         String username = "Guest";
         if (user != null) {
             username = user.getUsername();
+        }else{
+            if(!UserDB.userExists(username)){
+                user = new User();
+                user.setUsername(username);
+                UserDB.insert(user);
+            }
         }
 
-        String id = "cartido00000";
+        String cart_id = "";
         JSONObject itemsIncart = new JSONObject();
         switch (todo) {
             case "view":
@@ -70,14 +75,20 @@ public class AjaxCartServlet extends HttpServlet {
                 String book_title = request.getParameter("book_title");
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
-                String cart_id = (String) request.getSession().getAttribute("cart_id");
-                if(cart_id == null){
-                    cart_id = id;
+                int book_inventory = Integer.parseInt(request.getParameter("book_inventory"));
+                if (!cart.isEmpty()) {
+                    cart_id = cart.get(0).getCart_id();
+                } else {
+                    cart_id = (String) request.getSession().getAttribute("cart_id");
                 }
+
                 CartItem cartitem = new CartItem(book_id, book_price, book_title, book_author);
                 cartitem.setCart_id(cart_id);
-                cartitem.setUsername(username);
+//                if (user != null) {
+                    cartitem.setUsername(username);
+//                }
                 cartitem.setQuantity(book_quantity);
+                cartitem.setInventory(book_inventory);
 
                 if (cart.isEmpty()) {
                     cart.add(cartitem);
@@ -129,12 +140,12 @@ public class AjaxCartServlet extends HttpServlet {
                 break;
 
             case "update":
-                int book_quantity_update = Integer.parseInt(request.getParameter("book_quantity_update"));
+                book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
                 book_id = request.getParameter("book_id");
                 for (CartItem item : cart) {
                     if (item.getId().equals(book_id)
-                            & item.getQuantity() != book_quantity_update) {
-                        item.setQuantity(book_quantity_update);
+                            & item.getQuantity() != book_quantity) {
+                        item.setQuantity(book_quantity);
                         CartDB.updateQuantity(item);
                     }
                 }

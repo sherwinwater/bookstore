@@ -26,7 +26,6 @@ public class AjaxUserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String url = "/account/login.jsp";
         String todo = request.getParameter("todo");
 
         HttpSession session = request.getSession();
@@ -37,9 +36,11 @@ public class AjaxUserServlet extends HttpServlet {
             user = (User) session.getAttribute("user");
             cart = (ArrayList<CartItem>) session.getAttribute("cart");
         }
-
         if (user == null) {
             user = new User();
+        }
+        if (cart == null) {
+            cart = new ArrayList<>();
         }
         synchronized (lock) {
             session.setAttribute("user", user);
@@ -48,8 +49,6 @@ public class AjaxUserServlet extends HttpServlet {
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String cart_id = request.getParameter("cart_id");
-        session.setAttribute("cart_id", cart_id);
 
         String message = "";
         String salt = "";
@@ -57,6 +56,7 @@ public class AjaxUserServlet extends HttpServlet {
         String msg_password = "";
         String msg_username = "";
 
+        JSONObject msg = new JSONObject();
         switch (todo) {
             case "checkname":
                 response.setHeader("Cache-Control", "no-cache");
@@ -68,7 +68,6 @@ public class AjaxUserServlet extends HttpServlet {
                 if (UserDB.userExists(username)) {
                     msg_username = username + " is already in the list!";
                 }
-                JSONObject msg = new JSONObject();
                 msg.put("msg_username", msg_username);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -87,7 +86,6 @@ public class AjaxUserServlet extends HttpServlet {
                     msg_password = e.getMessage();
                 }
 
-                msg = new JSONObject();
                 msg.put("msg_password", msg_password);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
@@ -95,7 +93,6 @@ public class AjaxUserServlet extends HttpServlet {
                 break;
 
             case "signup":
-                msg = new JSONObject();
                 if (password == "") {  // "" cannot be null, string is "", object is null
                     msg_password = "Password cannot be empty";
                     msg.put("msg_password", msg_password);
@@ -135,7 +132,6 @@ public class AjaxUserServlet extends HttpServlet {
                 break;
 
             case "login":
-                msg = new JSONObject();
                 if (!UserDB.select(username).isEmpty()) {
                     salt = UserDB.select(username).get(0).getSalt();
                     try {
@@ -164,16 +160,13 @@ public class AjaxUserServlet extends HttpServlet {
                 break;
 
             case "logout":
-                user = null;
-                cart = (ArrayList<CartItem>) request.getSession().getAttribute("cart");
-                cart.clear();
-                url = "/account/login.jsp";
-                getServletContext()
-                        .getRequestDispatcher(url)
-                        .forward(request, response);
+                session.invalidate();
+                msg.put("session", session);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(msg);
                 break;
         }
-
     }
 
     @Override

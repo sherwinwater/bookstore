@@ -212,7 +212,9 @@ async function showSearchResults(page) {
 }
 
 async function showSearchandCatalog(page) {
-    let response = await fetch(page);
+    let cart_id = "cart" + randomID();
+    let page2 = page + "&cart_id=" + cart_id;
+    let response = await fetch(page2);
     let resJason = await response.json();
     getTable(resJason.bookList, "addCart");
     showSubcatalog(resJason);
@@ -241,18 +243,15 @@ searchTxt.addEventListener("keyup", () => {
 // sign up
 
 async function loginUser(action) {
-    let username = password = page = cart_id = "";
-    cart_id = "cart" + randomID();
+    let username = password = page = "";
     if (action === "signup") {
         username = document.signupForm.username.value;
         password = document.signupForm.password.value;
-        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password +
-                "&cart_id=" + cart_id;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
     } else if (action === "login") {
         username = document.loginForm.username.value;
         password = document.loginForm.password.value;
-        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password +
-                "&cart_id=" + cart_id;
+        page = "ajaxuser?todo=" + action + "&username=" + username + "&password=" + password;
     }
 
 // method1
@@ -298,6 +297,14 @@ async function loginUser(action) {
     }
 }
 
+// logout
+async function logoutUser() {
+    let page = "ajaxuser?todo=logout";
+    let response = await fetch(page);
+    let resJason = await response.json();
+    showPage('./account/logout.jsp');
+}
+
 // add cart
 async function getCart(i, action) {
     let book_ids = book_prices = book_quantitys = book_quantitys_update
@@ -309,24 +316,26 @@ async function getCart(i, action) {
             book_quantitys = document.getElementsByClassName('book_quantity');
             book_titles = document.getElementsByClassName('book_title');
             book_authors = document.getElementsByClassName('book_author');
+            book_inventorys = document.getElementsByClassName('book_inventory');
             page = "ajaxcart?todo=" + action
                     + "&book_id=" + book_ids[i].innerHTML
                     + "&book_price=" + book_prices[i].innerHTML
                     + "&book_quantity=" + book_quantitys[i].value
                     + "&book_title=" + book_titles[i].innerHTML
-                    + "&book_author=" + book_authors[i].innerHTML;
+                    + "&book_author=" + book_authors[i].innerHTML
+                    + "&book_inventory=" + book_inventorys[i].innerHTML;
             break;
         case "update":
         case "remove":
             book_ids = document.getElementsByClassName('book_id');
             book_prices = document.getElementsByClassName('book_price');
-            book_quantitys_update = document.getElementsByClassName('book_quantity_update');
+            book_quantitys = document.getElementsByClassName('book_quantity');
             book_titles = document.getElementsByClassName('book_title');
             book_authors = document.getElementsByClassName('book_author');
             page = "ajaxcart?todo=" + action
                     + "&book_id=" + book_ids[i].innerHTML
                     + "&book_price=" + book_prices[i].innerHTML
-                    + "&book_quantity_update=" + book_quantitys_update[i].value
+                    + "&book_quantity=" + book_quantitys[i].value
                     + "&book_title=" + book_titles[i].innerHTML
                     + "&book_author=" + book_authors[i].innerHTML;
             break;
@@ -408,8 +417,8 @@ function getTable(args, action) {
                         <th>Title</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Inventory</th>
-                        <th>Action</th>
+                      <!--   <th>Inventory</th> 
+                        <th>Action</th> --!>
                     </tr></thead> <tbody> `;
                 for (var item in args) {
                     tbody += ` <tr>
@@ -418,11 +427,23 @@ function getTable(args, action) {
                         <td class="book_title">${args[item].title}</td>
                         <td class="book_price">${args[item].price}</td>
                         <td> 
-                            <input type="number" name="book_quantity" value="1" min="1" class="book_quantity">
+                            <!-- <input type="number" name="book_quantity" value="1" min="1" 
+                                 class="book_quantity" onchange="checkQuantity(${i})" ><br>
+                    <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
+                    <p class="msg_quantity" style="color:red;"></p>
+                            --!>
+                    
+                        <form action="# method="get" onsubmit="getCart(${i},'add');return false">
+                        <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
+                                    step="1" max="${args[item].inventory}" class="book_quantity" style="display:inline-block">
+                        <input type="submit" value="Add to Cart" class="book_add" style="display:inline-block">
+                        </form>
+                        <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
+                    
                         </td>
-                        <td class="book_inventory">${args[item].inventory_qty}</td>
+                <!--        <td class="book_inventory">${args[item].inventory}</td> 
                         <td>
-                        <input type="button" value="Add to Cart" class="book_add" onclick="getCart(${i},'add')">
+                        <input type="button" value="Add to Cart" class="book_add" onclick="getCart(${i},'add')">  --!>
                         </td>
                         </tr>`;
                     i++;
@@ -444,7 +465,7 @@ function getTable(args, action) {
                         <th>Title</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                        <th>Action</th>
+                         <th>Action</th> 
                     </tr></thead> <tbody> `;
                 for (var item in args) {
                     tbody += ` <tr>
@@ -453,10 +474,21 @@ function getTable(args, action) {
                         <td class="book_title">${args[item].title}</td>
                         <td class="book_price">${args[item].price}</td>
                         <td> 
-                            <input type="number" name="book_quantity_update" value="${args[item].quantity}" min="1" 
-                                    class="book_quantity_update" style="display:inline-block">
+                        
+                            <!-- <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
+                                    step="1" max="10" class="book_quantity" style="display:inline-block" onchange="checkQuantity(${i})">
                             <input type="button" value="update" class="book_update" style="display:inline-block"
-                            onclick="getCart(${i},'update')" >
+                            onclick="getCart(${i},'update')">
+                        <p class="msg_quantity" style="color:red;"></p>
+                        --!>
+                        
+                        <form action="# method="get" onsubmit="getCart(${i},'update');return false">
+                            <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
+                                    step="1" max="${args[item].inventory}" class="book_quantity" style="display:inline-block">
+                            <input type="submit" value="update" class="book_update" style="display:inline-block">
+                        </form>
+                        <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
+                        
                         </td>
                         <td>
                         <input type="button" value="Remove item" class="book_remove" style="display:inline-block"
@@ -482,4 +514,15 @@ function showBookQuantity(data) {
     document.getElementById('java_quantity').innerHTML = "Java(" + data.java_quantity + ")";
     document.getElementById('PHP_quantity').innerHTML = "PHP(" + data.PHP_quantity + ")";
     document.getElementById('JavaScript_quantity').innerHTML = "JavaScript(" + data.JavaScript_quantity + ")";
+}
+
+function checkQuantity(i) {
+//    let book_quantitys = document.getElementsByClassName('book_quantity');
+//    let book_inventorys = document.getElementsByClassName('book_inventory');
+//    let msg = document.getElementsByClassName("msg_quantity");
+//    msg[i].innerHTML = "";
+//    if (book_quantitys[i].value > book_inventorys[i].innerHTML) {
+//        book_quantitys[i].value = book_inventorys[i].innerHTML;
+//        msg[i].innerHTML = "max " + book_inventorys[i].innerHTML;
+//    }
 }

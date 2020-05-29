@@ -63,8 +63,8 @@ public class UserServlet extends HttpServlet {
                     msg_user = username + " is already in the list!";
                 }
                 request.setAttribute("msg_user", msg_user);
-                System.out.println(msg_user);
-                log(msg_user);
+//                System.out.println(msg_user);
+//                log(msg_user);
                 // sign up
                 if (PasswordUtil.validatePassword(password)
                         && !UserDB.userExists(username)) {

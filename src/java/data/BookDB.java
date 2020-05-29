@@ -4,8 +4,9 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class BookDB {
+
     private static final String TABLE = "books";
-    
+
     public static int insert(CartItem item) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -38,7 +39,7 @@ public class BookDB {
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
-        String query = "UPDATE "+TABLE+" SET "
+        String query = "UPDATE " + TABLE + " SET "
                 + "product_price = ? "
                 + "WHERE product_id = ?";
         try {
@@ -55,12 +56,34 @@ public class BookDB {
         }
     }
 
+    public static void updateQuantity(CartItem item) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+
+        String query = "UPDATE " + TABLE + " SET "
+                + "product_inventory = product_inventory - ? "
+                + "WHERE product_id = ?";
+        try {
+            ps = connection.prepareStatement(query);
+            ps.setDouble(1, item.getQuantity());
+            ps.setString(2, item.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+//            return 0;
+        } finally {
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
     public static void delete(CartItem item) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
 
-        String query = "DELETE FROM "+TABLE+" "
+        String query = "DELETE FROM " + TABLE + " "
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
@@ -81,7 +104,7 @@ public class BookDB {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = "SELECT * FROM "+TABLE+" "
+        String query = "SELECT * FROM " + TABLE + " "
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
@@ -105,7 +128,7 @@ public class BookDB {
         ResultSet rs = null;
         ArrayList<CartItem> itemList = new ArrayList<>();
 
-        String query = "SELECT * FROM "+TABLE+" "
+        String query = "SELECT * FROM " + TABLE + " "
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
@@ -113,8 +136,8 @@ public class BookDB {
             rs = ps.executeQuery();
             while (rs.next()) {
                 CartItem item = new CartItem(rs.getString("product_id"),
-                        rs.getDouble("product_price"),rs.getString("product_title"),
-                rs.getString("product_author"));
+                        rs.getDouble("product_price"), rs.getString("product_title"),
+                        rs.getString("product_author"));
                 item.setQuantity(rs.getInt("product_quantity"));
                 item.setTotalprice(rs.getDouble("product_totalprice"));
                 itemList.add(item);
@@ -129,7 +152,7 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
-    
+
     public static ArrayList<Book> search(String title) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
@@ -137,18 +160,18 @@ public class BookDB {
         ResultSet rs = null;
         ArrayList<Book> bookList = new ArrayList<>();
 
-        String query = "SELECT * FROM "+ TABLE 
+        String query = "SELECT * FROM " + TABLE
                 + " WHERE product_title LIKE ?";
         try {
             ps = connection.prepareStatement(query);
-            title = "%"+title+"%";
+            title = "%" + title + "%";
             ps.setString(1, title);
             rs = ps.executeQuery();
             while (rs.next()) {
                 Book book = new Book(rs.getString("product_id"),
-                        rs.getDouble("product_price"),rs.getString("product_title"),
+                        rs.getDouble("product_price"), rs.getString("product_title"),
                         rs.getString("product_author"));
-                book.setInventory_qty(rs.getInt("product_inventory_qty"));
+                book.setInventory(rs.getInt("product_inventory"));
                 bookList.add(book);
             }
             return bookList;
@@ -161,6 +184,5 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
-    
-    
+
 }

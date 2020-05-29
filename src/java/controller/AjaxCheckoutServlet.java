@@ -2,6 +2,7 @@ package controller;
 
 import business.PasswordUtil;
 import data.Book;
+import data.BookDB;
 import data.CartDB;
 import data.CartItem;
 import data.Contact;
@@ -35,7 +36,6 @@ public class AjaxCheckoutServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setHeader("Cache-Control", "no-cache");
         response.setHeader("Pragma", "no-cache");
-        PrintWriter out = response.getWriter();
         String todo = request.getParameter("todo");
         JSONObject data = new JSONObject();
 
@@ -105,7 +105,6 @@ public class AjaxCheckoutServlet extends HttpServlet {
 
                 CreditCard creditcard = new CreditCard(creditID, firstname, lastname,
                         creditCardType, creditCardNumber, creditCardExpirationDate);
-
                 CreditCardDB.insert(creditcard);
 
                 // Invoice
@@ -126,10 +125,12 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 ArrayList<CartItem> cart = (ArrayList<CartItem>) session.getAttribute("cart");
                 for (CartItem item : cart) {
                     CartDB.updateIsOrdered(item);
+                    BookDB.updateQuantity(item); // update DB inventory of products
                 }
 
                 // clear cart
                 cart.clear();
+                session.removeAttribute("cart");
                 session.removeAttribute("cart_id");
                 session.removeAttribute("contact");
                 session.removeAttribute("creditID");
@@ -140,11 +141,6 @@ public class AjaxCheckoutServlet extends HttpServlet {
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(data);
-                
-                //  session invalidate
-//                if (session != null) {
-//                    session.invalidate();
-//                }
                 break;
         }
 

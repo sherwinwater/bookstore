@@ -7,16 +7,14 @@
     <a href="#" onclick="showPage('./account/login.html')">Login Again</a>   
 
     <%
-        Enumeration names = session.getAttributeNames();
-        while (names.hasMoreElements()) {
-            System.out.println((String) names.nextElement());
-        }
-
-        session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        System.out.println("session : " + session);
+//        Enumeration names = session.getAttributeNames();
+//        while (names.hasMoreElements()) {
+//            System.out.println((String) names.nextElement());
+//        }
+//        session = request.getSession(false);
+//        if (session != null) {
+//            session.invalidate();
+//        }
     %>
 
 </section>

@@ -15,6 +15,7 @@ import data.Book;
 import data.CartDB;
 import data.BookDB;
 import data.CartItem;
+import data.User;
 import org.json.JSONObject;
 
 @WebServlet(name = "AjaxSearchServlet", urlPatterns = {"/ajaxsearch"})
@@ -44,6 +45,27 @@ public class AjaxSearchServlet extends HttpServlet {
         jo.put("PHP_quantity", qyt_book_PHP);
         jo.put("JavaScript_quantity", qyt_book_JavaScript);
         jo.put("bookList", bookList);
+
+        // session with threads-safe
+        HttpSession session = request.getSession();
+        final Object lock = request.getSession().getId().intern();
+        ArrayList<CartItem> cart = new ArrayList<>();
+        String cart_id = new String();
+        synchronized (lock) {
+            cart = (ArrayList<CartItem>) session.getAttribute("cart");
+            cart_id = (String) session.getAttribute("cart_id");
+        }
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+        if (cart_id == null) {
+            cart_id = request.getParameter("cart_id");
+        }
+        synchronized (lock) {
+            session.setAttribute("cart", cart);
+            session.setAttribute("cart_id", cart_id);
+        }
+//        System.out.println("cart_id  "+cart_id);
         
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
