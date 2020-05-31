@@ -424,7 +424,10 @@ function getTable(args, action) {
                     tbody += ` <tr>
                         <td class="book_id">${args[item].id}</td>
                         <td class="book_author">${args[item].author}</td>
-                        <td class="book_title">${args[item].title}</td>
+                        <td class="book_title">${args[item].title}
+                                <img src="./images/logo.png" 
+                                             alt="Book Store Logo" width="188">
+                        </td>
                         <td class="book_price">${args[item].price}</td>
                         <td> 
                             <!-- <input type="number" name="book_quantity" value="1" min="1" 
@@ -514,15 +517,4 @@ function showBookQuantity(data) {
     document.getElementById('java_quantity').innerHTML = "Java(" + data.java_quantity + ")";
     document.getElementById('PHP_quantity').innerHTML = "PHP(" + data.PHP_quantity + ")";
     document.getElementById('JavaScript_quantity').innerHTML = "JavaScript(" + data.JavaScript_quantity + ")";
-}
-
-function checkQuantity(i) {
-//    let book_quantitys = document.getElementsByClassName('book_quantity');
-//    let book_inventorys = document.getElementsByClassName('book_inventory');
-//    let msg = document.getElementsByClassName("msg_quantity");
-//    msg[i].innerHTML = "";
-//    if (book_quantitys[i].value > book_inventorys[i].innerHTML) {
-//        book_quantitys[i].value = book_inventorys[i].innerHTML;
-//        msg[i].innerHTML = "max " + book_inventorys[i].innerHTML;
-//    }
 }

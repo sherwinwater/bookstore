@@ -9,6 +9,7 @@ public class Book implements Serializable{
     private String title;
     private String author;
     private int inventory;
+    private String imgURL;
 
     public Book() {
     }
@@ -58,6 +59,14 @@ public class Book implements Serializable{
 
     public void setInventory(int inventory) {
         this.inventory = inventory;
+    }
+
+    public String getImgURL() {
+        return imgURL;
+    }
+
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 
 }
