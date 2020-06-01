@@ -54,7 +54,14 @@ function showPage(href) {
     fetch(href)
             .then(res => res.text()) // text()--xml, json()---json
             .then(res => {
-                document.getElementById("content").innerHTML = res;
+                let content = document.getElementById("content");
+                let content_admin = document.getElementById("content_admin");
+                if (content != null) {
+                    content.innerHTML = res;
+                }
+                if (content_admin != null) {
+                    content_admin.innerHTML = res;
+                }
 //                alert(res);
             })
 }
@@ -424,8 +431,8 @@ function getTable(args, action) {
                     tbody += ` <tr>
                         <td class="book_id">${args[item].id}</td>
                         <td class="book_author">${args[item].author}</td>
-                        <td class="book_title">${args[item].title}
-                                <img src="./images/logo.png" 
+                        <td ><span class="book_title">${args[item].title}</span>
+                                <img src="${args[item].imgURL}" 
                                              alt="Book Store Logo" width="188">
                         </td>
                         <td class="book_price">${args[item].price}</td>
@@ -517,4 +524,41 @@ function showBookQuantity(data) {
     document.getElementById('java_quantity').innerHTML = "Java(" + data.java_quantity + ")";
     document.getElementById('PHP_quantity').innerHTML = "PHP(" + data.PHP_quantity + ")";
     document.getElementById('JavaScript_quantity').innerHTML = "JavaScript(" + data.JavaScript_quantity + ")";
+}
+
+//admin part
+async function insertBook() {
+
+    //get data
+    let id = document.bookForm.id.value;
+    let title = document.bookForm.title.value;
+    let author = document.bookForm.author.value;
+    let price = document.bookForm.price.value;
+    let inventory = document.bookForm.inventory.value;
+    let imgURL = document.bookForm.imgURL.value;
+    let location = document.bookForm.location.value;
+    let vendor = document.bookForm.vendor.value;
+    let owner = document.bookForm.owner.value;
+
+    // get 
+    let page = "ajaxbook?todo=insert" + "&id=" + id + "&title=" + title
+            + "&author=" + author + "&price=" + price
+            + "&inventory=" + inventory + "&imgURL=" + imgURL
+            + "&location=" + location + "&vendor=" + vendor
+            + "&owner=" + owner;
+    let response = await fetch(page);
+    let resJason = await response.json();
+
+    let msg_id_bookForm = document.getElementById('msg_id_bookForm');
+    msg_id_bookForm.innerHTML = resJason.msg_data;
+}
+
+async function checkBookId() {
+    let id = document.bookForm.id.value;
+    let page = "ajaxbook?todo=check" + "&id=" + id;
+    let response = await fetch(page);
+    let resJason = await response.json();
+
+    let msg_id_bookForm = document.getElementById('msg_id_bookForm');
+    msg_id_bookForm.innerHTML = resJason.msg_data;
 }

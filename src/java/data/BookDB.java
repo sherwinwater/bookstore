@@ -7,23 +7,26 @@ public class BookDB {
 
     private static final String TABLE = "books";
 
-    public static int insert(CartItem item) {
+    public static int insert(Book book) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         String query
                 = "INSERT INTO " + TABLE + " (product_id,product_price,"
                 + "product_title,product_author,"
-                + "product_quantity,product_totalprice)"
-                + "VALUES(?,?,?,?)";
+                + "product_inventory,imgURL,vendor,owner,location)"
+                + "VALUES(?,?,?,?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, item.getId());
-            ps.setDouble(2, item.getPrice());
-            ps.setString(3, item.getTitle());
-            ps.setString(4, item.getAuthor());
-            ps.setInt(5, item.getQuantity());
-            ps.setDouble(6, item.getTotalprice());
+            ps.setString(1, book.getId());
+            ps.setDouble(2, book.getPrice());
+            ps.setString(3, book.getTitle());
+            ps.setString(4, book.getAuthor());
+            ps.setInt(5, book.getInventory());
+            ps.setString(6, book.getImgURL());
+            ps.setString(7, book.getVendor());
+            ps.setString(8, book.getOwner());
+            ps.setString(9, book.getLocation());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -34,7 +37,7 @@ public class BookDB {
         }
     }
 
-    public static int update(CartItem item) {
+    public static int update(Book book) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -44,8 +47,8 @@ public class BookDB {
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setDouble(1, item.getPrice());
-            ps.setString(2, item.getId());
+            ps.setDouble(1, book.getPrice());
+            ps.setString(2, book.getId());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -56,7 +59,7 @@ public class BookDB {
         }
     }
 
-    public static void updateQuantity(CartItem item) {
+    public static void updateQuantity(CartItem book) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -66,8 +69,8 @@ public class BookDB {
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setDouble(1, item.getQuantity());
-            ps.setString(2, item.getId());
+            ps.setDouble(1, book.getQuantity());
+            ps.setString(2, book.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -78,7 +81,7 @@ public class BookDB {
         }
     }
 
-    public static void delete(CartItem item) {
+    public static void delete(CartItem book) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -87,7 +90,7 @@ public class BookDB {
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
-            ps.setString(1, item.getId());
+            ps.setString(1, book.getId());
 
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -98,7 +101,7 @@ public class BookDB {
         }
     }
 
-    public static boolean itemExists(String id) {
+    public static boolean bookExists(String id) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
@@ -121,12 +124,12 @@ public class BookDB {
         }
     }
 
-    public static ArrayList<CartItem> select(String id) {
+    public static ArrayList<Book> select(String id) {
         ConnectionPool pool = ConnectionPool.getInstance();
         Connection connection = pool.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        ArrayList<CartItem> itemList = new ArrayList<>();
+        ArrayList<Book> bookList = new ArrayList<>();
 
         String query = "SELECT * FROM " + TABLE + " "
                 + "WHERE product_id = ?";
@@ -135,14 +138,13 @@ public class BookDB {
             ps.setString(1, id);
             rs = ps.executeQuery();
             while (rs.next()) {
-                CartItem item = new CartItem(rs.getString("product_id"),
+                Book book = new Book(rs.getString("product_id"),
                         rs.getDouble("product_price"), rs.getString("product_title"),
                         rs.getString("product_author"));
-                item.setQuantity(rs.getInt("product_quantity"));
-                item.setTotalprice(rs.getDouble("product_totalprice"));
-                itemList.add(item);
+                book.setInventory(rs.getInt("product_inventory"));
+                bookList.add(book);
             }
-            return itemList;
+            return bookList;
         } catch (SQLException e) {
             System.out.println(e);
             return null;
@@ -172,6 +174,10 @@ public class BookDB {
                         rs.getDouble("product_price"), rs.getString("product_title"),
                         rs.getString("product_author"));
                 book.setInventory(rs.getInt("product_inventory"));
+                book.setLocation(rs.getString("location"));
+                book.setImgURL(rs.getString("imgURL"));
+                book.setVendor(rs.getString("vendor"));
+                book.setOwner(rs.getString("owner"));
                 bookList.add(book);
             }
             return bookList;

@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Murach's Java Servlets and JSP</title>
-        <link rel="stylesheet" href="../styles/main.css" type="text/css"/>
-    </head>
+<jsp:include page="/includes/header.jsp" />
+<jsp:include page="/includes/column_left_admin.jsp" />
+
+<!-- start the middle column -->
+
+<section id="content_admin">
     <h1>Welcome to the Admin application</h1>
     <form action="orders.jsp" method="post">
         <input type="submit" value="Collect Orders">
@@ -12,5 +11,8 @@
     <form action="reports.htm" method="post">
         <input type="submit" value="Reports">
     </form>
-</body>
-</html>
+</section>
+
+<!-- end the middle column -->
+
+<jsp:include page="/includes/footer.jsp" />

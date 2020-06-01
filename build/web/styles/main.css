@@ -139,8 +139,18 @@ section label {
     font-weight: bold;
     padding-top: 0.25em;    
 }
-section input[type="text"], input[type="email"], input[type="password"] {
+section input[type="text"], input[type="email"], 
+input[type="password"],input[type="number"] {
     width: 12em;
+    margin-left: 0.5em;    
+    margin-bottom: 0.5em;
+}
+
+#bookForm input[type="text"], 
+#bookForm input[type="email"], 
+#bookForm input[type="password"],
+#bookForm input[type="number"] {
+    width: 30em;
     margin-left: 0.5em;    
     margin-bottom: 0.5em;
 }
@@ -173,8 +183,10 @@ th, td {
 .top {
     vertical-align: top;
 }
-input[type="number"]{
+table input[type="number"]{
     width:4em;
+    margin-left: 0.5em;    
+    margin-bottom: 0.5em;
 }
 
 /* the style for the cart pages */

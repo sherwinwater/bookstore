@@ -14,7 +14,6 @@ public class CartItem extends Book {
     private double totalprice;
     private String cart_id;
     private String username;
-    private int inventory;
     
     public CartItem(String id, Double price,String title,String author) {
         super(id, price,title,author);
@@ -50,14 +49,6 @@ public class CartItem extends Book {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public int getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(int inventory) {
-        this.inventory = inventory;
     }
     
 }

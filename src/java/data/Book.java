@@ -8,8 +8,11 @@ public class Book implements Serializable{
     private Double price;
     private String title;
     private String author;
-    private int inventory;
     private String imgURL;
+    private String location;
+    private String vendor;
+    private String owner;
+    private int inventory;
 
     public Book() {
     }
@@ -67,6 +70,30 @@ public class Book implements Serializable{
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
 }

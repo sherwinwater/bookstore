@@ -5,9 +5,7 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <session-config>
-        <session-timeout>
-            30
-        </session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
     
     <resource-ref>
@@ -17,7 +15,12 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-
+    <!-- define the welcome files -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    
 <!--    <servlet>
         <servlet-name>BookServlet</servlet-name>
         <servlet-class>controller.BookServlet</servlet-class>
@@ -59,8 +62,8 @@
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
-            <form-login-page>/admin/login.html</form-login-page>
-            <form-error-page>/admin/login_error.html</form-error-page>
+            <form-login-page>/admin/login.jsp</form-login-page>
+            <form-error-page>/admin/login_error.jsp</form-error-page>
         </form-login-config>
     </login-config>
     
