@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import data.Book;
 import data.BookDB;
+import java.util.ArrayList;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.HttpMethodConstraint;
 import javax.servlet.annotation.ServletSecurity;
@@ -64,7 +65,6 @@ public class AjaxBookServlet extends HttpServlet {
                     if (request.getParameter("inventory") != null && !request.getParameter("inventory").isEmpty()) {
                         book_inventory = Integer.parseInt(request.getParameter("inventory"));
                     }
-                    System.out.println("d");
                     String book_imgURL = request.getParameter("imgURL");
                     String book_location = request.getParameter("location");
                     String book_vendor = request.getParameter("vendor");
@@ -87,8 +87,44 @@ public class AjaxBookServlet extends HttpServlet {
                 break;
 
             case "update":
+                book_id = request.getParameter("id");
+                String book_author = request.getParameter("author");
+                String book_title = request.getParameter("title");
+                Double book_price = 0.0;
+                if (request.getParameter("price") != null && !request.getParameter("price").isEmpty()) {
+                    book_price = Double.parseDouble(request.getParameter("price"));
+                }
+                int book_inventory = 0;
+                if (request.getParameter("inventory") != null && !request.getParameter("inventory").isEmpty()) {
+                    book_inventory = Integer.parseInt(request.getParameter("inventory"));
+                }
+                String book_imgURL = request.getParameter("imgURL");
+                String book_location = request.getParameter("location");
+                String book_vendor = request.getParameter("vendor");
+                String book_owner = request.getParameter("owner");
+                Book book = new Book(book_id, book_price, book_title, book_author);
+                book.setInventory(book_inventory);
+                book.setImgURL(book_imgURL);
+                book.setLocation(book_location);
+                book.setVendor(book_vendor);
+                book.setOwner(book_owner);
+                BookDB.update(book);
+
+                data.put("book", book);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(data);
                 break;
+
             case "search":
+                String search = request.getParameter("search");
+                ArrayList<Book> bookList = new ArrayList<>();
+                bookList = BookDB.search(search);
+
+                data.put("bookList", bookList);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(data);
                 break;
         }
     }

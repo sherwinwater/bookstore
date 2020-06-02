@@ -31,6 +31,7 @@ a:link { color: green; }
 a:visited { color: green; }
 a.current { color: #ef9c00; }
 a:hover, a:focus { color: maroon; }
+a:clicked {background: pink;}
 
 ul { 
     margin-left: 1.5em;   
@@ -154,6 +155,14 @@ input[type="password"],input[type="number"] {
     margin-left: 0.5em;    
     margin-bottom: 0.5em;
 }
+
+#book_update_table input[type="text"], 
+#book_update_table input[type="number"] {
+    width: 5em;
+    /*margin-left: 0.1em;*/    
+    margin-bottom: 0.5em;
+}
+
 section input[type="submit"] {
     margin-left: 0.5em;
 }

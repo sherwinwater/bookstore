@@ -19,13 +19,15 @@
         <nav id='nav_bar'>    
             <input type="search" name="search" placeholder="search book title" id="searchTxt">
             <ul>
-                <li><a href="#" onclick="showPage('./admin/admin.html')">Admin</a></li>
-                <li><a href="#" onclick="showPage('./account/login.jsp')">Account</a></li>                
-                <li><a href="<c:url value=''/>">Hi ${user.username}</a></li>
+                <li><a href="<c:url value='/' />">Home</a></li>
+                <li><a href="<c:url value='/admin'/>" >Admin</a></li>
                 <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
-
-                <li><a href="#" onclick="showPage('./cart')">Cart</a></li>
+                <li><a href="#" onclick="showPage('/ebook/admin/books.jsp')">Books</a></li>
                 <li><a href="#" onclick="showPage('order')">Order</a></li>
+                <li><a href="<c:url value='/admin/users' />">Users</a></li>
+                <li><a href="<c:url value='/admin/invoices' />">Invoices</a></li>
             </ul>
 
         </nav>
+                
+   

@@ -24,7 +24,7 @@
     <input type="submit" value="Insert">
 </form>
 
-<h2>Update books</h2>
+<h2 onclick="showBooks()">Update books</h2>
 <table id="book_update_table"></table>
 
 <!--    <thead>

@@ -43,12 +43,26 @@ public class BookDB {
         PreparedStatement ps = null;
 
         String query = "UPDATE " + TABLE + " SET "
-                + "product_price = ? "
-                + "WHERE product_id = ?";
+                + "product_author = ? ,"
+                + "product_title= ? ,"
+                + "product_inventory= ? ,"
+                + "product_price = ? ,"
+                + "imgURL = ? ,"
+                + "location = ? ,"
+                + "vendor = ? ,"
+                + "owner = ? "
+                + "WHERE product_id = ? ";
         try {
             ps = connection.prepareStatement(query);
-            ps.setDouble(1, book.getPrice());
-            ps.setString(2, book.getId());
+            ps.setString(1, book.getAuthor());
+            ps.setString(2, book.getTitle());
+            ps.setInt(3, book.getInventory());
+            ps.setDouble(4, book.getPrice());
+            ps.setString(5, book.getImgURL());
+            ps.setString(6, book.getLocation());
+            ps.setString(7, book.getVendor());
+            ps.setString(8, book.getOwner());
+            ps.setString(9, book.getId());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

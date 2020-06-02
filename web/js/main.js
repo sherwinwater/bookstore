@@ -314,7 +314,7 @@ async function logoutUser() {
 
 // add cart
 async function getCart(i, action) {
-    let book_ids = book_prices = book_quantitys = book_quantitys_update
+    let book_ids = book_prices = book_quantitys = book_quantitys
             = book_titles = book_authors = page = "";
     switch (action) {
         case "add":
@@ -561,4 +561,124 @@ async function checkBookId() {
 
     let msg_id_bookForm = document.getElementById('msg_id_bookForm');
     msg_id_bookForm.innerHTML = resJason.msg_data;
+}
+
+function getBookTable(args) {
+    let book_update_table = document.getElementById("book_update_table");
+
+    if (args[0] == null) {   // cannot be === null
+        book_update_table.innerHTML = "no results";
+    } else {
+        var thead = tbody = "";
+        var i = 0;
+        thead = ` <thead><tr>
+                        <th >ID</th>
+                        <th >Author</th>
+                        <th >Title</th>
+                        <th >Price</th>
+                        <th >Inventory</th> 
+                        <th >ImgURL</th> 
+                        <th >Location</th> 
+                        <th >Vendor</th> 
+                        <th >Owner</th> 
+                        <th>Action</th>
+                    </tr></thead> <tbody> `;
+        for (var item in args) {
+            tbody += ` <tr>
+                        <td ><input type="text" value="${args[item].id}" class="id" style="width:4em"></td>
+                        <td ><input type="text" value="${args[item].author}" class="author" style="width:6em"></td>
+                        <td ><span ><input type="text" value="${args[item].title}" class="title" style="width:9em"></span>
+                        <td ><input type="number" step="any" value="${args[item].price}" class="price" style="width:4em"></td>
+                        <td ><input type="number" step="1" value="${args[item].inventory}" class="inventory" style="width:4em"></td>
+                        <td ><input type="text" value="${args[item].imgURL}" class="imgURL" style="width:10em">
+                                <img src="${args[item].imgURL}" 
+                                             alt="Book Store Logo" width="148">
+                        </td>
+                        <td ><input type="text" value="${args[item].location}" class="location" style="width:4em"></td>
+                        <td ><input type="text" value="${args[item].vendor}" class="vendor" style="width:4em"></td>
+                        <td ><input type="text" value="${args[item].owner}" class="owner" style="width:4em"></td>
+                        <td ><input type="button" value="update" class="update" onclick="updateBook(${i},'update')"></td>
+                      </tr>`;
+            i++;
+        }
+        book_update_table.innerHTML = thead + tbody + `</tbody>`;
+    }
+}
+
+async function showBooks() {
+    let page = "ajaxbook?todo=search&search=";
+    let response = await fetch(page);
+    let resJason = await response.json();
+    getBookTable(resJason.bookList);
+}
+
+// update DB book table
+async function updateBook(i,action) {
+    let ids = prices = quantitys
+            = titles = authors = locations = vendors = owners
+            = imgURLs = page = "";
+    switch (action) {
+        case "add":
+            ids = document.getElementsByClassName('id');
+            prices = document.getElementsByClassName('price');
+            quantitys = document.getElementsByClassName('quantity');
+            titles = document.getElementsByClassName('title');
+            authors = document.getElementsByClassName('author');
+            inventorys = document.getElementsByClassName('inventory');
+            page = "ajaxcart?todo=" + action
+                    + "&id=" + ids[i].value
+                    + "&price=" + prices[i].value
+                    + "&quantity=" + quantitys[i].value
+                    + "&title=" + titles[i].value
+                    + "&author=" + authors[i].value
+                    + "&inventory=" + inventorys[i].value;
+            break;
+        case "update":
+        case "remove":
+            ids = document.getElementsByClassName('id');
+            prices = document.getElementsByClassName('price');
+            inventorys = document.getElementsByClassName('inventory');
+            titles = document.getElementsByClassName('title');
+            authors = document.getElementsByClassName('author');
+            imgURLs = document.getElementsByClassName('imgURL');
+            locations = document.getElementsByClassName('location');
+            vendors = document.getElementsByClassName('vendor');
+            owners = document.getElementsByClassName('owner');
+            page = "ajaxbook?todo=" + action
+                    + "&id=" + ids[i].value
+                    + "&price=" + prices[i].value
+                    + "&inventory=" + inventorys[i].value
+                    + "&title=" + titles[i].value
+                    + "&author=" + authors[i].value
+                    + "&imgURL=" + imgURLs[i].value
+                    + "&location=" + locations[i].value
+                    + "&vendor=" + vendors[i].value
+                    + "&owner=" + owners[i].value;
+            break;
+    }
+
+// method--GET
+    let response = await fetch(page);
+    let resJason = await response.json();
+//    console.log(resJason);
+//    document.getElementById("message_signup").innerHTML = resJason.msg_username;
+
+// method--POST
+//    const settings = {
+//        method: 'POST',
+//        headers: {
+//            Accept: 'application/json',
+//            'Content-Type': 'application/json'
+//        }
+//    };
+//    try {
+//        const response = await fetch(page, settings);
+//        const resJason = await response.json();
+//        if (action == "remove") {
+//            getTable(resJason.cart, "viewCart");
+//        }
+//
+//    } catch (e) {
+//        console.log(e);
+//    }
 }
