@@ -209,13 +209,14 @@ async function viewCart() {
     let page = "ajaxcart?todo=view";
     let response = await fetch(page);
     let resJason = await response.json();
-    getTable(resJason.cart, "viewCart");
+    getTable(resJason.cart, "viewCart", 6, 1);
 }
 
 async function showSearchResults(page) {
     let response = await fetch(page);
     let resJason = await response.json();
-    getTable(resJason.bookList, "addCart");
+    getTable(resJason.bookList, "addCart", 6, 1);
+
 }
 
 async function showSearchandCatalog(page) {
@@ -223,7 +224,7 @@ async function showSearchandCatalog(page) {
     let page2 = page + "&cart_id=" + cart_id;
     let response = await fetch(page2);
     let resJason = await response.json();
-    getTable(resJason.bookList, "addCart");
+    getTable(resJason.bookList, "addCart", 6, 1);
     showSubcatalog(resJason);
 }
 
@@ -367,7 +368,7 @@ async function getCart(i, action) {
         const response = await fetch(page, settings);
         const resJason = await response.json();
         if (action == "remove") {
-            getTable(resJason.cart, "viewCart");
+            getTable(resJason.cart, "viewCart", 5, 1);
         }
 
     } catch (e) {
@@ -409,14 +410,26 @@ async function getCart(i, action) {
 //}
 
 
-function getTable(args, action) {
+function getTable(data, action, pageItems, pageNumber) {
+    var blockview = document.getElementById("content_blockview");
+    var nav_view = document.getElementById("nav_view");
+    var pagination = document.getElementById("pagination");
+    var data_table_hidden = document.getElementById("data_table_hidden");
+    var dataStr = JSON.stringify(data);
+    data_table_hidden.innerHTML =
+            `<span id="data_table" hidden>${dataStr}</span>
+                    <span id="action_table" hidden>${action}</span>`;
 
     switch (action) {
         case "addCart":
-            if (args[0] == null) {   // cannot be === null
+            if (data[0] == null) {   // cannot be === null
                 content.innerHTML = "no results";
             } else {
+                nav_view.innerHTML = `<input type="button" value="block" onclick="showProductView('block')">
+                    <input type="button" value="list" onclick="showProductView('list')">`;
+
                 var thead = tbody = "";
+                var blockbody = "";
                 var i = 0;
                 thead = ` <table> <thead><tr>
                         <th>ID</th>
@@ -424,46 +437,52 @@ function getTable(args, action) {
                         <th>Title</th>
                         <th>Price</th>
                         <th>Quantity</th>
-                      <!--   <th>Inventory</th> 
-                        <th>Action</th> --!>
                     </tr></thead> <tbody> `;
-                for (var item in args) {
-                    tbody += ` <tr>
-                        <td class="book_id">${args[item].id}</td>
-                        <td class="book_author">${args[item].author}</td>
-                        <td ><span class="book_title">${args[item].title}</span>
-                                <img src="${args[item].imgURL}" 
-                                             alt="Book Store Logo" width="188">
+//                for (var item in data) {
+                for (var item = (pageNumber - 1) * pageItems; item < (pageNumber) * pageItems; item++) {
+                    if (data[item] != null) {
+                        tbody += ` <tr>
+                        <td class="book_id">${data[item].id}</td>
+                        <td class="book_author">${data[item].author}</td>
+                        <td >
+                             <img src="${data[item].imgURL}" alt="Book Store Logo" width="148" height="148"><br>
+                        <span class="book_title">${data[item].title}</span>
                         </td>
-                        <td class="book_price">${args[item].price}</td>
+                        <td class="book_price">${data[item].price}</td>
                         <td> 
-                            <!-- <input type="number" name="book_quantity" value="1" min="1" 
-                                 class="book_quantity" onchange="checkQuantity(${i})" ><br>
-                    <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
-                    <p class="msg_quantity" style="color:red;"></p>
-                            --!>
-                    
-                        <form action="# method="get" onsubmit="getCart(${i},'add');return false">
-                        <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
-                                    step="1" max="${args[item].inventory}" class="book_quantity" style="display:inline-block">
-                        <input type="submit" value="Add to Cart" class="book_add" style="display:inline-block">
-                        </form>
-                        <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
-                    
+                            <form action="# method="get" onsubmit="getCart(${i},'add');return false">
+                            <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
+                                        step="1" max="${data[item].inventory}" class="book_quantity" ><br>
+                            <input type="submit" value="Add to Cart" class="book_add" >
+                            </form>
+                            <p style="font-size:90%">in stock <span class="book_inventory">${data[item].inventory}</span></p>
                         </td>
-                <!--        <td class="book_inventory">${args[item].inventory}</td> 
-                        <td>
-                        <input type="button" value="Add to Cart" class="book_add" onclick="getCart(${i},'add')">  --!>
-                        </td>
-                        </tr>`;
+                     </tr>`;
+
+                        // blockview
+                        blockbody += `<div class="blockitem">
+                            <img src="${data[item].imgURL}" alt="Book Store Logo" width="148" height="148"><br>
+                           <span class="book_title">${data[item].title}</span><br>
+                           <span class="book_author">by ${data[item].author}</span><br><br>
+                         <form action="# method="get" onsubmit="getCart(${i},'add');return false">
+                            <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
+                                        step="1" max="${data[item].inventory}" class="book_quantity" style="width:4em">
+                            <input type="submit" value="Add to Cart" class="book_add" >
+                            <p style="font-size:90%;margin-left:0.5em">in stock <span class="book_inventory">${data[item].inventory}</span></p>
+                            </form>
+                            </div>`;
+
+                    } else {
+                        break;
+                    }
                     i++;
                 }
-                content.innerHTML = thead + tbody + `</tbody> </table>`;
             }
+
             break;
 
         case "viewCart":
-            if (args[0] == null) {   // cannot be === null
+            if (data[0] == null) {   // cannot be === null
                 content.innerHTML = "no results";
             } else {
                 var thead = tbody = "";
@@ -477,47 +496,82 @@ function getTable(args, action) {
                         <th>Quantity</th>
                          <th>Action</th> 
                     </tr></thead> <tbody> `;
-                for (var item in args) {
-                    tbody += ` <tr>
-                        <td class="book_id">${args[item].id}</td>
-                        <td class="book_author">${args[item].author}</td>
-                        <td class="book_title">${args[item].title}</td>
-                        <td class="book_price">${args[item].price}</td>
+                for (var item = (pageNumber - 1) * pageItems; item < (pageNumber) * pageItems; item++) {
+                    if (data[item] != null) {
+//                for (var item in data) {
+                        tbody += ` <tr>
+                        <td class="book_id">${data[item].id}</td>
+                        <td class="book_author">${data[item].author}</td>
+                        <td class="book_title">${data[item].title}</td>
+                        <td class="book_price">${data[item].price}</td>
                         <td> 
-                        
-                            <!-- <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
-                                    step="1" max="10" class="book_quantity" style="display:inline-block" onchange="checkQuantity(${i})">
-                            <input type="button" value="update" class="book_update" style="display:inline-block"
-                            onclick="getCart(${i},'update')">
-                        <p class="msg_quantity" style="color:red;"></p>
-                        --!>
-                        
-                        <form action="# method="get" onsubmit="getCart(${i},'update');return false">
-                            <input type="number" name="book_quantity" value="${args[item].quantity}" min="1" 
-                                    step="1" max="${args[item].inventory}" class="book_quantity" style="display:inline-block">
-                            <input type="submit" value="update" class="book_update" style="display:inline-block">
-                        </form>
-                        <p style="font-size:90%">in stock <span class="book_inventory">${args[item].inventory}</span></p>
-                        
+                            <form action="# method="get" onsubmit="getCart(${i},'update');return false">
+                                <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
+                                        step="1" max="${data[item].inventory}" class="book_quantity"><br>
+                                <input type="submit" value="update" class="book_update">
+                            </form>
+                            <p style="font-size:90%">in stock <span class="book_inventory">${data[item].inventory}</span></p>
                         </td>
                         <td>
-                        <input type="button" value="Remove item" class="book_remove" style="display:inline-block"
+                        <input type="button" value="Remove" class="book_remove" style="display:inline-block"
                             onclick="getCart(${i},'remove')" >
                         </td>
-                        </tr>`;
+                      </tr>`;
+                    } else {
+                        break;
+                    }
                     i++;
                 }
-                content.innerHTML = thead + tbody + `</tbody> </table><br><br>`;
             }
-
-            let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
-                                   onclick='showSearchandCatalog("ajaxsearch?search=")' >`;
-            let checkout = `<input type="button" value="Checkout" style="display:inline-block"
-                            onclick="checkoutCart()" >`;
-            content.innerHTML += `<br>` + shopping + checkout;
-
             break;
     }
+
+    // add pagination page numbers
+    let pageNumbers = Math.ceil(data.length / pageItems);
+    let page = "";
+    for (var pageindex = 1; pageindex <= pageNumbers; pageindex++) {
+        page += `<a href="#" onclick="showPageItems(${pageItems},${pageindex})" class="page${pageindex}">${pageindex}</a>`;
+    }
+
+    var pageLast = pageNumber <= 1 ? 1 : pageNumber - 1;
+    var pageNext = pageNumber >= pageNumbers ? pageNumbers : pageNumber + 1;
+
+    pagination.innerHTML = `
+                    <a href="#" onclick="showPageItems(${pageItems},${pageLast})">&laquo;</a>` + page +
+            `<a href="#" onclick="showPageItems(${pageItems},${pageNext})">&raquo;</a>`;
+
+    content.innerHTML = thead + tbody + `</tbody> </table>`;
+    blockview.innerHTML = blockbody;
+
+    if (action == "viewCart") {
+        let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
+                                   onclick='showSearchandCatalog("ajaxsearch?search=")' >`;
+        let checkout = `<input type="button" value="Checkout" style="display:inline-block"
+                            onclick="checkoutCart()" >`;
+        content.innerHTML += `<br>` + shopping + checkout;
+    }
+}
+
+function showProductView(option) {
+
+    switch (option) {
+        case "block":
+            document.getElementById('content_blockview').style.display = "flex";
+            document.getElementById('content').style.display = "none";
+            break;
+        case "list":
+            document.getElementById('content_blockview').style.display = "none";
+            document.getElementById('content').style.display = "block";
+            break;
+    }
+}
+
+//function showPageItems(data, action,pageItems,pageNumber) {  // cannot get data
+function showPageItems(pageItems, pageNumber) {
+    var dataString = document.getElementById('data_table').innerHTML;  // get dataString of json
+    var action = document.getElementById('action_table').innerHTML;    // parse the json string
+    var data = JSON.parse(dataString);
+    getTable(data, action, pageItems, pageNumber);
 }
 
 function showBookQuantity(data) {
@@ -563,10 +617,10 @@ async function checkBookId() {
     msg_id_bookForm.innerHTML = resJason.msg_data;
 }
 
-function getBookTable(args) {
+function getBookTable(data) {
     let book_update_table = document.getElementById("book_update_table");
 
-    if (args[0] == null) {   // cannot be === null
+    if (data[0] == null) {   // cannot be === null
         book_update_table.innerHTML = "no results";
     } else {
         var thead = tbody = "";
@@ -583,20 +637,20 @@ function getBookTable(args) {
                         <th >Owner</th> 
                         <th>Action</th>
                     </tr></thead> <tbody> `;
-        for (var item in args) {
+        for (var item in data) {
             tbody += ` <tr>
-                        <td ><input type="text" value="${args[item].id}" class="id" style="width:4em"></td>
-                        <td ><input type="text" value="${args[item].author}" class="author" style="width:6em"></td>
-                        <td ><span ><input type="text" value="${args[item].title}" class="title" style="width:9em"></span>
-                        <td ><input type="number" step="any" value="${args[item].price}" class="price" style="width:4em"></td>
-                        <td ><input type="number" step="1" value="${args[item].inventory}" class="inventory" style="width:4em"></td>
-                        <td ><input type="text" value="${args[item].imgURL}" class="imgURL" style="width:10em">
-                                <img src="${args[item].imgURL}" 
+                        <td ><input type="text" value="${data[item].id}" class="id" style="width:4em"></td>
+                        <td ><input type="text" value="${data[item].author}" class="author" style="width:6em"></td>
+                        <td ><span ><input type="text" value="${data[item].title}" class="title" style="width:9em"></span>
+                        <td ><input type="number" step="any" value="${data[item].price}" class="price" style="width:4em"></td>
+                        <td ><input type="number" step="1" value="${data[item].inventory}" class="inventory" style="width:4em"></td>
+                        <td ><input type="text" value="${data[item].imgURL}" class="imgURL" style="width:10em">
+                                <img src="${data[item].imgURL}" 
                                              alt="Book Store Logo" width="148">
                         </td>
-                        <td ><input type="text" value="${args[item].location}" class="location" style="width:4em"></td>
-                        <td ><input type="text" value="${args[item].vendor}" class="vendor" style="width:4em"></td>
-                        <td ><input type="text" value="${args[item].owner}" class="owner" style="width:4em"></td>
+                        <td ><input type="text" value="${data[item].location}" class="location" style="width:4em"></td>
+                        <td ><input type="text" value="${data[item].vendor}" class="vendor" style="width:4em"></td>
+                        <td ><input type="text" value="${data[item].owner}" class="owner" style="width:4em"></td>
                         <td ><input type="button" value="update" class="update" onclick="updateBook(${i},'update')"></td>
                       </tr>`;
             i++;
@@ -613,7 +667,7 @@ async function showBooks() {
 }
 
 // update DB book table
-async function updateBook(i,action) {
+async function updateBook(i, action) {
     let ids = prices = quantitys
             = titles = authors = locations = vendors = owners
             = imgURLs = page = "";
