@@ -1,9 +1,9 @@
 <jsp:include page="/includes/header_admin.jsp" />
-<jsp:include page="/includes/column_left_admin.jsp" />
+<%--<jsp:include page="/includes/column_left_admin.jsp" />--%>
 
 <!-- start the middle column -->
 
-<section>
+<section id="content_admin">
     <h1>Admin Login Form</h1>
     <p>Please enter your username and password to continue.</p>
     <form action="j_security_check" method="get">

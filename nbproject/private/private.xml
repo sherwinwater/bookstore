@@ -5,7 +5,8 @@
         <group>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/controller/AjaxBookServlet.java</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/controller/AjaxSearchServlet.java</file>
-            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/data/BookDB.java</file>
+            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/src/java/controller/AjaxCartServlet.java</file>
+            <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/index.html</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/styles/main.css</file>
             <file>file:/Users/leepeng/Documents/myWebProject/myprojects/bookstore/web/js/main.js</file>
         </group>

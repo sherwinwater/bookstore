@@ -17,7 +17,7 @@
         </header>
 
         <nav id='nav_bar'>    
-            <input type="search" name="search" placeholder="search book title" id="searchTxt">
+<!--            <input type="search" name="search" placeholder="search book title" id="searchTxt">-->
             <ul>
                 <li><a href="<c:url value='/' />">Home</a></li>
                 <li><a href="<c:url value='/admin'/>" >Admin</a></li>

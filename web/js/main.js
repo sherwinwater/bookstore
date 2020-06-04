@@ -1,3 +1,6 @@
+//import {checkUsername,checkPassword,loginUser,logoutUser} from "./user.js";
+//import {randomID} from "./randomid.js";
+
 var links = document.getElementsByClassName("link");
 var email = document.getElementById("email");
 var service = document.getElementById("service");
@@ -216,7 +219,7 @@ async function showSearchResults(page) {
     let response = await fetch(page);
     let resJason = await response.json();
     getTable(resJason.bookList, "addCart", 6, 1);
-
+    showProductView('grid');
 }
 
 async function showSearchandCatalog(page) {
@@ -225,10 +228,15 @@ async function showSearchandCatalog(page) {
     let response = await fetch(page2);
     let resJason = await response.json();
     getTable(resJason.bookList, "addCart", 6, 1);
+    showProductView('grid');
     showSubcatalog(resJason);
 }
 
 // --end show page 
+searchTxt.addEventListener("keyup", () => {
+    showSearchResults("ajaxsearch?search=" + searchTxt.value);
+});
+
 async function checkUsername(page) {
     let response = await fetch(page + document.getElementById("signup_username").value);
     let resJason = await response.json();
@@ -245,9 +253,7 @@ async function checkPassword(page) {
 //    }
 }
 
-searchTxt.addEventListener("keyup", () => {
-    showSearchResults("ajaxsearch?search=" + searchTxt.value);
-});
+
 // sign up
 
 async function loginUser(action) {
@@ -314,17 +320,22 @@ async function logoutUser() {
 }
 
 // add cart
-async function getCart(i, action) {
+async function getCart(i, action, view) {
     let book_ids = book_prices = book_quantitys = book_quantitys
             = book_titles = book_authors = page = "";
-    switch (action) {
-        case "add":
+    switch (action + view) {
+        case "addgrid":
             book_ids = document.getElementsByClassName('book_id');
             book_prices = document.getElementsByClassName('book_price');
             book_quantitys = document.getElementsByClassName('book_quantity');
             book_titles = document.getElementsByClassName('book_title');
             book_authors = document.getElementsByClassName('book_author');
             book_inventorys = document.getElementsByClassName('book_inventory');
+
+            if (book_quantitys[i].value == "") {
+                book_quantitys[i].value = 1;
+            }
+
             page = "ajaxcart?todo=" + action
                     + "&book_id=" + book_ids[i].innerHTML
                     + "&book_price=" + book_prices[i].innerHTML
@@ -333,8 +344,28 @@ async function getCart(i, action) {
                     + "&book_author=" + book_authors[i].innerHTML
                     + "&book_inventory=" + book_inventorys[i].innerHTML;
             break;
-        case "update":
-        case "remove":
+        case "addlist":
+            book_ids = document.getElementsByClassName('book_id_list');
+            book_prices = document.getElementsByClassName('book_price_list');
+            book_quantitys = document.getElementsByClassName('book_quantity_list');
+            book_titles = document.getElementsByClassName('book_title_list');
+            book_authors = document.getElementsByClassName('book_author_list');
+            book_inventorys = document.getElementsByClassName('book_inventory_list');
+
+            if (book_quantitys[i].value == "") {
+                book_quantitys[i].value = 1;
+            }
+
+            page = "ajaxcart?todo=" + action
+                    + "&book_id=" + book_ids[i].innerHTML
+                    + "&book_price=" + book_prices[i].innerHTML
+                    + "&book_quantity=" + book_quantitys[i].value
+                    + "&book_title=" + book_titles[i].innerHTML
+                    + "&book_author=" + book_authors[i].innerHTML
+                    + "&book_inventory=" + book_inventorys[i].innerHTML;
+            break;
+        case "updatelist":
+        case "removelist":
             book_ids = document.getElementsByClassName('book_id');
             book_prices = document.getElementsByClassName('book_price');
             book_quantitys = document.getElementsByClassName('book_quantity');
@@ -368,7 +399,7 @@ async function getCart(i, action) {
         const response = await fetch(page, settings);
         const resJason = await response.json();
         if (action == "remove") {
-            getTable(resJason.cart, "viewCart", 5, 1);
+            getTable(resJason.cart, "viewCart", 6, 1);
         }
 
     } catch (e) {
@@ -411,25 +442,28 @@ async function getCart(i, action) {
 
 
 function getTable(data, action, pageItems, pageNumber) {
-    var blockview = document.getElementById("content_blockview");
+    var gridview = document.getElementById("content_gridview");
+    var listview = document.getElementById("content_listview");
+    var content_welcome = document.getElementById("content_welcome");
     var nav_view = document.getElementById("nav_view");
-    var pagination = document.getElementById("pagination");
+    var pagination_listview = document.getElementById("pagination_listview");
     var data_table_hidden = document.getElementById("data_table_hidden");
     var dataStr = JSON.stringify(data);
     data_table_hidden.innerHTML =
             `<span id="data_table" hidden>${dataStr}</span>
                     <span id="action_table" hidden>${action}</span>`;
+    content_welcome.innerHTML = "";
 
     switch (action) {
         case "addCart":
             if (data[0] == null) {   // cannot be === null
-                content.innerHTML = "no results";
+                listview.innerHTML = "no results";
+                gridview.innerHTML = "no results";
             } else {
-                nav_view.innerHTML = `<input type="button" value="block" onclick="showProductView('block')">
-                    <input type="button" value="list" onclick="showProductView('list')">`;
+                nav_view.innerHTML = `<img src="/ebook/images/gridview.png" onclick="showProductView('grid')" style="width:20px; display:inline-block">
+                    <img src="/ebook/images/listview.png" onclick="showProductView('list')" style="width:20px; display:inline-block">`;
 
-                var thead = tbody = "";
-                var blockbody = "";
+                var thead = tbody = gridbody = "";
                 var i = 0;
                 thead = ` <table> <thead><tr>
                         <th>ID</th>
@@ -438,33 +472,20 @@ function getTable(data, action, pageItems, pageNumber) {
                         <th>Price</th>
                         <th>Quantity</th>
                     </tr></thead> <tbody> `;
-//                for (var item in data) {
+
+                // grid view 
                 for (var item = (pageNumber - 1) * pageItems; item < (pageNumber) * pageItems; item++) {
                     if (data[item] != null) {
-                        tbody += ` <tr>
-                        <td class="book_id">${data[item].id}</td>
-                        <td class="book_author">${data[item].author}</td>
-                        <td >
-                             <img src="${data[item].imgURL}" alt="Book Store Logo" width="148" height="148"><br>
-                        <span class="book_title">${data[item].title}</span>
-                        </td>
-                        <td class="book_price">${data[item].price}</td>
-                        <td> 
-                            <form action="# method="get" onsubmit="getCart(${i},'add');return false">
-                            <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
-                                        step="1" max="${data[item].inventory}" class="book_quantity" ><br>
-                            <input type="submit" value="Add to Cart" class="book_add" >
-                            </form>
-                            <p style="font-size:90%">in stock <span class="book_inventory">${data[item].inventory}</span></p>
-                        </td>
-                     </tr>`;
-
-                        // blockview
-                        blockbody += `<div class="blockitem">
+                        gridbody += `<div class="griditem">
                             <img src="${data[item].imgURL}" alt="Book Store Logo" width="148" height="148"><br>
                            <span class="book_title">${data[item].title}</span><br>
-                           <span class="book_author">by ${data[item].author}</span><br><br>
-                         <form action="# method="get" onsubmit="getCart(${i},'add');return false">
+                           <span class="book_author">by ${data[item].author}</span><br>
+                           <div style='color:green;font-size:1.5em; font-weight:bold;margin-left:0.2em;'>
+                            <span>$</span><span class="book_price" >${data[item].price}</span>
+                           </div>
+                           <span class="book_id" hidden>${data[item].id}</span>
+                         <form action="# method="get" onsubmit="getCart(${i},'add','grid');return false">
+
                             <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
                                         step="1" max="${data[item].inventory}" class="book_quantity" style="width:4em">
                             <input type="submit" value="Add to Cart" class="book_add" >
@@ -477,13 +498,48 @@ function getTable(data, action, pageItems, pageNumber) {
                     }
                     i++;
                 }
-            }
+                showPagination(data, pageItems, pageNumber, "gridview");
 
+                // list view
+                i = 0;
+                for (var item = (pageNumber - 1) * 3; item < (pageNumber) * 3; item++) {
+                    if (data[item] != null) {
+                        tbody += ` <tr>
+                        <td class="book_id_list">${data[item].id}</td>
+                        <td class="book_author_list">${data[item].author}</td>
+                        <td >
+                             <img src="${data[item].imgURL}" alt="Book Store Logo" width="148" height="148"><br>
+                        <span class="book_title_list">${data[item].title}</span>
+                        </td>
+                        <td class="book_price_list">${data[item].price}</td>
+                        <td> 
+                            <form action="# method="get" onsubmit="getCart(${i},'add','list');return false">
+                            <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
+                                        step="1" max="${data[item].inventory}" class="book_quantity_list" ><br>
+                            <input type="submit" value="Add to Cart" class="book_add" >
+                            </form>
+                            <p style="font-size:90%">in stock <span class="book_inventory_list">${data[item].inventory}</span></p>
+                        </td>
+                     </tr>`;
+                    } else {
+                        break;
+                    }
+                    i++;
+                }
+                // listview
+                showPagination(data, 3, pageNumber, "listview");
+                listview.innerHTML = thead + tbody + `</tbody> </table>`;
+                gridview.innerHTML = gridbody;
+            }
             break;
 
         case "viewCart":
+            nav_view.innerHTML = "";
+            gridview.innerHTML = "";
+            pagination_listview.innerHTML = "";
+            showProductView("list");
             if (data[0] == null) {   // cannot be === null
-                content.innerHTML = "no results";
+                listview.innerHTML = "no results";
             } else {
                 var thead = tbody = "";
                 var i = 0;
@@ -498,14 +554,13 @@ function getTable(data, action, pageItems, pageNumber) {
                     </tr></thead> <tbody> `;
                 for (var item = (pageNumber - 1) * pageItems; item < (pageNumber) * pageItems; item++) {
                     if (data[item] != null) {
-//                for (var item in data) {
                         tbody += ` <tr>
                         <td class="book_id">${data[item].id}</td>
                         <td class="book_author">${data[item].author}</td>
                         <td class="book_title">${data[item].title}</td>
                         <td class="book_price">${data[item].price}</td>
                         <td> 
-                            <form action="# method="get" onsubmit="getCart(${i},'update');return false">
+                            <form action="# method="get" onsubmit="getCart(${i},'update','list');return false">
                                 <input type="number" name="book_quantity" value="${data[item].quantity}" min="1" 
                                         step="1" max="${data[item].inventory}" class="book_quantity"><br>
                                 <input type="submit" value="update" class="book_update">
@@ -514,7 +569,7 @@ function getTable(data, action, pageItems, pageNumber) {
                         </td>
                         <td>
                         <input type="button" value="Remove" class="book_remove" style="display:inline-block"
-                            onclick="getCart(${i},'remove')" >
+                            onclick="getCart(${i},'remove','list')" >
                         </td>
                       </tr>`;
                     } else {
@@ -522,56 +577,69 @@ function getTable(data, action, pageItems, pageNumber) {
                     }
                     i++;
                 }
+                showPagination(data, pageItems, pageNumber, "listview");
+
+                let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
+                                   onclick='showSearchandCatalog("ajaxsearch?search=")' ><span>&nbsp</span>`;
+                let checkout = `<input type="button" value="Checkout" style="display:inline-block"
+                            onclick="checkoutCart()" >`;
+                listview.innerHTML = thead + tbody + `<br>` + shopping + checkout;
             }
             break;
     }
+}
 
-    // add pagination page numbers
+function showPagination(data, pageItems, pageNumber, option) {
+    var pagination_gridview = document.getElementById("pagination_gridview");
+    var pagination_listview = document.getElementById("pagination_listview");
     let pageNumbers = Math.ceil(data.length / pageItems);
     let page = "";
     for (var pageindex = 1; pageindex <= pageNumbers; pageindex++) {
-        page += `<a href="#" onclick="showPageItems(${pageItems},${pageindex})" class="page${pageindex}">${pageindex}</a>`;
+        page += `<a href="#" onclick="showPageItems(${pageItems},${pageindex},'${option}')" id="${option}page${pageindex}">${pageindex}</a>`;
     }
 
     var pageLast = pageNumber <= 1 ? 1 : pageNumber - 1;
     var pageNext = pageNumber >= pageNumbers ? pageNumbers : pageNumber + 1;
 
-    pagination.innerHTML = `
-                    <a href="#" onclick="showPageItems(${pageItems},${pageLast})">&laquo;</a>` + page +
-            `<a href="#" onclick="showPageItems(${pageItems},${pageNext})">&raquo;</a>`;
-
-    content.innerHTML = thead + tbody + `</tbody> </table>`;
-    blockview.innerHTML = blockbody;
-
-    if (action == "viewCart") {
-        let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
-                                   onclick='showSearchandCatalog("ajaxsearch?search=")' >`;
-        let checkout = `<input type="button" value="Checkout" style="display:inline-block"
-                            onclick="checkoutCart()" >`;
-        content.innerHTML += `<br>` + shopping + checkout;
-    }
-}
-
-function showProductView(option) {
-
     switch (option) {
-        case "block":
-            document.getElementById('content_blockview').style.display = "flex";
-            document.getElementById('content').style.display = "none";
+        case "gridview":
+            pagination_gridview.innerHTML = `
+                    <a href="#" onclick="showPageItems(${pageItems},${pageLast},'${option}')">&laquo;</a>` + page +
+                    `<a href="#" onclick="showPageItems(${pageItems},${pageNext},'${option}')">&raquo;</a>`;
             break;
-        case "list":
-            document.getElementById('content_blockview').style.display = "none";
-            document.getElementById('content').style.display = "block";
+        case "listview":
+            pagination_listview.innerHTML = `
+                    <a href="#" onclick="showPageItems(${pageItems},${pageLast},'${option}')">&laquo;</a>` + page +
+                    `<a href="#" onclick="showPageItems(${pageItems},${pageNext},'${option}')">&raquo;</a>`;
             break;
     }
 }
 
 //function showPageItems(data, action,pageItems,pageNumber) {  // cannot get data
-function showPageItems(pageItems, pageNumber) {
+function showPageItems(pageItems, pageNumber, option) {
     var dataString = document.getElementById('data_table').innerHTML;  // get dataString of json
     var action = document.getElementById('action_table').innerHTML;    // parse the json string
     var data = JSON.parse(dataString);
     getTable(data, action, pageItems, pageNumber);
+    document.getElementById(option + "page" + pageNumber).className = "";
+    document.getElementById(option + "page" + pageNumber).className = "active";
+}
+
+function showProductView(option) {
+    switch (option) {
+        case "grid":
+            document.getElementById('content_gridview').style.display = "flex";
+            document.getElementById('content_listview').style.display = "none";
+            document.getElementById('pagination_listview').style.display = "none";
+            document.getElementById('pagination_gridview').style.display = "inline-block";
+            break;
+        case "list":
+            document.getElementById('content_gridview').style.display = "none";
+            document.getElementById('content_listview').style.display = "block";
+            document.getElementById('pagination_listview').style.display = "inline-block";
+            document.getElementById('pagination_gridview').style.display = "none";
+            break;
+    }
 }
 
 function showBookQuantity(data) {
