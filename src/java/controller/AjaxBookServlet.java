@@ -38,6 +38,9 @@ public class AjaxBookServlet extends HttpServlet {
         response.setHeader("Pragma", "no-cache");
 
         String todo = request.getParameter("todo");
+
+        String searchContent = "";
+        ArrayList<Book> bookList = new ArrayList<>();
         JSONObject data = new JSONObject();
         String msg_data = new String();
         switch (todo) {
@@ -117,9 +120,24 @@ public class AjaxBookServlet extends HttpServlet {
                 break;
 
             case "search":
-                String search = request.getParameter("search");
-                ArrayList<Book> bookList = new ArrayList<>();
-                bookList = BookDB.search(search);
+                searchContent = request.getParameter("search");
+                bookList = BookDB.search(searchContent);
+
+                data.put("bookList", bookList);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(data);
+                break;
+
+            case "sort":
+                String sortContent = request.getParameter("sortContent");
+                String option = request.getParameter("option");
+                if (option.equals("ASC")) {
+                    bookList = BookDB.sort(sortContent);
+                }
+                if (option.equals("DESC")) {
+                    bookList = BookDB.sortDesc(sortContent);
+                }
 
                 data.put("bookList", bookList);
                 response.setContentType("application/json");

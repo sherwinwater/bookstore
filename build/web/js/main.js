@@ -233,9 +233,11 @@ async function showSearchandCatalog(page) {
 }
 
 // --end show page 
-searchTxt.addEventListener("keyup", () => {
-    showSearchResults("ajaxsearch?search=" + searchTxt.value);
-});
+if (searchTxt != null) {
+    searchTxt.addEventListener("keyup", () => {
+        showSearchResults("ajaxsearch?search=" + searchTxt.value);
+    });
+}
 
 async function checkUsername(page) {
     let response = await fetch(page + document.getElementById("signup_username").value);
@@ -601,16 +603,25 @@ function showPagination(data, pageItems, pageNumber, option) {
     var pageLast = pageNumber <= 1 ? 1 : pageNumber - 1;
     var pageNext = pageNumber >= pageNumbers ? pageNumbers : pageNumber + 1;
 
+
     switch (option) {
         case "gridview":
             pagination_gridview.innerHTML = `
                     <a href="#" onclick="showPageItems(${pageItems},${pageLast},'${option}')">&laquo;</a>` + page +
                     `<a href="#" onclick="showPageItems(${pageItems},${pageNext},'${option}')">&raquo;</a>`;
+            if (pageNumber == 1) {
+                document.getElementById(option + "page" + pageNumber).className = "";
+                document.getElementById(option + "page" + pageNumber).className = "active";
+            }
             break;
         case "listview":
             pagination_listview.innerHTML = `
                     <a href="#" onclick="showPageItems(${pageItems},${pageLast},'${option}')">&laquo;</a>` + page +
                     `<a href="#" onclick="showPageItems(${pageItems},${pageNext},'${option}')">&raquo;</a>`;
+            if (pageNumber == 1) {
+                document.getElementById(option + "page" + pageNumber).className = "";
+                document.getElementById(option + "page" + pageNumber).className = "active";
+            }
             break;
     }
 }
@@ -804,3 +815,30 @@ async function updateBook(i, action) {
 //        console.log(e);
 //    }
 }
+
+
+// admin part 
+
+// sort by feature
+
+async function sortResults(content, option) {
+    if (content == "price") {
+        if (option == "ASC") {
+            document.getElementById('price_btn').style.display = "none";
+            document.getElementById('price_ASC').style.display = "none";
+            document.getElementById('price_DESC').style.display = "inline";
+        }
+        if (option == "DESC") {
+            document.getElementById('price_DESC').style.display = "none";
+            document.getElementById('price_ASC').style.display = "inline";
+        }
+    }
+    let page = "ajaxbook?todo=sort&sortContent=" + content + "&option=" + option;
+    let response = await fetch(page);
+    let resJason = await response.json();
+    getBookTable(resJason.bookList);
+}
+
+
+// end admin part
+

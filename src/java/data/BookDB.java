@@ -205,4 +205,87 @@ public class BookDB {
         }
     }
 
+    public static ArrayList<Book> sort(String sortContent) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Book> bookList = new ArrayList<>();
+        String query = "";
+        switch (sortContent) {
+            case "price":
+                query = "SELECT * FROM " + TABLE + " ORDER BY product_price ";
+                break;
+            case "title":
+                query = "SELECT * FROM " + TABLE + " ORDER BY product_title ";
+                break;
+        }
+
+        try {
+            ps = connection.prepareStatement(query);
+//            ps.setString(1, sortContent);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(rs.getString("product_id"),
+                        rs.getDouble("product_price"), rs.getString("product_title"),
+                        rs.getString("product_author"));
+                book.setInventory(rs.getInt("product_inventory"));
+                book.setLocation(rs.getString("location"));
+                book.setImgURL(rs.getString("imgURL"));
+                book.setVendor(rs.getString("vendor"));
+                book.setOwner(rs.getString("owner"));
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
+    public static ArrayList<Book> sortDesc(String sortContent) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Book> bookList = new ArrayList<>();
+        String query = "";
+        switch (sortContent) {
+            case "price":
+                query = "SELECT * FROM " + TABLE + " ORDER BY product_price DESC";
+                break;
+            case "title":
+                query = "SELECT * FROM " + TABLE + " ORDER BY product_title DESC";
+                break;
+        }
+        try {
+            ps = connection.prepareStatement(query);
+//            ps.setString(1, sortContent);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(rs.getString("product_id"),
+                        rs.getDouble("product_price"), rs.getString("product_title"),
+                        rs.getString("product_author"));
+                book.setInventory(rs.getInt("product_inventory"));
+                book.setLocation(rs.getString("location"));
+                book.setImgURL(rs.getString("imgURL"));
+                book.setVendor(rs.getString("vendor"));
+                book.setOwner(rs.getString("owner"));
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
+
 }

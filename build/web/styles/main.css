@@ -111,7 +111,8 @@ header img {
     padding-right: 15px;
     padding-left: 15px;
     float: left; 
-    height: 70vh;
+    min-height: 70vh;
+    height: 100%;
     border-right: 2px solid #ef9c00;    
     border-left: 2px solid #ef9c00;
 }
@@ -120,7 +121,8 @@ header img {
     padding-right: 15px;
     padding-left: 15px;
     float: left; 
-    height: 70vh;
+    min-height: 70vh;
+    height: 100%;
 }
 
 #content h1 {
@@ -172,6 +174,7 @@ input[type="password"],input[type="number"] {
     margin-bottom: 0.5em;
 }
 
+/* admin*/ 
 #bookForm input[type="text"], 
 #bookForm input[type="email"], 
 #bookForm input[type="password"],
@@ -181,13 +184,18 @@ input[type="password"],input[type="number"] {
     margin-bottom: 0.5em;
 }
 
-#book_update_table input[type="text"], 
-#book_update_table input[type="number"] {
+#book_update_table  input[type="text"], 
+#book_update_table  input[type="number"] {
     width: 5em;
     /*margin-left: 0.1em;*/    
     margin-bottom: 0.5em;
 }
 
+#book_update_table{
+    /*width: 100%;*/
+}
+
+/*-- end admin--*/
 section input[type="submit"] {
     margin-left: 0.5em;
 }
@@ -399,4 +407,13 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
+}
+
+
+/*sort part*/
+a.sort{
+    color: white;
+    background: green;
+    padding: 7px;
+    font-size: 1.3em;
 }

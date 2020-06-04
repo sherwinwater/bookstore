@@ -8,7 +8,7 @@
     <p>Please enter your username and password to continue.</p>
     <form action="j_security_check" method="get">
         <label class="pad_top">Username</label>
-        <input type="text" name="j_username"><br>
+        <input type="text" name="j_username" autofocus=""><br>
         <label class="pad_top">Password</label>
         <input type="password" name="j_password"><br>
         <label>&nbsp;</label>
