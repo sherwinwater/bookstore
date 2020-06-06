@@ -23,8 +23,8 @@ section, aside {
     margin-bottom: 1em;    
 }
 
-h1 { font-size: 175%; }
-h2 { font-size: 125%; }
+h1 { font-size: 175%; margin: 6px;}
+h2 { font-size: 125%; margin: 6px; }
 
 a { font-weight: bold;  text-decoration: none;}
 a:link { color: green; }
@@ -260,6 +260,18 @@ tr:hover {background-color:#f5f5f5;}
     width: 2em;
     margin-left: 0em;
 }
+#totalprice_content{
+    text-align:center;
+    /*padding-right:2em;*/
+    color:green;
+    font-weight:bold;
+    font-size:1.3em;
+}
+#totalprice_label{
+    text-align:right;
+    padding-right:0.5em;
+}
+
 #required {
     margin-left: 8.5em;
     margin-bottom: .5em;
@@ -369,7 +381,7 @@ footer p {
     /*width: 100%;*/
     margin-left: auto;
     margin-right: auto;
-    bottom: 9em;
+    bottom: 8em;
     text-align: center;
 }
 
@@ -408,7 +420,9 @@ img {
     margin-left: auto;
     margin-right: auto;
 }
-
+img:hover {
+    cursor: pointer;
+}
 
 /*sort part*/
 a.sort{
@@ -416,4 +430,25 @@ a.sort{
     background: green;
     padding: 7px;
     font-size: 1.3em;
+}
+.sort_nav{
+    margin-bottom: 20px;
+}
+
+.nav_book_admin{
+    clear: left;
+    margin: 0;
+    padding: 8px;
+    text-align: left;
+}
+.nav_book_admin ul{
+    margin-top: .5em;
+    margin-bottom: .5em;
+    list-style: none;
+    padding-top: .5em;
+    display: inline;
+}
+.nav_book_admin li{
+    display: inline-block;
+    padding: 0 1.5em;
 }

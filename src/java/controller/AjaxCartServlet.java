@@ -17,6 +17,8 @@ import data.BookDB;
 import data.CartItem;
 import data.User;
 import data.UserDB;
+import java.util.Collections;
+import java.util.Comparator;
 import org.json.JSONObject;
 
 @WebServlet(name = "AjaxCartServlet", urlPatterns = {"/ajaxcart"})
@@ -58,12 +60,17 @@ public class AjaxCartServlet extends HttpServlet {
             }
         }
 
+        Comparator <CartItem> sortById = Comparator.comparing(CartItem::getId);
+        Comparator <CartItem> sortByPrice = Comparator.comparing(CartItem::getTotalprice);
+        
         String cart_id = "";
         JSONObject itemsIncart = new JSONObject();
         switch (todo) {
             case "view":
+                int cartSize = cart.size();
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
+                itemsIncart.put("cartSize", cartSize);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);
@@ -73,9 +80,11 @@ public class AjaxCartServlet extends HttpServlet {
                 String book_id = request.getParameter("book_id");
                 String book_author = request.getParameter("book_author");
                 String book_title = request.getParameter("book_title");
+                String book_imgURL = request.getParameter("book_imgURL");
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
                 int book_inventory = Integer.parseInt(request.getParameter("book_inventory"));
+                Double book_totalprice = Math.round(book_price * book_quantity*100)/100.00;
                 if (!cart.isEmpty()) {
                     cart_id = cart.get(0).getCart_id();
                 } else {
@@ -89,6 +98,8 @@ public class AjaxCartServlet extends HttpServlet {
 //                }
                 cartitem.setQuantity(book_quantity);
                 cartitem.setInventory(book_inventory);
+                cartitem.setImgURL(book_imgURL);
+                cartitem.setTotalprice(book_totalprice);
 
                 if (cart.isEmpty()) {
                     cart.add(cartitem);
@@ -112,7 +123,9 @@ public class AjaxCartServlet extends HttpServlet {
                         CartDB.insert(cartitem);
                     }
                 }
-
+                
+                Collections.sort(cart,sortById.thenComparing(sortByPrice));
+                
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
                 response.setContentType("application/json");
@@ -141,11 +154,13 @@ public class AjaxCartServlet extends HttpServlet {
 
             case "update":
                 book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
+                book_price = Double.parseDouble(request.getParameter("book_price"));
                 book_id = request.getParameter("book_id");
                 for (CartItem item : cart) {
                     if (item.getId().equals(book_id)
                             & item.getQuantity() != book_quantity) {
                         item.setQuantity(book_quantity);
+                        item.setTotalprice(book_quantity * book_price);
                         CartDB.updateQuantity(item);
                     }
                 }

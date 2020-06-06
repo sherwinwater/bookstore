@@ -8,7 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import data.Book;
 import data.BookDB;
+import data.CartItem;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.HttpMethodConstraint;
 import javax.servlet.annotation.ServletSecurity;
@@ -43,6 +48,11 @@ public class AjaxBookServlet extends HttpServlet {
         ArrayList<Book> bookList = new ArrayList<>();
         JSONObject data = new JSONObject();
         String msg_data = new String();
+
+        Comparator<Book> sortById = Comparator.comparing(Book::getId);
+        Comparator<Book> sortByTitle = Comparator.comparing(Book::getTitle);
+        Comparator<Book> sortByPrice = Comparator.comparing(Book::getPrice);
+
         switch (todo) {
             case "check":
                 String book_id = request.getParameter("id");
@@ -84,6 +94,29 @@ public class AjaxBookServlet extends HttpServlet {
                     System.out.println("hhh");
                 }
                 data.put("msg_data", msg_data);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().print(data);
+                break;
+
+            case "insertsamples":
+                int size = Integer.parseInt(request.getParameter("size"));
+
+                LocalDateTime myDateObj = LocalDateTime.now();
+                DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss");
+                String id = myDateObj.format(myFormatObj);
+
+                for (int i = 0; i < size; i++) {
+                    Book booksample = new Book(id + "__" + i, 11.00, "sample", "John Doe");
+                    booksample.setInventory(100);
+                    booksample.setImgURL("/ebook/images/book_I wish you more by Amy Rosen.jpg");
+                    booksample.setLocation("2A");
+                    booksample.setVendor("york");
+                    booksample.setOwner("JackRose");
+                    BookDB.insert(booksample);
+                }
+
+                data.put("size", size);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(data);
@@ -132,11 +165,23 @@ public class AjaxBookServlet extends HttpServlet {
             case "sort":
                 String sortContent = request.getParameter("sortContent");
                 String option = request.getParameter("option");
+
+//                if (option.equals("ASC")) {
+//                    bookList = BookDB.sort(sortContent);
+//                }
+//                if (option.equals("DESC")) {
+//                    bookList = BookDB.sortDesc(sortContent);
+//                }
+                // method 2:
+                searchContent = request.getParameter("search");
+                bookList = BookDB.search(searchContent);
                 if (option.equals("ASC")) {
-                    bookList = BookDB.sort(sortContent);
+                    Collections.sort(bookList, sortByPrice.thenComparing(sortByTitle).
+                            thenComparing(sortById));
                 }
                 if (option.equals("DESC")) {
-                    bookList = BookDB.sortDesc(sortContent);
+                    Collections.sort(bookList, sortByPrice.thenComparing(sortByTitle).
+                            thenComparing(sortById).reversed());
                 }
 
                 data.put("bookList", bookList);

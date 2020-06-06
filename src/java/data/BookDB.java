@@ -204,6 +204,44 @@ public class BookDB {
             pool.freeConnection(connection);
         }
     }
+    
+    public static ArrayList<Book> searchResults(String title,int pageNumber,int pageSize) {
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Book> bookList = new ArrayList<>();
+
+        String query = "SELECT * FROM " + TABLE
+                + " WHERE product_title LIKE ? LIMIT ?,?";
+        try {
+            ps = connection.prepareStatement(query);
+            title = "%" + title + "%";
+            ps.setString(1, title);
+            ps.setInt(2, pageNumber * pageSize);
+            ps.setInt(3, pageSize);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                Book book = new Book(rs.getString("product_id"),
+                        rs.getDouble("product_price"), rs.getString("product_title"),
+                        rs.getString("product_author"));
+                book.setInventory(rs.getInt("product_inventory"));
+                book.setLocation(rs.getString("location"));
+                book.setImgURL(rs.getString("imgURL"));
+                book.setVendor(rs.getString("vendor"));
+                book.setOwner(rs.getString("owner"));
+                bookList.add(book);
+            }
+            return bookList;
+        } catch (SQLException e) {
+            System.out.println(e);
+            return null;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+    }
 
     public static ArrayList<Book> sort(String sortContent) {
         ConnectionPool pool = ConnectionPool.getInstance();

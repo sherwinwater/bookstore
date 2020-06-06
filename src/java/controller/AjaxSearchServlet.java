@@ -29,18 +29,23 @@ public class AjaxSearchServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         String search = request.getParameter("search");
+        int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+        int pageSize = Integer.parseInt(request.getParameter("pageSize"));
         ArrayList<Book> bookList = new ArrayList<>();
-        bookList = BookDB.search(search);
+//        bookList = BookDB.search(search);
+        bookList = BookDB.searchResults(search,pageNumber,pageSize);
 
         String book_java = "java";
         String book_PHP = "PHP";
         String book_JavaScript = "JavaScript";
 
+        int qyt_book = BookDB.search(search).size();
         int qyt_book_java = BookDB.search(book_java).size();
         int qyt_book_PHP = BookDB.search(book_PHP).size();
         int qyt_book_JavaScript = BookDB.search(book_JavaScript).size();
 
         JSONObject jo = new JSONObject();
+        jo.put("book_quantity", qyt_book);
         jo.put("java_quantity", qyt_book_java);
         jo.put("PHP_quantity", qyt_book_PHP);
         jo.put("JavaScript_quantity", qyt_book_JavaScript);

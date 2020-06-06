@@ -23,7 +23,8 @@
                 <li><a href="<c:url value='/' />">Home</a></li>
                 <li><a href="<c:url value='/admin'/>" >Admin</a></li>
                 <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
-                <li><a href="#" onclick="showPage('/ebook/admin/books.jsp')">Books</a></li>
+                <li><a href="<c:url value='/admin/book_index.jsp'/>">Books</a></li>
+                <!--<li><a href="#" onclick="showPage('/ebook/admin/books.jsp')">Books</a></li>-->
                 <li><a href="#" onclick="showPage('order')">Order</a></li>
                 <li><a href="<c:url value='/admin/users' />">Users</a></li>
                 <li><a href="<c:url value='/admin/invoices' />">Invoices</a></li>

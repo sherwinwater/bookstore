@@ -14,8 +14,8 @@ public class CartDB {
         String query
                 = "INSERT INTO " + TABLE + " (product_id,product_price,"
                 + "product_title,product_author,"
-                + "product_quantity,product_totalprice,cartID,user_username,inventory)"
-                + "VALUES(?,?,?,?,?,?,?,?,?)";
+                + "product_quantity,product_totalprice,cartID,user_username,inventory,product_imgURL)"
+                + "VALUES(?,?,?,?,?,?,?,?,?,?)";
         try {
             ps = connection.prepareStatement(query);
             ps.setString(1, item.getId());
@@ -27,6 +27,7 @@ public class CartDB {
             ps.setString(7, item.getCart_id());
             ps.setString(8, item.getUsername());
             ps.setInt(9, item.getInventory());
+            ps.setString(10, item.getImgURL());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
@@ -65,12 +66,13 @@ public class CartDB {
         PreparedStatement ps = null;
 
         String query = "UPDATE " + TABLE + " SET "
-                + "product_quantity = ? "
+                + "product_quantity = ?  AND product_totalprice = ?"
                 + "WHERE product_id = ?";
         try {
             ps = connection.prepareStatement(query);
             ps.setDouble(1, item.getQuantity());
-            ps.setString(2, item.getId());
+            ps.setDouble(2, item.getTotalprice());
+            ps.setString(3, item.getId());
             return ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
