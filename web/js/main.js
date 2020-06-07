@@ -462,7 +462,7 @@ async function getCart(i, action, view) {
         if (action == "add") {
             includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
         }
-        if (action == "remove" || action == "upate") {
+        if (action == "remove" || action == "update") {
             includePages('/ebook/cart/cart_totalprice_checkout.jsp', 'sidebarB');
         }
         document.getElementById("cart_quantity").dataset.count = resJason.cartSize;
@@ -732,7 +732,7 @@ function showPageTable(data, action, pageSize, pageNumber) {
                            <span class="book_id" hidden>${bookList[item].id}</span>
                          <form action="# method="get" onsubmit="getCart(${i},'add','grid');return false">
 
-                            <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="1" 
+                            <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="0" 
                                         step="1" max="${bookList[item].inventory}" class="book_quantity" style="width:4em">
                             <input type="submit" value="Add to Cart" class="book_add" >
                             <p style="font-size:90%;margin-left:0.5em">in stock <span class="book_inventory">${bookList[item].inventory}</span></p>
@@ -759,7 +759,7 @@ function showPageTable(data, action, pageSize, pageNumber) {
                         <td class="book_price_list">${bookList[item].price}</td>
                         <td> 
                             <form action="# method="get" onsubmit="getCart(${i},'add','list');return false">
-                            <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="1" 
+                            <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="0" 
                                         step="1" max="${bookList[item].inventory}" class="book_quantity_list" ><br>
                             <input type="submit" value="Add to Cart" class="book_add" >
                             </form>
