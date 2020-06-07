@@ -69,6 +69,27 @@ function showPage(href) {
             })
 }
 
+function includePages(sourceHref, domID) {
+
+//xmlhttp method
+//    var xmlhttp = new XMLHttpRequest();
+//    xmlhttp.open("GET", href, false);
+//    xmlhttp.send();
+//    document.getElementById("content").innerHTML = xmlhttp.responseText;
+
+// fetch method;
+    fetch(sourceHref)
+            .then(res => res.text()) // text()--xml, json()---json
+            .then(res => {
+                let content = document.getElementById(domID);
+                content.innerHTML = res;
+//                alert(res);
+            })
+}
+
+
+
+
 // checkout cart page
 
 async function checkoutCart() {
@@ -213,6 +234,30 @@ async function viewCart() {
     let response = await fetch(page);
     let resJason = await response.json();
     showPageTable(resJason, "viewCart", 6, 0);
+
+//    let sidebarB = document.getElementById("sidebarB");
+//    sidebarB.innerHTML = `<table><tbody>
+//        <tr>
+//            <td>Subtotal</td>
+//            <td>567</td>
+//        </tr>
+//        <tr>
+//            <td>HST</td>
+//            <td>13%</td>
+//        </tr>
+//        <tr>
+//            <td>Delivery</td>
+//            <td>23.0</td>
+//        </tr>
+//        <tr>
+//            <td>Estimated Subtotal</td>
+//            <td>${resJason.totalprice.toFixed(2)}</td>
+//        </tr>
+//       </tbody></table>`;
+//    
+    includePages('/ebook/cart/cart_totalprice_checkout.jsp', 'sidebarB');
+
+
 }
 
 async function showSearchResults(page) {
@@ -235,6 +280,9 @@ async function showSearchandCatalog() {
     showPageTable(resJason, "addCart", pageSize, pageNumber);
     showProductView('grid');
     showSubcatalog(resJason);
+
+    includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+
 }
 
 // --end show page 
@@ -411,6 +459,13 @@ async function getCart(i, action, view) {
         if (action == "remove") {
             showPageTable(resJason, "viewCart", 6, 0);
         }
+        if (action == "add") {
+            includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+        }
+        if (action == "remove" || action == "upate") {
+            includePages('/ebook/cart/cart_totalprice_checkout.jsp', 'sidebarB');
+        }
+        document.getElementById("cart_quantity").dataset.count = resJason.cartSize;
 
     } catch (e) {
         console.log(e);
@@ -774,15 +829,15 @@ function showPageTable(data, action, pageSize, pageNumber) {
                             onclick="getCart(${i},'remove','list')" >
                         </td>
                       </tr>`;
-                        totalprice += cart[item].totalprice;
+//                        totalprice += cart[item].totalprice;
                     } else {
                         break;
                     }
                     i++;
                 }
-                tbody += `<tr><td colspan= "5" id="totalprice_label">total price</td>
-                        <td id="totalprice_content" >${totalprice.toFixed(2)}</td>
-                        <td></td></tr>`;
+//                tbody += `<tr><td colspan= "5" id="totalprice_label">total price</td>
+//                        <td id="totalprice_content" >${totalprice.toFixed(2)}</td>
+//                        <td></td></tr>`;
 
                 let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"
                                    onclick='showSearchandCatalog("ajaxsearch?search=")' ><span>&nbsp</span>`;

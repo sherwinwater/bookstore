@@ -52,25 +52,33 @@ public class AjaxCartServlet extends HttpServlet {
         String username = "Guest";
         if (user != null) {
             username = user.getUsername();
-        }else{
-            if(!UserDB.userExists(username)){
+        } else {
+            if (!UserDB.userExists(username)) {
                 user = new User();
                 user.setUsername(username);
                 UserDB.insert(user);
             }
         }
 
-        Comparator <CartItem> sortById = Comparator.comparing(CartItem::getId);
-        Comparator <CartItem> sortByPrice = Comparator.comparing(CartItem::getTotalprice);
-        
+        Comparator<CartItem> sortById = Comparator.comparing(CartItem::getId);
+        Comparator<CartItem> sortByPrice = Comparator.comparing(CartItem::getTotalprice);
+
         String cart_id = "";
         JSONObject itemsIncart = new JSONObject();
+        int cartSize = 0;
         switch (todo) {
             case "view":
-                int cartSize = cart.size();
+                cartSize = cart.size();
+                double totalprice = 0.00;
+                for (CartItem item : cart) {
+                    totalprice += item.getTotalprice();
+                }
+//                totalprice = Math.round(totalprice *100.0)/100.0;
+
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
                 itemsIncart.put("cartSize", cartSize);
+                itemsIncart.put("totalprice", totalprice);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);
@@ -84,7 +92,7 @@ public class AjaxCartServlet extends HttpServlet {
                 Double book_price = Double.parseDouble(request.getParameter("book_price"));
                 int book_quantity = Integer.parseInt(request.getParameter("book_quantity"));
                 int book_inventory = Integer.parseInt(request.getParameter("book_inventory"));
-                Double book_totalprice = Math.round(book_price * book_quantity*100)/100.00;
+                Double book_totalprice = Math.round(book_price * book_quantity * 100.0) / 100.0;
                 if (!cart.isEmpty()) {
                     cart_id = cart.get(0).getCart_id();
                 } else {
@@ -94,7 +102,7 @@ public class AjaxCartServlet extends HttpServlet {
                 CartItem cartitem = new CartItem(book_id, book_price, book_title, book_author);
                 cartitem.setCart_id(cart_id);
 //                if (user != null) {
-                    cartitem.setUsername(username);
+                cartitem.setUsername(username);
 //                }
                 cartitem.setQuantity(book_quantity);
                 cartitem.setInventory(book_inventory);
@@ -123,11 +131,12 @@ public class AjaxCartServlet extends HttpServlet {
                         CartDB.insert(cartitem);
                     }
                 }
-                
-                Collections.sort(cart,sortById.thenComparing(sortByPrice));
-                
+
+                Collections.sort(cart, sortById.thenComparing(sortByPrice));
+                cartSize = cart.size();
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
+                itemsIncart.put("cartSize", cartSize);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);
@@ -143,9 +152,11 @@ public class AjaxCartServlet extends HttpServlet {
                         CartDB.deleteItem(item);
                     }
                 }
+                cartSize = cart.size();
 
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
+                itemsIncart.put("cartSize", cartSize);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);
@@ -164,9 +175,11 @@ public class AjaxCartServlet extends HttpServlet {
                         CartDB.updateQuantity(item);
                     }
                 }
+                cartSize = cart.size();
 
                 itemsIncart = new JSONObject();
                 itemsIncart.put("cart", cart);
+                itemsIncart.put("cartSize", cartSize);
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().print(itemsIncart);

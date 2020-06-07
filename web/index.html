@@ -27,7 +27,15 @@
                         <li><a href="<c:url value='/user?todo=logout'/>">Logout</a></li>
                     </ul>
                 </li>
-                <li><a href="#" onclick="viewCart()">Cart</a></li>
+                <li><a href="#" onclick="viewCart()">
+                        <div id="ex2">
+                            <span class="fa-stack fa-2x has-badge" id="cart_quantity" data-count="0">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-shopping-cart fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </div>
+                    </a>
+                </li>
                 <li><a href="#" onclick="showPage('./order/order.jsp')">Order</a></li>
                 <!--<li><a href="#" onclick="showPage('./account/logout.jsp')">Logout</a></li>-->
                 <li><a href="#" onclick="logoutUser()">Logout</a></li>
@@ -99,7 +107,7 @@
                 Sherwin  &amp; Company, Inc. 
                 All rights reserved.</p>
         </footer>
-         <script src="./js/main.js" ></script> 
+        <script src="./js/main.js" ></script> 
         <!--<script type="module" src="./js/main.js" ></script>-->
     </body>
 </html>
