@@ -260,10 +260,10 @@ async function viewCart() {
 
 }
 
-async function showSearchResults(page) {
+async function showSearchResults(arg) {
     let pageNumber = 0;
     let pageSize = 6;
-    let page = page + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+    let page = arg + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize;
     let response = await fetch(page);
     let resJason = await response.json();
     showPageTable(resJason, "addCart", pageSize, pageNumber);
