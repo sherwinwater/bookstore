@@ -261,10 +261,15 @@ async function viewCart() {
 }
 
 async function showSearchResults(page) {
+    let pageNumber = 0;
+    let pageSize = 6;
+    let page = page + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize;
     let response = await fetch(page);
     let resJason = await response.json();
-    showPageTable(resJason, "addCart", 6, 1);
+    showPageTable(resJason, "addCart", pageSize, pageNumber);
     showProductView('grid');
+    includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+
 }
 
 async function showSearchandCatalog() {
