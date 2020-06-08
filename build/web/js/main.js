@@ -733,7 +733,8 @@ function showPageTable(data, action, pageSize, pageNumber) {
                          <form action="# method="get" onsubmit="getCart(${i},'add','grid');return false">
 
                             <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="0" 
-                                        step="1" max="${bookList[item].inventory}" class="book_quantity" style="width:4em">
+                                        step="1" max="${bookList[item].inventory}" class="book_quantity" 
+                                onchange="getCart(${i},'add','grid')" style="width:4em">
                             <input type="submit" value="Add to Cart" class="book_add" >
                             <p style="font-size:90%;margin-left:0.5em">in stock <span class="book_inventory">${bookList[item].inventory}</span></p>
                             </form>
@@ -760,7 +761,8 @@ function showPageTable(data, action, pageSize, pageNumber) {
                         <td> 
                             <form action="# method="get" onsubmit="getCart(${i},'add','list');return false">
                             <input type="number" name="book_quantity" value="${bookList[item].quantity}" min="0" 
-                                        step="1" max="${bookList[item].inventory}" class="book_quantity_list" ><br>
+                                        step="1" max="${bookList[item].inventory}" class="book_quantity_list" 
+                                        onchange="getCart(${i},'add','list')"><br>
                             <input type="submit" value="Add to Cart" class="book_add" >
                             </form>
                             <p style="font-size:90%">in stock <span class="book_inventory_list">${bookList[item].inventory}</span></p>
