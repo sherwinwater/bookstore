@@ -386,6 +386,9 @@ async function logoutUser() {
     let response = await fetch(page);
     let resJason = await response.json();
     showPage('./account/logout.jsp');
+
+    includePages('./cart/cart_items_checkout.jsp', 'sidebarB');
+    includePages('./cart/cart_totalprice_checkout.jsp', 'sidebarB');
 }
 
 // add cart
