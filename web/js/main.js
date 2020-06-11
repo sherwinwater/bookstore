@@ -389,6 +389,7 @@ async function logoutUser() {
 
     includePages('./cart/cart_items_checkout.jsp', 'sidebarB');
     includePages('./cart/cart_totalprice_checkout.jsp', 'sidebarB');
+    document.getElementById("cart_quantity").dataset.count = 0;
 }
 
 // add cart
