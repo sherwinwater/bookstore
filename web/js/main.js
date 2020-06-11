@@ -5,8 +5,14 @@ var links = document.getElementsByClassName("link");
 var email = document.getElementById("email");
 var service = document.getElementById("service");
 var searchTxt = document.getElementById("searchTxt");
-var content = document.getElementById("content");
+var content_welcome = document.getElementById("content_welcome");
+var content_admin = document.getElementById("content_admin");
 var contents = document.getElementsByClassName("content");
+var gridview = document.getElementById("content_gridview");
+var listview = document.getElementById("content_listview");
+var pagination_listview = document.getElementById("pagination_listview");
+var nav_view = document.getElementById("nav_view");
+
 // add current classname
 for (var i = 0; i < links.length; i++) {
     links[i].addEventListener("click", function () {
@@ -57,10 +63,12 @@ function showPage(href) {
     fetch(href)
             .then(res => res.text()) // text()--xml, json()---json
             .then(res => {
-                let content = document.getElementById("content");
-                let content_admin = document.getElementById("content_admin");
-                if (content != null) {
-                    content.innerHTML = res;
+                if (content_welcome != null) {
+                    content_welcome.innerHTML = res;
+                    listview.innerHTML = "";
+                    gridview.innerHTML = "";
+                    pagination_listview.innerHTML = "";
+                    nav_view.innerHTML = "";
                 }
                 if (content_admin != null) {
                     content_admin.innerHTML = res;
@@ -81,8 +89,8 @@ function includePages(sourceHref, domID) {
     fetch(sourceHref)
             .then(res => res.text()) // text()--xml, json()---json
             .then(res => {
-                let content = document.getElementById(domID);
-                content.innerHTML = res;
+                let id = document.getElementById(domID);
+                id.innerHTML = res;
 //                alert(res);
             })
 }
@@ -255,7 +263,7 @@ async function viewCart() {
 //        </tr>
 //       </tbody></table>`;
 //    
-    includePages('/ebook/cart/cart_totalprice_checkout.jsp', 'sidebarB');
+    includePages('./cart/cart_totalprice_checkout.jsp', 'sidebarB');
 
 
 }
@@ -268,7 +276,7 @@ async function showSearchResults(arg) {
     let resJason = await response.json();
     showPageTable(resJason, "addCart", pageSize, pageNumber);
     showProductView('grid');
-    includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+    includePages('./cart/cart_items_checkout.jsp', 'sidebarB');
 
 }
 
@@ -280,13 +288,14 @@ async function showSearchandCatalog() {
 
     let page = "ajaxsearch?search=&cart_id=" + cart_id
             + "&pageNumber=" + pageNumber + "&pageSize=" + pageSize;
+//    let response = await fetch(page,{mode:'cors'});
     let response = await fetch(page);
     let resJason = await response.json();
     showPageTable(resJason, "addCart", pageSize, pageNumber);
     showProductView('grid');
     showSubcatalog(resJason);
 
-    includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+    includePages('./cart/cart_items_checkout.jsp', 'sidebarB');
 
 }
 
@@ -465,10 +474,10 @@ async function getCart(i, action, view) {
             showPageTable(resJason, "viewCart", 6, 0);
         }
         if (action == "add") {
-            includePages('/ebook/cart/cart_items_checkout.jsp', 'sidebarB');
+            includePages('./cart/cart_items_checkout.jsp', 'sidebarB');
         }
         if (action == "remove" || action == "update") {
-            includePages('/ebook/cart/cart_totalprice_checkout.jsp', 'sidebarB');
+            includePages('./cart/cart_totalprice_checkout.jsp', 'sidebarB');
         }
         document.getElementById("cart_quantity").dataset.count = resJason.cartSize;
 
@@ -532,8 +541,8 @@ async function getCart(i, action, view) {
 //                gridview.innerHTML = "no results";
 //            } else {
 //                nav_view.innerHTML =
-//                        `<img src="/ebook/images/gridview.png" onclick="showProductView('grid')" style="width:20px; display:inline-block">
-//                    <img src="/ebook/images/listview.png" onclick="showProductView('list')" style="width:20px; display:inline-block">`;
+//                        `<img src="./images/gridview.png" onclick="showProductView('grid')" style="width:20px; display:inline-block">
+//                    <img src="./images/listview.png" onclick="showProductView('list')" style="width:20px; display:inline-block">`;
 //
 //                var thead = tbody = gridbody = "";
 //                var i = 0;
@@ -692,11 +701,6 @@ async function getPageItems(pageSize, pageNumber, view) {
 }
 
 function showPageTable(data, action, pageSize, pageNumber) {
-    var gridview = document.getElementById("content_gridview");
-    var listview = document.getElementById("content_listview");
-    var content_welcome = document.getElementById("content_welcome");
-    var nav_view = document.getElementById("nav_view");
-    var pagination_listview = document.getElementById("pagination_listview");
     var bookList = data.bookList;
     var cart = data.cart;
     var cartSize = data.cartSize;
@@ -710,8 +714,8 @@ function showPageTable(data, action, pageSize, pageNumber) {
                 gridview.innerHTML = "no results";
             } else {
                 nav_view.innerHTML =
-                        `<img src="/ebook/images/gridview.png" onclick="showProductView('grid')" style="width:20px; display:inline-block">
-                    <img src="/ebook/images/listview.png" onclick="showProductView('list')" style="width:20px; display:inline-block">`;
+                        `<img src="./images/gridview.png" onclick="showProductView('grid')" style="width:20px; display:inline-block">
+                    <img src="./images/listview.png" onclick="showProductView('list')" style="width:20px; display:inline-block">`;
 
                 var thead = tbody = gridbody = "";
                 var i = 0;
@@ -843,7 +847,7 @@ function showPageTable(data, action, pageSize, pageNumber) {
                     i++;
                 }
 //                tbody += `<tr><td colspan= "5" id="totalprice_label">total price</td>
-//                        <td id="totalprice_content" >${totalprice.toFixed(2)}</td>
+//                        <td id="totalprice_content_welcome" >${totalprice.toFixed(2)}</td>
 //                        <td></td></tr>`;
 
                 let shopping = `<input type="button" value="Continue Shopping" style="display:inline-block"

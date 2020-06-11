@@ -37,7 +37,7 @@
                 <td>${item.id}</td>
                 <td>${item.price}</td>
                 <td>${item.quantity}</td>
-                <td>${item.totalprice}</td>
+                <td>${String.format("%.2f",item.totalprice)}</td>
             </tr>
         </c:forEach>
     </table>
